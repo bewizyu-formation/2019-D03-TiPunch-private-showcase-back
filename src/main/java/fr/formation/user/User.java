@@ -23,6 +23,12 @@ public class User {
 	@JsonIgnore
 	private String password;
 
+	@Column(name = "mail")
+	private String mail;
+
+	@Column(name = "ville")
+	private String ville;
+
 
 	/**
 	 * Gets id.
@@ -83,4 +89,38 @@ public class User {
 		this.password = password;
 	}
 
+
+	/**
+	 * Gets mail
+	 * @return the mail
+	 */
+	public String getMail() {
+		return mail;
+	}
+
+	/**
+	 * Sets mail
+	 * @param mail
+	 */
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	/**
+	 * Gets ville
+	 * @return ville
+	 */
+
+	public String getVille() {
+		return ville;
+	}
+
+	/**
+	 * Stes ville
+	 * @param ville
+	 */
+
+	public void setVille(String ville) {
+		this.ville = ville;
+	}
 }
