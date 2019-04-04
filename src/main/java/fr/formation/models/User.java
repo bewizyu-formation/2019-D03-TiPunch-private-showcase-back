@@ -34,6 +34,9 @@ public class User {
 	@ManyToMany
 	private Set<Artist> listArtist;
 
+	@ManyToMany
+	private Set<Event> listEvents;
+
 
 	/**
 	 * Constructors
@@ -161,4 +164,20 @@ public class User {
 		this.listArtist = listArtist;
 	}
 
+	/**
+	 *  gets lsit event
+	 * @return list Events
+	 */
+	public Set<Event> getListEvents() {
+		return listEvents;
+	}
+
+	/**
+	 * Sets list event
+	 * @param listEvents
+	 */
+
+	public void setListEvents(Set<Event> listEvents) {
+		this.listEvents = listEvents;
+	}
 }

@@ -1,7 +1,7 @@
 package fr.formation.models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+
 import java.util.Set;
 
 @Entity
@@ -26,6 +26,8 @@ public class Artist {
 
     @ManyToMany(mappedBy = "listArtist")
     private Set<User> userList ;
+
+    private Event eventBooked; // nommer eventBooked mais je sais pas si c'est le mieux
 
     /**
      * Constructeurs
@@ -81,7 +83,12 @@ public class Artist {
     public Set<User> getUserList() {
         return userList;
     }
-/**
+
+    public Event getEventBooked() {
+        return eventBooked;
+    }
+
+    /**
      * Setteur Artist
      */
     public void setId(Long id) {
@@ -116,4 +123,7 @@ public class Artist {
         this.userList = userList;
     }
 
+    public void setEventBooked(Event eventBooked) {
+        this.eventBooked = eventBooked;
+    }
 }
