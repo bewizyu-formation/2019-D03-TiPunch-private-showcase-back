@@ -1,4 +1,4 @@
-package fr.formation.user;
+package fr.formation.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
