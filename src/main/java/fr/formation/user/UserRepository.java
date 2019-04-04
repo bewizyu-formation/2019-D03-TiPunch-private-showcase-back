@@ -1,5 +1,6 @@
 package fr.formation.user;
 
+import fr.formation.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

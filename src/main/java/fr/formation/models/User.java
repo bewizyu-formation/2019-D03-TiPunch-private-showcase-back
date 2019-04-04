@@ -3,6 +3,8 @@ package fr.formation.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Set;
+
 
 /**
  * The type User.
@@ -30,8 +32,23 @@ public class User {
 	private String city;
 
 	@ManyToMany
-	private ArrayList<Artiste> listArtist;
+	private Set<Artist> listArtist;
 
+
+	/**
+	 * Constructors
+	 */
+	public User() {
+	}
+
+
+	public User(String username, String password, String mail, String city, Set<Artist> listArtist) {
+		this.username = username;
+		this.password = password;
+		this.mail = mail;
+		this.city = city;
+		this.listArtist = listArtist;
+	}
 
 	/**
 	 * Gets id.
@@ -119,11 +136,29 @@ public class User {
 	}
 
 	/**
-	 * Stes city
+	 * Sets city
 	 * @param city
 	 */
 
 	public void setCity(String city) {
 		this.city = city;
 	}
+
+
+	/**
+	 * Gets list Artist
+	 * @return list artist
+	 */
+	public Set<Artist> getListArtist() {
+		return listArtist;
+	}
+
+	/**
+	 * Sets list artist
+	 * @param listArtist
+	 */
+	public void setListArtist(Set<Artist> listArtist) {
+		this.listArtist = listArtist;
+	}
+
 }

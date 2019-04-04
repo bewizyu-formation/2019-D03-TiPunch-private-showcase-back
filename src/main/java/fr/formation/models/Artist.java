@@ -2,6 +2,7 @@ package fr.formation.models;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Set;
 
 @Entity
 @Table(name = "Artist")
@@ -24,9 +25,7 @@ public class Artist {
     private Integer noteArtist;
 
     @ManyToMany(mappedBy = "listArtist")
-    private ArrayList<User> userList ;
-
-
+    private Set<User> userList ;
 
     /**
      * Constructeurs
@@ -38,7 +37,7 @@ public class Artist {
     public Artist(String nameArtist, String mailArtist,
                   String cityArtist, String descriptionArtist,
                   Integer nbVote, Integer noteArtist,
-                  ArrayList<User> userList) {
+                  Set<User> userList) {
         this.nameArtist = nameArtist;
         this.mailArtist = mailArtist;
         this.cityArtist = cityArtist;
@@ -79,7 +78,7 @@ public class Artist {
         return noteArtist;
     }
 
-    public ArrayList<User> getUserList() {
+    public Set<User> getUserList() {
         return userList;
     }
 /**
@@ -113,7 +112,8 @@ public class Artist {
         this.noteArtist = noteArtist;
     }
 
-    public void setUserList(ArrayList<User> userList) {
+    public void setUserList(Set<User> userList) {
         this.userList = userList;
     }
+
 }

@@ -20,6 +20,12 @@ public class UserRole {
 	private String role;
 
 	/**
+	 * Constructors
+	 */
+	public UserRole() {
+	}
+
+	/**
 	 * Gets role id.
 	 *
 	 * @return the role id
