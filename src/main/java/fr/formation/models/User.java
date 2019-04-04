@@ -26,8 +26,11 @@ public class User {
 	@Column(name = "mail")
 	private String mail;
 
-	@Column(name = "ville")
-	private String ville;
+	@Column(name = "city")
+	private String city;
+
+	@ManyToMany
+	private ArrayList<Artiste> listArtist;
 
 
 	/**
@@ -107,20 +110,20 @@ public class User {
 	}
 
 	/**
-	 * Gets ville
-	 * @return ville
+	 * Gets city
+	 * @return city
 	 */
 
-	public String getVille() {
-		return ville;
+	public String getCity() {
+		return city;
 	}
 
 	/**
-	 * Stes ville
-	 * @param ville
+	 * Stes city
+	 * @param city
 	 */
 
-	public void setVille(String ville) {
-		this.ville = ville;
+	public void setCity(String city) {
+		this.city = city;
 	}
 }
