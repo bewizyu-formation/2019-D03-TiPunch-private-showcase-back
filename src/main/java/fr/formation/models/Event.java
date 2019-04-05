@@ -13,7 +13,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
+
     @OneToOne
     private User organisateurEvent;
 
@@ -22,7 +22,7 @@ public class Event {
 
     private LocalDateTime dateEvent;
 
-    @NotNull
+
     @OneToOne
     private Artist artistAtTheEvent;
 

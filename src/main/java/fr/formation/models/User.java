@@ -38,7 +38,7 @@ public class User {
     @ManyToMany
     private Set<Event> listEvents;
 
-    @NotNull
+
     @OneToOne
     private Event eventOrganized;
 
