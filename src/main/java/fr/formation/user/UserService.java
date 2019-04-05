@@ -62,12 +62,14 @@ public class UserService implements UserDetailsService {
 	}
 
 	/**
-	 * Add a new user with the user repository
-	 *
+	 * * Add a new user with the user repository
 	 * @param username the username
 	 * @param password the password
-	 * @param roles    the roles
+	 * @param mail the mail
+	 * @param city the city
+	 * @param roles the roles
 	 */
+
 	public void addNewUser(String username, String password, String mail, String city ,String... roles) {
 
 		User user = new User();
@@ -76,9 +78,9 @@ public class UserService implements UserDetailsService {
 		user.setMail(mail);
 		user.setCity(city);
 
-		user = userRepository.save(user);
-
-
+		if(!userRepository.existsByUsername(user.getUsername())){
+			user = userRepository.save(user);
+		}
 
 		for (String role : roles) {
 
@@ -90,4 +92,6 @@ public class UserService implements UserDetailsService {
 		}
 
 	}
+	
+
 }
