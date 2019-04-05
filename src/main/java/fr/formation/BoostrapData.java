@@ -39,11 +39,17 @@ public class BoostrapData {
 		userService.addNewUser(
 				"admin",
 				passwordEncoder.encode("admin"),
+				"mail@test",
+				"Lyon",
 				SecurityConstants.ROLE_ADMIN
+
+
 		);
 		userService.addNewUser(
 				"user",
 				passwordEncoder.encode("user"),
+				"mailuser@test",
+				"Lyon",
 				SecurityConstants.ROLE_USER
 		);
 	}

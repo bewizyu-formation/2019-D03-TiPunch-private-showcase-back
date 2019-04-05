@@ -1,10 +1,7 @@
 package fr.formation.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * The type User controller.
@@ -23,11 +20,12 @@ public class UserController {
 	 * @param password the password
 	 * @param roles    the roles
 	 */
-	@PutMapping("/")
+	@PostMapping("/")
 	public void signup(@RequestParam String username, @RequestParam String password,
-										 @RequestParam String... roles) {
+					   @RequestParam String mail, @RequestParam String city,
+					   @RequestParam String... roles) {
 
-		userService.addNewUser(username, password, roles);
+		userService.addNewUser(username, password, mail, city ,  roles);
 
 	}
 

@@ -68,12 +68,17 @@ public class UserService implements UserDetailsService {
 	 * @param password the password
 	 * @param roles    the roles
 	 */
-	public void addNewUser(String username, String password, String... roles) {
+	public void addNewUser(String username, String password, String mail, String city ,String... roles) {
 
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(password);
+		user.setMail(mail);
+		user.setCity(city);
+
 		user = userRepository.save(user);
+
+
 
 		for (String role : roles) {
 
