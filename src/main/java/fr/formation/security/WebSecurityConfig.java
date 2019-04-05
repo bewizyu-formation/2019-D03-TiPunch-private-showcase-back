@@ -49,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.PUT, "/users/").permitAll()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
 				.antMatchers(HttpMethod.GET, "/communes").permitAll()
+				.antMatchers(HttpMethod.PUT, "/artists").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.logout().permitAll()
@@ -67,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 *
 	 * @return the password encoder
 	 */
-// Algorithme de hashage du mot de passe
+	// Algorithme de hashage du mot de passe
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
