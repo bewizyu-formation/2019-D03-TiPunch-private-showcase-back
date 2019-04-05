@@ -48,4 +48,18 @@ public class CommuneServiceImpl implements CommuneService {
 		);
 	}
 
+
+	@Override
+	public List<Commune> getCommunesByCode(String code) {
+		UriComponentsBuilder builder = UriComponentsBuilder
+				.fromUriString(GeoApiConstants.GEO_API_BASE_URL + GeoApiConstants.RESOURCE_COMMUNE)
+				.queryParam(GeoApiConstants.PARAMS_CODE, code)
+				.queryParam(GeoApiConstants.PARAMS_FIELDS, GeoApiConstants.COMMUNE_FIELDS_VALUES);
+
+		return this.restTemplate.getForObject(
+				builder.toUriString(),
+				List.class
+		);
+	}
+
 }

@@ -20,4 +20,11 @@ public interface CommuneService {
 	 */
 	List<Commune> getCommunes(final String nom);
 
+
+	/**
+	 * Gets commune by code
+	 * @param code the code
+	 * @return the commune by code
+	 */
+	List<Commune> getCommunesByCode(final String code);
 }
