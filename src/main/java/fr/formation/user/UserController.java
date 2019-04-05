@@ -1,10 +1,8 @@
 package fr.formation.user;
 
-import fr.formation.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * The type User controller.
@@ -33,12 +31,5 @@ public class UserController {
 		userService.addNewUser(username, password, mail, city ,  roles);
 
 	}
-	@GetMapping
-	public List<User> findAllUser(){
-		return null;
-	}
-
-
-
 
 }
