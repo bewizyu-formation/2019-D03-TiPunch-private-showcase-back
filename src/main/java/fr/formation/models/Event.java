@@ -14,6 +14,7 @@ public class Event {
     private Long id;
 
     @NotNull
+    @OneToOne
     private User organisateurEvent;
 
     @Max(100)
@@ -22,6 +23,7 @@ public class Event {
     private LocalDateTime dateEvent;
 
     @NotNull
+    @OneToOne
     private Artist artistAtTheEvent;
 
     @ManyToMany(mappedBy = "listEvents")

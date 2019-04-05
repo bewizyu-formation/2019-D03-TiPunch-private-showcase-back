@@ -1,6 +1,7 @@
 package fr.formation.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -25,8 +26,10 @@ public class Artist {
     private Integer noteArtist;
 
     @ManyToMany(mappedBy = "listArtist")
-    private Set<User> userList ;
+    private Set<User> userList;
 
+
+    @OneToOne
     private Event eventBooked; // nommer eventBooked mais je sais pas si c'est le mieux
 
     /**
