@@ -3,6 +3,7 @@ package fr.formation.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 
@@ -13,152 +14,110 @@ import java.util.Set;
 @Table(name = "user")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	@Column(name = "username")
-	private String username;
-
-
-	@Column(name = "password")
-	@JsonIgnore
-	private String password;
-
-	@Column(name = "mail")
-	private String mail;
-
-	@Column(name = "city")
-	private String city;
-
-	@ManyToMany
-	private Set<Artist> listArtist;
+    @Column(name = "username")
+    private String username;
 
 
-	/**
-	 * Constructors
-	 */
-	public User() {
-	}
+    @Column(name = "password")
+    @JsonIgnore
+    private String password;
+
+    @Column(name = "mail")
+    private String mail;
+
+    @Column(name = "city")
+    private String city;
+
+    @ManyToMany
+    private Set<Artist> listArtist;
+
+    @ManyToMany
+    private Set<Event> listEvents;
 
 
-	public User(String username, String password, String mail, String city, Set<Artist> listArtist) {
-		this.username = username;
-		this.password = password;
-		this.mail = mail;
-		this.city = city;
-		this.listArtist = listArtist;
-	}
-
-	/**
-	 * Gets id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
+    @OneToOne
+    private Event eventOrganized;
 
 
-	/**
-	 * Sets id.
-	 *
-	 * @param id the id
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
+    /**
+     * Constructors
+     */
+    public User() {
+    }
+
+    public User(Long id, String username, String password, String mail, String city, Set<Artist> listArtist, Set<Event> listEvents, @NotNull Event eventOrganized) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.mail = mail;
+        this.city = city;
+        this.listArtist = listArtist;
+        this.listEvents = listEvents;
+        this.eventOrganized = eventOrganized;
+    }
+
+    /**
+     * Getter
+     *
+     *
+     */
+    public Long getId() {
+        return id;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public String getMail() {
+        return mail;
+    }
+    public String getCity() {
+        return city;
+    }
+    public Set<Artist> getListArtist() {
+        return listArtist;
+    }
+    public Set<Event> getListEvents() {
+        return listEvents;
+    }
+    public Event getEventOrganized() {
+        return eventOrganized;
+    }
 
 
-	/**
-	 * Gets username.
-	 *
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-
-	/**
-	 * Sets username.
-	 *
-	 * @param username the username
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-
-	/**
-	 * Gets password.
-	 *
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-
-	/**
-	 * Sets password.
-	 *
-	 * @param password the password
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
-	/**
-	 * Gets mail
-	 * @return the mail
-	 */
-	public String getMail() {
-		return mail;
-	}
-
-	/**
-	 * Sets mail
-	 * @param mail
-	 */
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
-	/**
-	 * Gets city
-	 * @return city
-	 */
-
-	public String getCity() {
-		return city;
-	}
-
-	/**
-	 * Sets city
-	 * @param city
-	 */
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-
-	/**
-	 * Gets list Artist
-	 * @return list artist
-	 */
-	public Set<Artist> getListArtist() {
-		return listArtist;
-	}
-
-	/**
-	 * Sets list artist
-	 * @param listArtist
-	 */
-	public void setListArtist(Set<Artist> listArtist) {
-		this.listArtist = listArtist;
-	}
-
+    /**
+     * Setter
+     *
+     *
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+    public void setCity(String city) {
+        this.city = city;
+    }
+    public void setListArtist(Set<Artist> listArtist) {
+        this.listArtist = listArtist;
+    }
+    public void setListEvents(Set<Event> listEvents) {
+        this.listEvents = listEvents;
+    }
+    public void setEventOrganized(Event eventOrganized) {
+        this.eventOrganized = eventOrganized;
+    }
 }
