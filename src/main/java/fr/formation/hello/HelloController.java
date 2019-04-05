@@ -3,7 +3,10 @@ package fr.formation.hello;
 import fr.formation.security.SecurityConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.support.SecurityContextProvider;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +33,9 @@ public class HelloController {
 	@GetMapping("/admin")
 	@Secured(SecurityConstants.ROLE_ADMIN)
 	Hello sayHelloAdmin() {
+
+		//SecurityContextHolder.getContext().getAuthentication().
+
 		return new Hello("Hello Admin!");
 	}
 

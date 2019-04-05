@@ -92,6 +92,15 @@ public class UserService implements UserDetailsService {
 		}
 
 	}
+	public List<User> findAll(){
+		List<User> listUsers = userRepository.findAll();
+		return  listUsers;
+	}
+
+	public User getUserByUsername(String name) {
+		User user = userRepository.findByUsername(name);
+		return user;
+	}
 	
 
 }
