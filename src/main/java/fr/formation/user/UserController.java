@@ -27,11 +27,10 @@ public class UserController extends AbstractController {
 	 * @param roles    the roles
 	 */
 	@PutMapping(value = "/")
-	public void signup(@RequestBody String username, @RequestBody String password,
-									   @RequestBody String mail, @RequestBody String city,
-									   @RequestBody String... roles) {
+	public void signup(@RequestBody User data) {
 
-		userService.addNewUser(username, password, mail, city ,  roles);
+
+		userService.addNewUser(data.getUsername(), data.getPassword(), data.getMail(), data.getCity() );
 
 
 
