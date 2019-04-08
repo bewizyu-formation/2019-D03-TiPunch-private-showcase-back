@@ -82,9 +82,12 @@ public class UserService implements UserDetailsService {
 		user.setMail(mail);
 		user.setCity(city);
 
-		if(!userRepository.existsByUsername(user.getUsername())){
+		if(!userRepository.existsByUsername(user.getUsername())
+				&& isValidPassword(user.getPassword() )){
+
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user = userRepository.save(user);
+
 		}
 
 		for (String role : roles) {
@@ -102,6 +105,16 @@ public class UserService implements UserDetailsService {
 		User user = userRepository.findByUsername(name);
 		return user;
 	}
-	
+
+	/**
+	 * checked password with 8 character minimum, 1 MAJ, 1 number
+	 * @param password
+	 * @return boolean
+	 */
+	public boolean isValidPassword(String password){
+
+		return password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$");
+	}
+
 
 }

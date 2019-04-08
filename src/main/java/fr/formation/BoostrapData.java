@@ -38,7 +38,7 @@ public class BoostrapData {
 
 		userService.addNewUser(
 				"admin",
-				"admin",
+				"adminAdmin1",
 				"mail@test",
 				"Lyon",
 				SecurityConstants.ROLE_ADMIN
@@ -47,7 +47,7 @@ public class BoostrapData {
 		);
 		userService.addNewUser(
 				"user",
-				"user",
+				"userUser2",
 				"mailuser@test",
 				"Lyon",
 				SecurityConstants.ROLE_USER

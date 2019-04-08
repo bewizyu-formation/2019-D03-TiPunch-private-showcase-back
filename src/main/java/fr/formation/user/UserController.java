@@ -15,7 +15,6 @@ public class UserController extends AbstractController {
 	@Autowired
 	private UserService userService;
 
-
 	/**
 	 * Signup.
 	 *
@@ -23,12 +22,12 @@ public class UserController extends AbstractController {
 	 * @param password the password
 	 * @param roles    the roles
 	 */
-	@PutMapping("/")
+	@PutMapping(value = "/")
 	public void signup(@RequestParam String username, @RequestParam String password,
-					   @RequestParam String mail, @RequestParam String city,
-					   @RequestParam String... roles) {
+									   @RequestParam String mail, @RequestParam String city,
+									   @RequestParam String... roles) {
 
-		userService.addNewUser(username, password, mail, city ,  roles);
+		 userService.addNewUser(username, password, mail, city ,  roles);
 
 	}
 
