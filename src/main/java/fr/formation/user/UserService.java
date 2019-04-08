@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,6 +24,8 @@ public class UserService implements UserDetailsService {
 
 	private UserRoleRepository userRoleRepository;
 
+	private PasswordEncoder passwordEncoder;
+
 	/**
 	 * Instantiates a new User service.
 	 *
@@ -30,9 +33,10 @@ public class UserService implements UserDetailsService {
 	 * @param userRoleRepository the user role repository
 	 */
 	@Autowired
-	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository) {
+	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	/**
@@ -79,6 +83,7 @@ public class UserService implements UserDetailsService {
 		user.setCity(city);
 
 		if(!userRepository.existsByUsername(user.getUsername())){
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user = userRepository.save(user);
 		}
 
@@ -91,10 +96,6 @@ public class UserService implements UserDetailsService {
 			userRoleRepository.save(userRole);
 		}
 
-	}
-	public List<User> findAll(){
-		List<User> listUsers = userRepository.findAll();
-		return  listUsers;
 	}
 
 	public User getUserByUsername(String name) {
