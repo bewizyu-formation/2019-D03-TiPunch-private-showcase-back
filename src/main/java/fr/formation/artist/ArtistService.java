@@ -4,7 +4,10 @@ import fr.formation.models.Artist;
 import fr.formation.user.UserRole;
 import fr.formation.user.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * The type Artist service
@@ -14,6 +17,7 @@ public class ArtistService {
 
     private ArtistRepository artistRepository;
     private UserRoleRepository userRoleRepository;
+    private PasswordEncoder passwordEncoder;
 
 
 
@@ -24,9 +28,11 @@ public class ArtistService {
      *
      */
     @Autowired
-    public ArtistService(ArtistRepository artistRepository, UserRoleRepository userRoleRepository) {
+    public ArtistService(ArtistRepository artistRepository, UserRoleRepository userRoleRepository,
+                         PasswordEncoder passwordEncoder) {
         this.artistRepository = artistRepository;
         this.userRoleRepository = userRoleRepository;
+        this.passwordEncoder = passwordEncoder;
 
     }
 
@@ -42,6 +48,7 @@ public class ArtistService {
         artist.setDescriptionArtist(description);
 
         if(!artistRepository.existsByNameArtist(artist.getNameArtist())){
+            artist.setPasswordArtist(passwordEncoder.encode(artist.getPasswordArtist()));
             artist = artistRepository.save(artist);
         }
         for (String role : roles){
@@ -52,6 +59,20 @@ public class ArtistService {
             userRoleRepository.save(artistRole);
             
         }
+    }
+
+    public List<Artist> getArtists(){
+        List<Artist> artists = artistRepository.findAll();
+        return  artists;
+    }
+
+    public Artist findArtistByNameArtist(String nameArtist){
+        Artist artist = artistRepository.findArtistByNameArtist(nameArtist);
+        return  artist;
+    }
+
+    public void deleteArtistById(Long id){
+        // TODO
     }
 
 }

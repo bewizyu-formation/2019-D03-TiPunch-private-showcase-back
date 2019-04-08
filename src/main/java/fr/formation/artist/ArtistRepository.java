@@ -34,5 +34,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
      * @param nameArtist
      * @return boolean 
      */
-    public boolean existsByNameArtist(String nameArtist);
+    public boolean existsByNameArtist(String nameArtist); //A débatre
+
+
 }
