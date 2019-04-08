@@ -28,7 +28,6 @@ public class UserController extends AbstractController {
 					   @RequestParam String mail, @RequestParam String city,
 					   @RequestParam String... roles) {
 
-
 		userService.addNewUser(username, password, mail, city ,  roles);
 
 	}

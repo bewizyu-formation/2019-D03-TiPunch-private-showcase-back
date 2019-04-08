@@ -18,17 +18,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "username")
+    @NotNull
+    @Column(name = "username", unique = true)
     private String username;
-
 
     @Column(name = "password")
     @JsonIgnore
     private String password;
 
+    @NotNull
     @Column(name = "mail")
     private String mail;
 
+    @NotNull
     @Column(name = "city")
     private String city;
 
@@ -37,7 +39,6 @@ public class User {
 
     @ManyToMany
     private Set<Event> listEvents;
-
 
     @OneToOne
     private Event eventOrganized;
@@ -89,7 +90,6 @@ public class User {
     public Event getEventOrganized() {
         return eventOrganized;
     }
-
 
     /**
      * Setter
