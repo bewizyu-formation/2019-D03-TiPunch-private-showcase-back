@@ -1,5 +1,7 @@
 package fr.formation.models;
 
+import fr.formation.geo.model.DepartementAccepted;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -22,6 +24,8 @@ public class Artist {
 
     private String cityArtist;
 
+    @OneToMany(mappedBy = "artist")
+    private  Set<DepartementAccepted> departments;
 
     private String descriptionArtist;
 
@@ -44,12 +48,13 @@ public class Artist {
     }
 
     public Artist(String nameArtist, String mailArtist,
-                  String cityArtist, String descriptionArtist,
+                  String cityArtist,Set<DepartementAccepted> departments, String descriptionArtist,
                   Integer nbVote, Integer noteArtist,
                   Set<User> userList) {
         this.nameArtist = nameArtist;
         this.mailArtist = mailArtist;
         this.cityArtist = cityArtist;
+        this.departments = departments;
         this.descriptionArtist = descriptionArtist;
         this.nbVote = nbVote;
         this.noteArtist = noteArtist;
@@ -73,6 +78,10 @@ public class Artist {
 
     public String getCityArtist() {
         return cityArtist;
+    }
+
+    public Set<DepartementAccepted> getDepartments() {
+        return departments;
     }
 
     public String getDescriptionArtist() {
@@ -120,6 +129,10 @@ public class Artist {
 
     public void setCityArtist(String cityArtist) {
         this.cityArtist = cityArtist;
+    }
+
+    public void setDepartments(Set<DepartementAccepted> departments) {
+        this.departments = departments;
     }
 
     public void setDescriptionArtist(String descriptionArtist) {
