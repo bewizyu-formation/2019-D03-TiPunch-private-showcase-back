@@ -15,13 +15,6 @@ public class ArtistController extends AbstractController {
     @Autowired
     private ArtistService artistService;
 
-    @PutMapping("/")
-    public void signup (@RequestParam String username, @RequestParam String password,@RequestParam String mail,
-                        @RequestParam String city, @RequestParam String artistname, @RequestParam String description,
-                        @RequestParam String...roles){
-        ArtistController context = new ArtistController();
-        context.getAuthenticatedUsername();
 
-    }
 }
 

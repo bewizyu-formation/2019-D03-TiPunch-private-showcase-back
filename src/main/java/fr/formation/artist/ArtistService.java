@@ -36,7 +36,7 @@ public class ArtistService {
 
     }
 
-    public void addNewArtist(String username, String password, String mail,
+    public boolean addNewArtist(String username, String password, String mail,
                              String city, String artistName,
                              String description, String... roles) {
         Artist artist = new Artist();
@@ -50,15 +50,20 @@ public class ArtistService {
         if(!artistRepository.existsByNameArtist(artist.getNameArtist())){
             artist.setPasswordArtist(passwordEncoder.encode(artist.getPasswordArtist()));
             artist = artistRepository.save(artist);
-        }
-        for (String role : roles){
-            UserRole artistRole = new UserRole();
-            artistRole.setRole(role);
-            artistRole.setUserId(artist.getId());
 
-            userRoleRepository.save(artistRole);
-            
+            for (String role : roles){
+                UserRole artistRole = new UserRole();
+                artistRole.setRole(role);
+                artistRole.setUserId(artist.getId());
+
+                userRoleRepository.save(artistRole);
+
+            }
+            return true;
+
         }
+
+        return false;
     }
 
     public List<Artist> getArtists(){

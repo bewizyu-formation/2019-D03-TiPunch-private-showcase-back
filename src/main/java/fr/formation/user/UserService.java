@@ -74,7 +74,7 @@ public class UserService implements UserDetailsService {
 	 * @param roles the roles
 	 */
 
-	public void addNewUser(String username, String password, String mail, String city ,String... roles) {
+	public boolean addNewUser(String username, String password, String mail, String city ,String... roles) {
 
 		User user = new User();
 		user.setUsername(username);
@@ -88,16 +88,20 @@ public class UserService implements UserDetailsService {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user = userRepository.save(user);
 
+			for (String role : roles) {
+
+				UserRole userRole = new UserRole();
+				userRole.setRole(role);
+				userRole.setUserId(user.getId());
+
+				userRoleRepository.save(userRole);
+			}
+			return true;
+
 		}
 
-		for (String role : roles) {
 
-			UserRole userRole = new UserRole();
-			userRole.setRole(role);
-			userRole.setUserId(user.getId());
-
-			userRoleRepository.save(userRole);
-		}
+		return false;
 
 	}
 
