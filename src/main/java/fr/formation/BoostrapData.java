@@ -57,7 +57,7 @@ public class BoostrapData {
 		);
 		artistService.addNewArtist(
 				"userArtist",
-				"password",
+				"artistArtist1",
 				"mailArtiste@test",
 				"Marseille",
 				"Les PatateRats",

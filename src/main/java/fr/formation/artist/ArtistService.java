@@ -76,6 +76,11 @@ public class ArtistService {
         return  artist;
     }
 
+    public boolean isValidPassword(String password){
+
+        return password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$");
+    }
+
     public void deleteArtistById(Long id){
         // TODO
     }

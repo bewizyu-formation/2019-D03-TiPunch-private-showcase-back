@@ -27,19 +27,20 @@ public class UserController extends AbstractController {
 	 * @param roles    the roles
 	 */
 	@PutMapping(value = "/")
-	public void signup(@RequestParam String username, @RequestParam String password,
-									   @RequestParam String mail, @RequestParam String city,
-									   @RequestParam String... roles) {
+	public void signup(@RequestBody String username, @RequestBody String password,
+									   @RequestBody String mail, @RequestBody String city,
+									   @RequestBody String... roles) {
 
 		userService.addNewUser(username, password, mail, city ,  roles);
+
 
 
 	}
 
 	@PutMapping("/artist/")
-	public void signup (@RequestParam String username, @RequestParam String password,@RequestParam String mail,
-						@RequestParam String city, @RequestParam String artistname, @RequestParam String description,
-						@RequestParam String...roles){
+	public void signup (@RequestBody String username, @RequestBody String password,@RequestBody String mail,
+						@RequestBody String city, @RequestBody String artistname, @RequestBody String description,
+						@RequestBody String...roles){
 
 		artistService.addNewArtist(username, password, mail, city, artistname, description, roles);
 
