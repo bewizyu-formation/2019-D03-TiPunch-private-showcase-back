@@ -14,6 +14,10 @@ public class Artist {
 
     private String nameArtist;
 
+    private String username;
+
+    private String passwordArtist;
+
     private String mailArtist;
 
     private String cityArtist;
@@ -91,6 +95,14 @@ public class Artist {
         return eventBooked;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPasswordArtist() {
+        return passwordArtist;
+    }
+
     /**
      * Setteur Artist
      */
@@ -128,5 +140,13 @@ public class Artist {
 
     public void setEventBooked(Event eventBooked) {
         this.eventBooked = eventBooked;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPasswordArtist(String passwordArtist) {
+        this.passwordArtist = passwordArtist;
     }
 }
