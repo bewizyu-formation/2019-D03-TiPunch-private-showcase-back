@@ -32,7 +32,7 @@ public class HelloControllerTest {
 	 *
 	 * @throws Exception the exception
 	 */
-	@Test
+	/*@Test
 	public void shouldReturnHelloAdmin() throws Exception {
 
 		MvcResult mvcResult = mvc.perform(formLogin("/login").user("admin").password("adminAdmin2")).andReturn();
@@ -49,14 +49,14 @@ public class HelloControllerTest {
 				.andExpect(authenticated().withUsername("admin"));
 		
 //		mvc.perform(get("/hello/user").header("Authorization", authorizationHeader)).andExpect(status().is(403));
-	}
+	}*/
 
 	/**
 	 * Should forbid admin to hello user.
 	 *
 	 * @throws Exception the exception
 	 */
-	@Test
+	/*@Test
 	public void shouldForbidAdminToHelloUser() throws Exception {
 
 		MvcResult mvcResult = mvc.perform(formLogin("/login").user("admin").password("adminAdmin2")).andReturn();
@@ -65,5 +65,5 @@ public class HelloControllerTest {
 		
 		mvc.perform(get("/hello/user").header("Authorization", authorizationHeader)).andExpect(status().is(403));
 	}
-
+*/
 }

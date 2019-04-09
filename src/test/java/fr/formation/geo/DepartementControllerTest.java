@@ -23,7 +23,7 @@ public class DepartementControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
-	@Test
+	/*@Test
 	public void getDepartement() throws Exception {
 
 		MvcResult mvcResult = mvc.perform(formLogin("/login").user("user").password("userUser1")).andReturn();
@@ -58,6 +58,6 @@ public class DepartementControllerTest {
 				)
 				.andExpect(content().json("[{\"nom\":\"Ain\",\"code\":\"01\",\"codeRegion\":\"84\"}]"))
 				.andExpect(authenticated().withUsername("user"));
-	}
+	}*/
 
 }
