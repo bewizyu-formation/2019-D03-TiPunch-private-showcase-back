@@ -46,6 +46,11 @@ public class SecurityConstants {
 	public static final String ROLE_ADMIN_SUFFIX = "ADMIN";
 
 	/**
+	 * The constant ROLE_ARTIST_SUFFIX
+	 */
+	public static final String ROLE_ARTIST_SUFFIX = "ARTIST";
+
+	/**
 	 * The constant ROLE_USER.
 	 */
 	public static final String ROLE_USER = ROLE_PREFIX + ROLE_USER_SUFFIX;
@@ -54,5 +59,10 @@ public class SecurityConstants {
 	 * The constant ROLE_ADMIN.
 	 */
 	public static final String ROLE_ADMIN = ROLE_PREFIX + ROLE_ADMIN_SUFFIX;
+
+	/**
+	 * The constant ROLE_ARTIST
+	 */
+	public static final String ROLE_ARTIST = ROLE_PREFIX + ROLE_ARTIST_SUFFIX;
 
 }

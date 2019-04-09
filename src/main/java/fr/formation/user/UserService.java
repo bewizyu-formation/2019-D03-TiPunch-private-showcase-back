@@ -1,11 +1,13 @@
 package fr.formation.user;
 
+import fr.formation.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -22,6 +24,8 @@ public class UserService implements UserDetailsService {
 
 	private UserRoleRepository userRoleRepository;
 
+	private PasswordEncoder passwordEncoder;
+
 	/**
 	 * Instantiates a new User service.
 	 *
@@ -29,9 +33,10 @@ public class UserService implements UserDetailsService {
 	 * @param userRoleRepository the user role repository
 	 */
 	@Autowired
-	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository) {
+	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	/**
@@ -61,27 +66,59 @@ public class UserService implements UserDetailsService {
 	}
 
 	/**
-	 * Add a new user with the user repository
-	 *
+	 * * Add a new user with the user repository
 	 * @param username the username
 	 * @param password the password
-	 * @param roles    the roles
+	 * @param mail the mail
+	 * @param city the city
+	 * @param roles the roles
 	 */
-	public void addNewUser(String username, String password, String... roles) {
+
+	public boolean addNewUser(String username, String password, String mail, String city ,String... roles) {
 
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(password);
-		user = userRepository.save(user);
+		user.setMail(mail);
+		user.setCity(city);
 
-		for (String role : roles) {
+		if(!userRepository.existsByUsername(user.getUsername())
+				&& isValidPassword(user.getPassword() )){
 
-			UserRole userRole = new UserRole();
-			userRole.setRole(role);
-			userRole.setUserId(user.getId());
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			user = userRepository.save(user);
 
-			userRoleRepository.save(userRole);
+			for (String role : roles) {
+
+				UserRole userRole = new UserRole();
+				userRole.setRole(role);
+				userRole.setUserId(user.getId());
+
+				userRoleRepository.save(userRole);
+			}
+			return true;
+
 		}
 
+
+		return false;
+
 	}
+
+	public User getUserByUsername(String name) {
+		User user = userRepository.findByUsername(name);
+		return user;
+	}
+
+	/**
+	 * checked password with 8 character minimum, 1 MAJ, 1 number
+	 * @param password
+	 * @return boolean
+	 */
+	public boolean isValidPassword(String password){
+
+		return password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$");
+	}
+
+
 }

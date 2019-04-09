@@ -47,7 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/swagger-ui.html").permitAll()
 				.antMatchers("/health/").permitAll()
 				.antMatchers(HttpMethod.PUT, "/users/").permitAll()
+				.antMatchers(HttpMethod.PUT, "/users/artist/").permitAll()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers(HttpMethod.GET, "/communes/").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.logout().permitAll()
@@ -66,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 *
 	 * @return the password encoder
 	 */
-// Algorithme de hashage du mot de passe
+	// Algorithme de hashage du mot de passe
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
