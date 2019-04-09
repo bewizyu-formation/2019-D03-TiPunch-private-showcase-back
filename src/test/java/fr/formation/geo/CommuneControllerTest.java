@@ -14,13 +14,13 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc*/
 public class CommuneControllerTest {
 
-	@Autowired
-	private MockMvc mvc;
+	/*@Autowired
+	private MockMvc mvc;*/
 
 	/*@Test
 	public void shouldReturnValidResponse() throws Exception {

@@ -15,14 +15,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc*/
 public class DepartementControllerTest {
 
-	@Autowired
+	/*@Autowired
 	private MockMvc mvc;
-
+*/
 	/*@Test
 	public void getDepartement() throws Exception {
 

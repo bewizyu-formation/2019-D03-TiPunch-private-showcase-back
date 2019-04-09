@@ -19,13 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * The type Hello controller test.
  */
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc*/
 public class HelloControllerTest {
 
-	@Autowired
-	private MockMvc mvc;
+	/*@Autowired
+	private MockMvc mvc;*/
 
 	/**
 	 * Should return hello admin.
