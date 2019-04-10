@@ -27,4 +27,6 @@ public interface CommuneService {
 	 * @return the commune by code
 	 */
 	List<Commune> getCommunesByCode(final String code);
+
+
 }
