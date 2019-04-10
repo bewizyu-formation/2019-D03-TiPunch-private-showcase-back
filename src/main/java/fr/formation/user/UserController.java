@@ -34,7 +34,7 @@ public class UserController extends AbstractController {
 	/**
 	 * Signup user
 	 * @param data
-	 * @return string sucess/failed
+	 * @return string success/failed
 	 */
 	@PutMapping(value = "/")
 	public ResponseEntity<String> signup(@RequestBody UserDto data) {
@@ -77,13 +77,27 @@ public class UserController extends AbstractController {
 
 		getAuthenticatedUser().getUsername();
 
-		if(userService.userExist(username) || artistService.userExist(username)){
-
-			return new ResponseEntity<>(true, HttpStatus.OK);
-		}
+		if(userService.userExist(username)) return new ResponseEntity<>(true, HttpStatus.OK);
 
 		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	}
+
+	/**
+	 * artist exist
+	 * @param username
+	 * @return boolean
+	 */
+	@GetMapping("/exists/artist")
+	@Secured(SecurityConstants.ROLE_USER)
+	public ResponseEntity<Boolean> artistExist(@RequestParam String username){
+
+		getAuthenticatedUser().getUsername();
+
+		if(artistService.artistExist(username)) return new ResponseEntity<>(true, HttpStatus.OK);
+
+		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+	}
+
 
 	/**
 	 * All artists
@@ -100,8 +114,6 @@ public class UserController extends AbstractController {
 
 		return new ResponseEntity<>(artists,HttpStatus.OK);
 	}
-
-
 
 
 }
