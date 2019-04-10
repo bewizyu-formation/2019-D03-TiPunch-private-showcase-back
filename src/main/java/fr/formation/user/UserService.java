@@ -100,7 +100,6 @@ public class UserService implements UserDetailsService {
 
 		}
 
-
 		return false;
 
 	}
@@ -120,5 +119,11 @@ public class UserService implements UserDetailsService {
 		return password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$");
 	}
 
+	public boolean userExist(String username){
+		if (userRepository.existsByUsername(username)){
+			return true;
+		}
+		return false;
+	}
 
-}
+	}

@@ -84,5 +84,11 @@ public class ArtistService {
     public void deleteArtistById(Long id){
         // TODO
     }
+    public boolean userExist(String username){
+        if (artistRepository.existsByNameArtist(username)){
+            return true;
+        }
+        return false;
+    }
 
 }
