@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type Commune controller.
@@ -45,6 +46,7 @@ public class CommuneController {
 	@GetMapping("/")
 	public ResponseEntity<List<Commune>> getCommunes(@RequestParam final String nom) {
 		final List<Commune> communes = this.communeService.getCommunes(nom);
+		System.out.println(communes);
 		return new ResponseEntity<>(communes, HttpStatus.OK);
 	}
 

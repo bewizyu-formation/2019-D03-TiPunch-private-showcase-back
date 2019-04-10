@@ -33,8 +33,8 @@ public class UserController extends AbstractController {
 
 	/**
 	 * Signup user
-	 *
-	 *
+	 * @param data
+	 * @return string sucess/failed
 	 */
 	@PutMapping(value = "/")
 	public ResponseEntity<String> signup(@RequestBody UserDto data) {
@@ -47,8 +47,13 @@ public class UserController extends AbstractController {
 
 	}
 
+	/**
+	 * Signup artist
+	 * @param artist
+	 * @return string success/failed
+	 */
 	@PutMapping("/artist/")
-	public ResponseEntity<String> signup (@RequestBody ArtistDto artist){
+	public ResponseEntity<String> signup(@RequestBody ArtistDto artist){
 
 		boolean addArtist = artistService.addNewArtist(artist.getUsername(), artist.getPasswordArtist(),
 				artist.getMailArtist(), artist.getCityArtist(), artist.getNameArtist(),artist.getDescriptionArtist());
@@ -61,6 +66,11 @@ public class UserController extends AbstractController {
 
     }
 
+	/**
+	 * user exist
+	 * @param username
+	 * @return boolean
+	 */
 	@GetMapping("/exists")
 	@Secured(SecurityConstants.ROLE_USER)
 	public ResponseEntity<Boolean> userExist(@RequestParam String username){
@@ -75,17 +85,23 @@ public class UserController extends AbstractController {
 		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * All artists
+	 * @return list artists
+	 */
 	@GetMapping("/artist/list")
 	@Secured(SecurityConstants.ROLE_USER)
 	public ResponseEntity<List<Artist>> allArtist(){
 
 		getAuthenticatedUser().getUsername();
 		List<Artist> artists = this.artistService.getArtists();
-		int i = artists.size();
-		if (i == 0) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
+
+		if (artists.isEmpty()) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
 
 		return new ResponseEntity<>(artists,HttpStatus.OK);
 	}
+
+
 
 
 }
