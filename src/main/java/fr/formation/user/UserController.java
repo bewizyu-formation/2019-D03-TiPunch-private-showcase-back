@@ -81,12 +81,12 @@ public class UserController extends AbstractController {
 	 * @return boolean
 	 */
 	@GetMapping("/exists")
-	public ResponseEntity<User> userExist(@RequestParam String username){
+	public ResponseEntity<Boolean> userExist(@RequestParam String username){
 
 		if(userService.userExist(username))
-			return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 
-		return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	}
 
 	/**
@@ -95,12 +95,12 @@ public class UserController extends AbstractController {
 	 * @return boolean
 	 */
 	@GetMapping("/artist/exists")
-	public ResponseEntity<Artist> artistExist(@RequestParam String nameArtist){
+	public ResponseEntity<Boolean> artistExist(@RequestParam String nameArtist){
 
 		if(artistService.existsByNameArtist(nameArtist))
-			return new ResponseEntity<>(artistService.findArtistByNameArtist(nameArtist), HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 
-		return new ResponseEntity<>(artistService.findArtistByNameArtist(nameArtist), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 	}
 
 
