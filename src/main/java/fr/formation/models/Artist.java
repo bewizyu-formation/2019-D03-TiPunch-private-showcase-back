@@ -34,6 +34,9 @@ public class Artist {
     @Column(name = "codeDepartement")
     private String codeDepartement;
 
+    @Column(name="nameDepartement")
+    private String nameDepartement;
+
     @Column(name="descriptionArtist")
     private String descriptionArtist;
 
@@ -161,6 +164,10 @@ public class Artist {
         return contactPhone;
     }
 
+    public String getNameDepartement() {
+        return nameDepartement;
+    }
+
     /**
      * Setteur Artist
      */
@@ -234,6 +241,10 @@ public class Artist {
 
     public void setCodeDepartement(String codeDepartement) {
         this.codeDepartement = codeDepartement;
+    }
+
+    public void setNameDepartement(String nameDepartement) {
+        this.nameDepartement = nameDepartement;
     }
 }
 

@@ -1,13 +1,12 @@
 package fr.formation.artist;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.formation.geo.model.Commune;
 import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
+import fr.formation.geo.services.DepartementService;
 import fr.formation.models.Artist;
 import fr.formation.user.UserRole;
 import fr.formation.user.UserRoleRepository;
-import jdk.internal.org.objectweb.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ public class ArtistService {
     private ArtistRepository artistRepository;
     private UserRoleRepository userRoleRepository;
     private CommuneService communeService;
+    private DepartementService departementService;
     private Artist artist;
     private Commune commune;
     private DepartementAccepted departementAccepted;
@@ -39,11 +39,12 @@ public class ArtistService {
      */
     @Autowired
     public ArtistService(ArtistRepository artistRepository, UserRoleRepository userRoleRepository,
-                         PasswordEncoder passwordEncoder, CommuneService communeService) {
+                         PasswordEncoder passwordEncoder, CommuneService communeService, DepartementService departementService) {
         this.artistRepository = artistRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.communeService = communeService;
+        this.departementService =departementService;
 
 
     }
@@ -57,11 +58,20 @@ public class ArtistService {
         artist.setMailArtist(mail);
         artist.setCityArtist(city);
         List<LinkedHashMap> communes = communeService.getCommunes(city) ;
+        List<LinkedHashMap> departements ;
         for ( LinkedHashMap <String ,String> c : communes){
           boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
           if (cityApi){
              String codeDepartement =  c.get("codeDepartement");
-             artist.setCodeDepartement(codeDepartement);
+             if (!codeDepartement.isEmpty()){
+                 artist.setCodeDepartement(codeDepartement);
+                 departements = departementService.getDepartementByCode(codeDepartement);
+                 for (LinkedHashMap<String, String> d : departements){
+                     String nomDepartement = d.get("nom");
+                     artist.setNameDepartement(nomDepartement);
+
+                 }
+             }
           }
 
 

@@ -38,6 +38,9 @@ public class User {
     @Column(name="codeDepartement")
     private String codeDepartement;
 
+    @Column(name ="nameDepartement")
+    private  String nameDepartement;
+
     @ManyToMany
     private Set<Artist> listArtist;
 
@@ -98,6 +101,10 @@ public class User {
         return codeDepartement;
     }
 
+    public String getNameDepartement() {
+        return nameDepartement;
+    }
+
     /**
      * Setter
      *
@@ -129,5 +136,9 @@ public class User {
     }
     public void setCodeDepartement(String codeDepartement) {
         this.codeDepartement = codeDepartement;
+    }
+
+    public void setNameDepartement(String nameDepartement) {
+        this.nameDepartement = nameDepartement;
     }
 }
