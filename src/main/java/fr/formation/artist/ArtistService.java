@@ -91,4 +91,17 @@ public class ArtistService {
         return false;
     }
 
+    public boolean existsByNameArtist(String nameArtist){
+        if(artistRepository.existsByNameArtist(nameArtist)){
+            return true;
+        }
+        return false;
+    }
+
+    public Artist finArtistById(Long id){
+
+        Artist artist = artistRepository.findArtistsById(id);
+        return artist;
+    }
+
 }

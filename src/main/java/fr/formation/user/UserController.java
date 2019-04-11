@@ -5,7 +5,9 @@ import fr.formation.controller.AbstractController;
 import fr.formation.modelDto.ArtistDto;
 import fr.formation.modelDto.UserDto;
 import fr.formation.models.Artist;
+import fr.formation.models.User;
 import fr.formation.security.SecurityConstants;
+import io.swagger.annotations.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -58,7 +62,12 @@ public class UserController extends AbstractController {
 		boolean addArtist = artistService.addNewArtist(artist.getUsername(), artist.getPasswordArtist(),
 				artist.getMailArtist(), artist.getCityArtist(), artist.getNameArtist(),artist.getDescriptionArtist());
 
-        boolean addUser = userService.addNewUser(artist.getUsername(), artist.getPasswordArtist(), artist.getMailArtist(), artist.getCityArtist() );
+		boolean addUser = false;
+
+		if(addArtist){
+			addUser = userService.addNewUser(artist.getUsername(), artist.getPasswordArtist(),
+					artist.getMailArtist(), artist.getCityArtist() );
+		}
 
         if (addArtist && addUser) return new ResponseEntity("success",HttpStatus.OK);
 
@@ -73,13 +82,13 @@ public class UserController extends AbstractController {
 	 */
 	@GetMapping("/exists")
 	@Secured(SecurityConstants.ROLE_USER)
-	public ResponseEntity<Boolean> userExist(@RequestParam String username){
+	public ResponseEntity<User> userExist(@RequestParam String username){
 
 		getAuthenticatedUser().getUsername();
 
-		if(userService.userExist(username)) return new ResponseEntity<>(true, HttpStatus.OK);
+		if(userService.userExist(username)) return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
 
-		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.BAD_REQUEST);
 	}
 
 	/**
@@ -89,13 +98,13 @@ public class UserController extends AbstractController {
 	 */
 	@GetMapping("/exists/artist")
 	@Secured(SecurityConstants.ROLE_USER)
-	public ResponseEntity<Boolean> artistExist(@RequestParam String username){
+	public ResponseEntity<Artist> artistExist(@RequestParam String username){
 
 		getAuthenticatedUser().getUsername();
 
-		if(artistService.artistExist(username)) return new ResponseEntity<>(true, HttpStatus.OK);
+		if(artistService.artistExist(username)) return new ResponseEntity<>(artistService.findArtistByNameArtist(username), HttpStatus.OK);
 
-		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(artistService.findArtistByNameArtist(username), HttpStatus.BAD_REQUEST);
 	}
 
 
@@ -108,12 +117,14 @@ public class UserController extends AbstractController {
 	public ResponseEntity<List<Artist>> allArtist(){
 
 		getAuthenticatedUser().getUsername();
+
 		List<Artist> artists = this.artistService.getArtists();
 
 		if (artists.isEmpty()) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
 
 		return new ResponseEntity<>(artists,HttpStatus.OK);
 	}
+
 
 
 }

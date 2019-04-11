@@ -21,6 +21,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
      * Find all artist
      * @return the list artist
      */
+
     public List<Artist> findAll();
 
     /**
@@ -42,5 +43,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
      * @return
      */
     public boolean existsByUsername(String username);
+
+    public Artist findArtistsById(Long id);
 
 }
