@@ -1,6 +1,7 @@
 package fr.formation.artist;
 
 import fr.formation.models.Artist;
+import fr.formation.models.User;
 import fr.formation.user.UserRole;
 import fr.formation.user.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,13 @@ public class ArtistService {
         return false;
     }
 
-    public List<Artist> getArtists(){
+
+    public List<Artist> getArtists(User user){
         List<Artist> artists = artistRepository.findAll();
+        // TODO
+        /*
+            search artist by departement user
+         */
         return  artists;
     }
 

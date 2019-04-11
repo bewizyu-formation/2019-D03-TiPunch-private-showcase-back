@@ -81,30 +81,26 @@ public class UserController extends AbstractController {
 	 * @return boolean
 	 */
 	@GetMapping("/exists")
-	@Secured(SecurityConstants.ROLE_USER)
 	public ResponseEntity<User> userExist(@RequestParam String username){
 
-		getAuthenticatedUser().getUsername();
-
-		if(userService.userExist(username)) return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
+		if(userService.userExist(username))
+			return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
 
 		return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.BAD_REQUEST);
 	}
 
 	/**
 	 * artist exist
-	 * @param username
+	 * @param nameArtist
 	 * @return boolean
 	 */
-	@GetMapping("/exists/artist")
-	@Secured(SecurityConstants.ROLE_USER)
-	public ResponseEntity<Artist> artistExist(@RequestParam String username){
+	@GetMapping("/artist/exists")
+	public ResponseEntity<Artist> artistExist(@RequestParam String nameArtist){
 
-		getAuthenticatedUser().getUsername();
+		if(artistService.existsByNameArtist(nameArtist))
+			return new ResponseEntity<>(artistService.findArtistByNameArtist(nameArtist), HttpStatus.OK);
 
-		if(artistService.artistExist(username)) return new ResponseEntity<>(artistService.findArtistByNameArtist(username), HttpStatus.OK);
-
-		return new ResponseEntity<>(artistService.findArtistByNameArtist(username), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(artistService.findArtistByNameArtist(nameArtist), HttpStatus.BAD_REQUEST);
 	}
 
 
@@ -113,18 +109,14 @@ public class UserController extends AbstractController {
 	 * @return list artists
 	 */
 	@GetMapping("/artist/list")
-	@Secured(SecurityConstants.ROLE_USER)
+	@Secured({SecurityConstants.ROLE_USER})
 	public ResponseEntity<List<Artist>> allArtist(){
 
-		getAuthenticatedUser().getUsername();
-
-		List<Artist> artists = this.artistService.getArtists();
+		List<Artist> artists = this.artistService.getArtists(getAuthenticatedUser());
 
 		if (artists.isEmpty()) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
 
 		return new ResponseEntity<>(artists,HttpStatus.OK);
 	}
-
-
 
 }
