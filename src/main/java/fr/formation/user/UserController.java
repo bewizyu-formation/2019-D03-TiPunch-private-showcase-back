@@ -41,7 +41,7 @@ public class UserController extends AbstractController {
 
 		boolean addUser = userService.addNewUser(data.getUsername(), data.getPassword(), data.getMail(), data.getCity());
 
-		if(addUser) return new ResponseEntity("success",HttpStatus.CREATED);
+		if(addUser) return new ResponseEntity("success",HttpStatus.OK);
 
 		return new ResponseEntity("failed",HttpStatus.BAD_REQUEST);
 
