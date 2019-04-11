@@ -44,7 +44,7 @@ public class CommuneController {
 	 */
 	@GetMapping("/")
 	public ResponseEntity<List<Commune>> getCommunes(@RequestParam final String nom) {
-		final List<Commune> communes = this.communeService.getCommunes(nom);
+		final List<Commune> communes = this.communeService.getCommunesObject(nom);
 		return new ResponseEntity<>(communes, HttpStatus.OK);
 	}
 

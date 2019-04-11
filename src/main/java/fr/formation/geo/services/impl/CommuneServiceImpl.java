@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class CommuneServiceImpl implements CommuneService {
 	}
 
 	@Override
-	public List<Commune> getCommunes(String nom) {
+	public List<LinkedHashMap> getCommunes(String nom) {
 
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromUriString(GeoApiConstants.GEO_API_BASE_URL + GeoApiConstants.RESOURCE_COMMUNE)
@@ -46,6 +47,20 @@ public class CommuneServiceImpl implements CommuneService {
 				builder.toUriString(),
 				List.class
 		);
+	}
+
+	@Override
+	public List<Commune> getCommunesObject(String nom) {
+		UriComponentsBuilder builder = UriComponentsBuilder
+				.fromUriString(GeoApiConstants.GEO_API_BASE_URL + GeoApiConstants.RESOURCE_COMMUNE)
+				.queryParam(GeoApiConstants.PARAMS_NOM, nom)
+				.queryParam(GeoApiConstants.PARAMS_FIELDS, GeoApiConstants.COMMUNE_FIELDS_VALUES);
+
+		return this.restTemplate.getForObject(
+				builder.toUriString(),
+				List.class
+		);
+
 	}
 
 
@@ -61,5 +76,7 @@ public class CommuneServiceImpl implements CommuneService {
 				List.class
 		);
 	}
+
+
 
 }

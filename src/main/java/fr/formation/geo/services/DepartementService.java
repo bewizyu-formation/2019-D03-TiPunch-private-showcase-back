@@ -2,6 +2,7 @@ package fr.formation.geo.services;
 
 import fr.formation.geo.model.Departement;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface DepartementService {
 	 *
 	 * @return the departement
 	 */
-	List<Departement> getDepartement(final String nom);
+	List<LinkedHashMap> getDepartement(final String nom);
 
 
 	/**
@@ -26,7 +27,7 @@ public interface DepartementService {
 	 *
 	 * @return the departement by code
 	 */
-	List<Departement> getDepartementByCode(final String code);
+	List<LinkedHashMap> getDepartementByCode(final String code);
 
 
 }

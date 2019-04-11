@@ -4,9 +4,15 @@ import fr.formation.artist.ArtistService;
 import fr.formation.controller.AbstractController;
 import fr.formation.modelDto.ArtistDto;
 import fr.formation.modelDto.UserDto;
+import fr.formation.models.Artist;
 import fr.formation.models.User;
+import fr.formation.security.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -24,9 +30,6 @@ public class UserController extends AbstractController {
 	/**
 	 * Signup.
 	 *
-	 * @param username the username
-	 * @param password the password
-	 * @param roles    the roles
 	 */
 	@PutMapping(value = "/")
 	public void signup(@RequestBody UserDto data) {
@@ -44,4 +47,16 @@ public class UserController extends AbstractController {
 
     }
 
-}
+	@GetMapping("/home")
+	@Secured(SecurityConstants.ROLE_USER)
+	public Set<Artist> getArtistByCityUser(){
+	    String cityUser = getAuthenticatedUser().getCity();
+	   Set<Artist> listArtistbyUserCity = artistService.findArtistByCity(cityUser);
+	   return listArtistbyUserCity;
+
+	}
+
+	}
+
+
+

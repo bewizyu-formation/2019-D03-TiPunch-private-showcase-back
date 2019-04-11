@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class DepartementServiceImpl implements DepartementService {
 	}
 
 	@Override
-	public List<Departement> getDepartement(String nom) {
+	public List<LinkedHashMap> getDepartement(String nom) {
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromUriString(GeoApiConstants.GEO_API_BASE_URL + GeoApiConstants.RESOURCE_DEPARTEMENT)
 				.queryParam(GeoApiConstants.PARAMS_NOM, nom)
@@ -44,7 +45,7 @@ public class DepartementServiceImpl implements DepartementService {
 	}
 
 	@Override
-	public List<Departement> getDepartementByCode(String code) {
+	public List<LinkedHashMap> getDepartementByCode(String code) {
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromUriString(GeoApiConstants.GEO_API_BASE_URL + GeoApiConstants.RESOURCE_DEPARTEMENT)
 				.queryParam(GeoApiConstants.PARAMS_CODE, code)

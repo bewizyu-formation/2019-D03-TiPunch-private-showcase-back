@@ -1,5 +1,7 @@
 package fr.formation.user;
 
+import fr.formation.geo.services.CommuneService;
+import fr.formation.geo.services.DepartementService;
 import fr.formation.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -26,6 +29,9 @@ public class UserService implements UserDetailsService {
 
 	private PasswordEncoder passwordEncoder;
 
+	private CommuneService communeService;
+	private DepartementService departementService;
+
 	/**
 	 * Instantiates a new User service.
 	 *
@@ -33,10 +39,13 @@ public class UserService implements UserDetailsService {
 	 * @param userRoleRepository the user role repository
 	 */
 	@Autowired
-	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
+					   CommuneService communeService, DepartementService departementService) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.communeService = communeService;
+		this.departementService = departementService;
 	}
 
 	/**
@@ -81,6 +90,27 @@ public class UserService implements UserDetailsService {
 		user.setPassword(password);
 		user.setMail(mail);
 		user.setCity(city);
+
+		List<LinkedHashMap> communes = communeService.getCommunes(city) ;
+		List<LinkedHashMap> departements ;
+		for ( LinkedHashMap <String ,String> c : communes){
+			boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
+			if (cityApi){
+				String codeDepartement =  c.get("codeDepartement");
+				if (!codeDepartement.isEmpty()){
+					user.setCodeDepartement(codeDepartement);
+					departements = departementService.getDepartementByCode(codeDepartement);
+					for (LinkedHashMap<String, String> d : departements){
+						String nomDepartement = d.get("nom");
+						user.setNameDepartement(nomDepartement);
+
+					}
+				}
+			}
+
+
+
+		}
 
 		if(!userRepository.existsByUsername(user.getUsername())
 				&& isValidPassword(user.getPassword() )){
