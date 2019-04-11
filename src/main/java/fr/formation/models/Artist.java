@@ -13,41 +13,59 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name= "nameArtist")
     private String nameArtist;
-
+    @Column(name= "username")
     private String username;
-
+    @Column(name="passwordArtist")
     private String passwordArtist;
 
+    @Column(name = "mailArtist")
     private String mailArtist;
 
+    @Column(name ="cityArtist")
     private String cityArtist;
 
+
+    @Column(name ="departments")
     @OneToMany(mappedBy = "artist")
     private  Set<DepartementAccepted> departments;
 
+    @Column(name = "codeDepartement")
     private String codeDepartement;
 
+    @Column(name="descriptionArtist")
     private String descriptionArtist;
 
+    @Column(name="nbVote")
     private Integer nbVote;
 
+    @Column(name="noteArtist")
     private Integer noteArtist;
 
+
+    @Column(name="userList")
     @ManyToMany(mappedBy = "listArtist")
     private Set<User> userList;
 
+
+
     @OneToOne
     private Event eventBooked;
-    
+
+    @Column(name="urlImage")
     private String urlImage;
-    
+
+    @Column(name="shortDescriptionArtist")
     private String shortDescriptionArtist;
-    
+
+    @Column(name="contactPhone")
     private String contactPhone;
-    
+
+    @Column(name="contactMail")
     private String contactMail;
-    
+
+    @Column(name="urlSiteArtist")
     private String urlSiteArtist;
 
     /**

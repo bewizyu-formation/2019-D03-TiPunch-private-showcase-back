@@ -1,19 +1,18 @@
 package fr.formation.artist;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.formation.geo.model.Commune;
 import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
 import fr.formation.models.Artist;
 import fr.formation.user.UserRole;
 import fr.formation.user.UserRoleRepository;
+import jdk.internal.org.objectweb.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -57,16 +56,17 @@ public class ArtistService {
         artist.setPasswordArtist(password);
         artist.setMailArtist(mail);
         artist.setCityArtist(city);
-        List<Commune> communes = communeService.getCommunes(city);
-        for (Commune c : communes){
-            if (c.getNom().equals(artist.getCityArtist())){
-              String codeDepartementBase = c.getCodeDepartement();
+        List<LinkedHashMap> communes = communeService.getCommunes(city) ;
+        for ( LinkedHashMap <String ,String> c : communes){
+          boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
+          if (cityApi){
+             String codeDepartement =  c.get("codeDepartement");
+             artist.setCodeDepartement(codeDepartement);
+          }
 
-              artist.setCodeDepartement(codeDepartementBase);
 
-            }
+
         }
-        System.out.println(" LE DEPARTEMENT : " + artist.getCodeDepartement());
 
         artist.setNameArtist(artistName);
         artist.setDescriptionArtist(description);
@@ -119,7 +119,7 @@ public class ArtistService {
     }
 
     public Set<Artist>findArtistByCity(String city){
-        List<Commune> communeList  =  communeService.getCommunes(city); // recupére la liste de commune du user
+        List<Commune> communeList  =  communeService.getCommunesObject(city); // recupére la liste de commune du user
         Set<DepartementAccepted> codeDepartement = artist.getDepartments(); // recupère la list des departements lié aux artistes
         List<String> listDepartementApi= new ArrayList<>();
 

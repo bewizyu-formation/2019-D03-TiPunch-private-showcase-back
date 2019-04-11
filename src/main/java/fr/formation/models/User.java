@@ -35,6 +35,9 @@ public class User {
     @Column(name = "city")
     private String city;
 
+    @Column(name="codeDepartement")
+    private String codeDepartement;
+
     @ManyToMany
     private Set<Artist> listArtist;
 
@@ -91,6 +94,9 @@ public class User {
     public Event getEventOrganized() {
         return eventOrganized;
     }
+    public String getCodeDepartement() {
+        return codeDepartement;
+    }
 
     /**
      * Setter
@@ -120,5 +126,8 @@ public class User {
     }
     public void setEventOrganized(Event eventOrganized) {
         this.eventOrganized = eventOrganized;
+    }
+    public void setCodeDepartement(String codeDepartement) {
+        this.codeDepartement = codeDepartement;
     }
 }

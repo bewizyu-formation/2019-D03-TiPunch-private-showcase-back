@@ -1,5 +1,6 @@
 package fr.formation.user;
 
+import fr.formation.geo.services.CommuneService;
 import fr.formation.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -26,6 +28,8 @@ public class UserService implements UserDetailsService {
 
 	private PasswordEncoder passwordEncoder;
 
+	private CommuneService communeService;
+
 	/**
 	 * Instantiates a new User service.
 	 *
@@ -33,10 +37,12 @@ public class UserService implements UserDetailsService {
 	 * @param userRoleRepository the user role repository
 	 */
 	@Autowired
-	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
+					   CommuneService communeService) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.communeService = communeService;
 	}
 
 	/**
@@ -81,6 +87,18 @@ public class UserService implements UserDetailsService {
 		user.setPassword(password);
 		user.setMail(mail);
 		user.setCity(city);
+
+		List<LinkedHashMap> communes = communeService.getCommunes(city) ;
+		for ( LinkedHashMap <String ,String> c : communes){
+			boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
+			if (cityApi){
+				String codeDepartement =  c.get("codeDepartement");
+				user.setCodeDepartement(codeDepartement);
+			}
+
+
+
+		}
 
 		if(!userRepository.existsByUsername(user.getUsername())
 				&& isValidPassword(user.getPassword() )){
