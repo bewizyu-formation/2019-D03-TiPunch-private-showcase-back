@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -38,8 +39,8 @@ public class DepartementController {
 	 * @return the departement
 	 */
 	@GetMapping("/")
-	public ResponseEntity<List<Departement>> getDepartement(@RequestParam final String nom) {
-		final List<Departement> departements = this.departementService.getDepartement(nom);
+	public ResponseEntity<List<LinkedHashMap>> getDepartement(@RequestParam final String nom) {
+		final List<LinkedHashMap> departements = this.departementService.getDepartement(nom);
 		return new ResponseEntity<>(departements, HttpStatus.OK);
 	}
 
@@ -51,8 +52,8 @@ public class DepartementController {
 	 * @return the departement by code
 	 */
 	@GetMapping("/{code}")
-	public ResponseEntity<List<Departement>> getDepartementByCode(@PathVariable(value = "code") final String code) {
-		final List<Departement> departements = this.departementService.getDepartementByCode(code);
+	public ResponseEntity<List<LinkedHashMap>> getDepartementByCode(@PathVariable(value = "code") final String code) {
+		final List<LinkedHashMap> departements = this.departementService.getDepartementByCode(code);
 		return new ResponseEntity<>(departements, HttpStatus.OK);
 	}
 }

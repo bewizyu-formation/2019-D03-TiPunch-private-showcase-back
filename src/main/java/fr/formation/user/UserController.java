@@ -7,18 +7,24 @@ import fr.formation.modelDto.UserDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import fr.formation.security.SecurityConstants;
+
 import io.swagger.annotations.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+
 import java.util.stream.Collectors;
+
 
 
 /**
@@ -39,6 +45,7 @@ public class UserController extends AbstractController {
 	 * Signup user
 	 * @param data
 	 * @return string success/failed
+
 	 */
 	@PutMapping(value = "/")
 	public ResponseEntity<String> signup(@RequestBody UserDto data) {
@@ -74,6 +81,7 @@ public class UserController extends AbstractController {
 		return new ResponseEntity("failed",HttpStatus.BAD_REQUEST);
 
     }
+
 
 	/**
 	 * user exist
@@ -120,3 +128,16 @@ public class UserController extends AbstractController {
 	}
 
 }
+
+	@GetMapping("/home")
+	@Secured(SecurityConstants.ROLE_USER)
+	public Set<Artist> getArtistByCityUser(){
+	    String cityUser = getAuthenticatedUser().getCity();
+	   Set<Artist> listArtistbyUserCity = artistService.findArtistByCity(cityUser);
+	   return listArtistbyUserCity;
+
+	}
+
+	}
+
+

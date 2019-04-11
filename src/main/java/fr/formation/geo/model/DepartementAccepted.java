@@ -3,6 +3,7 @@ package fr.formation.geo.model;
 import fr.formation.models.Artist;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name ="departementAccepted")
@@ -15,7 +16,7 @@ public class DepartementAccepted {
     @ManyToOne
     private Artist artist;
 
-    private Integer departements;
+    private String codeDepartements;
 
     /**
      * Constructors
@@ -23,10 +24,10 @@ public class DepartementAccepted {
     public DepartementAccepted() {
     }
 
-    public DepartementAccepted(Long id, Artist artist, Integer departements) {
+    public DepartementAccepted(Long id, Artist artist, String codeDepartements) {
         this.id = id;
         this.artist = artist;
-        this.departements = departements;
+        this.codeDepartements = codeDepartements;
     }
 
     /**
@@ -40,8 +41,8 @@ public class DepartementAccepted {
         return artist;
     }
 
-    public Integer getDepartements() {
-        return departements;
+    public String getCodeDepartements() {
+        return codeDepartements;
     }
 
     /**
@@ -55,7 +56,7 @@ public class DepartementAccepted {
         this.artist = artist;
     }
 
-    public void setDepartements(Integer departements) {
-        this.departements = departements;
+    public void setCodeDepartements(String codeDepartements) {
+        this.codeDepartements = codeDepartements;
     }
 }

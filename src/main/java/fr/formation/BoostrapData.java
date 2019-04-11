@@ -63,6 +63,27 @@ public class BoostrapData {
 				"Les PatateRats",
 				"Ska-Punk",
 				SecurityConstants.ROLE_ARTIST
+
+		);
+		artistService.addNewArtist(
+				"userArtist2",
+				"artistArtist2",
+				"mailArtiste@test",
+				"Lyon",
+				"Les PatateRats2",
+				"Ska-Punk2",
+				SecurityConstants.ROLE_ARTIST
+
+		);
+		artistService.addNewArtist(
+				"userArtist3",
+				"artistArtist3",
+				"mailArtiste@test",
+				"Lyon",
+				"Les PatateRats3",
+				"Ska-Punk3",
+				SecurityConstants.ROLE_ARTIST
+
 		);
 
 	}

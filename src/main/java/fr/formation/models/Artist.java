@@ -3,7 +3,6 @@ package fr.formation.models;
 import fr.formation.geo.model.DepartementAccepted;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -14,31 +13,63 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name= "nameArtist")
     private String nameArtist;
-
+    @Column(name= "username")
     private String username;
-
+    @Column(name="passwordArtist")
     private String passwordArtist;
 
+    @Column(name = "mailArtist")
     private String mailArtist;
 
+    @Column(name ="cityArtist")
     private String cityArtist;
 
+
+    @Column(name ="departments")
     @OneToMany(mappedBy = "artist")
     private  Set<DepartementAccepted> departments;
 
+    @Column(name = "codeDepartement")
+    private String codeDepartement;
+
+    @Column(name="nameDepartement")
+    private String nameDepartement;
+
+    @Column(name="descriptionArtist")
     private String descriptionArtist;
 
+    @Column(name="nbVote")
     private Integer nbVote;
 
+    @Column(name="noteArtist")
     private Integer noteArtist;
 
+
+    @Column(name="userList")
     @ManyToMany(mappedBy = "listArtist")
     private Set<User> userList;
 
 
+
     @OneToOne
-    private Event eventBooked; // nommer eventBooked mais je sais pas si c'est le mieux
+    private Event eventBooked;
+
+    @Column(name="urlImage")
+    private String urlImage;
+
+    @Column(name="shortDescriptionArtist")
+    private String shortDescriptionArtist;
+
+    @Column(name="contactPhone")
+    private String contactPhone;
+
+    @Column(name="contactMail")
+    private String contactMail;
+
+    @Column(name="urlSiteArtist")
+    private String urlSiteArtist;
 
     /**
      * Constructeurs
@@ -47,19 +78,16 @@ public class Artist {
     public Artist() {
     }
 
-    public Artist(String nameArtist, String mailArtist,
-                  String cityArtist,Set<DepartementAccepted> departments, String descriptionArtist,
-                  Integer nbVote, Integer noteArtist,
-                  Set<User> userList) {
+    public Artist(String nameArtist, String username, String passwordArtist, String mailArtist, String cityArtist, Set<DepartementAccepted> departments, String descriptionArtist) {
         this.nameArtist = nameArtist;
+        this.username = username;
+        this.passwordArtist = passwordArtist;
         this.mailArtist = mailArtist;
         this.cityArtist = cityArtist;
         this.departments = departments;
         this.descriptionArtist = descriptionArtist;
-        this.nbVote = nbVote;
-        this.noteArtist = noteArtist;
-        this.userList = userList;
     }
+
 
     /**
      * Getteur Artist
@@ -112,6 +140,34 @@ public class Artist {
         return passwordArtist;
     }
 
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public String getShortDescriptionArtist() {
+        return shortDescriptionArtist;
+    }
+
+    public String getContactMail() {
+        return contactMail;
+    }
+
+    public String getUrlSiteArtist() {
+        return urlSiteArtist;
+    }
+
+    public String getCodeDepartement() {
+        return codeDepartement;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public String getNameDepartement() {
+        return nameDepartement;
+    }
+
     /**
      * Setteur Artist
      */
@@ -162,4 +218,33 @@ public class Artist {
     public void setPasswordArtist(String passwordArtist) {
         this.passwordArtist = passwordArtist;
     }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public void setShortDescriptionArtist(String shortDescriptionArtist) {
+        this.shortDescriptionArtist = shortDescriptionArtist;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    public void setContactMail(String contactMail) {
+        this.contactMail = contactMail;
+    }
+
+    public void setUrlSiteArtist(String urlSiteArtist) {
+        this.urlSiteArtist = urlSiteArtist;
+    }
+
+    public void setCodeDepartement(String codeDepartement) {
+        this.codeDepartement = codeDepartement;
+    }
+
+    public void setNameDepartement(String nameDepartement) {
+        this.nameDepartement = nameDepartement;
+    }
 }
+

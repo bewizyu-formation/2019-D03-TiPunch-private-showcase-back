@@ -1,5 +1,9 @@
 package fr.formation.artist;
 
+import fr.formation.geo.model.Commune;
+import fr.formation.geo.model.DepartementAccepted;
+import fr.formation.geo.services.CommuneService;
+import fr.formation.geo.services.DepartementService;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import fr.formation.user.UserRole;
@@ -8,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The type Artist service
@@ -18,6 +23,11 @@ public class ArtistService {
 
     private ArtistRepository artistRepository;
     private UserRoleRepository userRoleRepository;
+    private CommuneService communeService;
+    private DepartementService departementService;
+    private Artist artist;
+    private Commune commune;
+    private DepartementAccepted departementAccepted;
     private PasswordEncoder passwordEncoder;
 
 
@@ -30,10 +40,13 @@ public class ArtistService {
      */
     @Autowired
     public ArtistService(ArtistRepository artistRepository, UserRoleRepository userRoleRepository,
-                         PasswordEncoder passwordEncoder) {
+                         PasswordEncoder passwordEncoder, CommuneService communeService, DepartementService departementService) {
         this.artistRepository = artistRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.communeService = communeService;
+        this.departementService =departementService;
+
 
     }
 
@@ -45,6 +58,27 @@ public class ArtistService {
         artist.setPasswordArtist(password);
         artist.setMailArtist(mail);
         artist.setCityArtist(city);
+        List<LinkedHashMap> communes = communeService.getCommunes(city) ;
+        List<LinkedHashMap> departements ;
+        for ( LinkedHashMap <String ,String> c : communes){
+          boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
+          if (cityApi){
+             String codeDepartement =  c.get("codeDepartement");
+             if (!codeDepartement.isEmpty()){
+                 artist.setCodeDepartement(codeDepartement);
+                 departements = departementService.getDepartementByCode(codeDepartement);
+                 for (LinkedHashMap<String, String> d : departements){
+                     String nomDepartement = d.get("nom");
+                     artist.setNameDepartement(nomDepartement);
+
+                 }
+             }
+          }
+
+
+
+        }
+
         artist.setNameArtist(artistName);
         artist.setDescriptionArtist(description);
 
@@ -81,6 +115,11 @@ public class ArtistService {
         Artist artist = artistRepository.findArtistByNameArtist(nameArtist);
         return  artist;
     }
+    public Artist findArtistById(Long id){
+        Artist artist = artistRepository.findArtistById(id);
+
+        return  artist;
+    }
 
     public boolean isValidPassword(String password){
 
@@ -88,7 +127,11 @@ public class ArtistService {
     }
 
     public void deleteArtistById(Long id){
-        // TODO
+        artistRepository.deleteArtistById(id);
+    }
+    public Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist){
+        Artist artist = artistRepository.findArtistByDepartments(codeDepartementArtist);
+        return artist;
     }
     public boolean artistExist(String username){
         if (artistRepository.existsByUsername(username)){
@@ -109,5 +152,31 @@ public class ArtistService {
         Artist artist = artistRepository.findArtistsById(id);
         return artist;
     }
+
+    public Set<Artist>findArtistByCity(String city){
+        List<Commune> communeList  =  communeService.getCommunesObject(city); // recupére la liste de commune du user
+        Set<DepartementAccepted> codeDepartement = artist.getDepartments(); // recupère la list des departements lié aux artistes
+        List<String> listDepartementApi= new ArrayList<>();
+
+       for ( Commune c: communeList){
+
+           listDepartementApi = communeList.stream().map(commune -> commune.getCodeDepartement()).collect(Collectors.toList());
+       }
+       Set<Artist> listArtists = new HashSet<>();
+       for (DepartementAccepted codeDepartementArtist: codeDepartement){
+           for (String codeDepartementApi : listDepartementApi){
+               if (codeDepartementArtist.toString().equals(codeDepartementApi)){
+                   listArtists.add(artistRepository.findArtistByDepartments(codeDepartementArtist));
+
+               }
+
+           }
+       }
+       return listArtists;
+
+    }
+
+
+
 
 }
