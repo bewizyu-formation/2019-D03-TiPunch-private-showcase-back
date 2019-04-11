@@ -60,7 +60,7 @@ public class UserController extends AbstractController {
 
         boolean addUser = userService.addNewUser(artist.getUsername(), artist.getPasswordArtist(), artist.getMailArtist(), artist.getCityArtist() );
 
-        if (addArtist && addUser) return new ResponseEntity("success",HttpStatus.CREATED);
+        if (addArtist && addUser) return new ResponseEntity("success",HttpStatus.OK);
 
 		return new ResponseEntity("failed",HttpStatus.BAD_REQUEST);
 
