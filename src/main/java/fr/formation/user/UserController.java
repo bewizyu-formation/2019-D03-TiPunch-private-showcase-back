@@ -86,7 +86,7 @@ public class UserController extends AbstractController {
 		if(userService.userExist(username))
 			return new ResponseEntity<>(true, HttpStatus.OK);
 
-		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class UserController extends AbstractController {
 		if(artistService.existsByNameArtist(nameArtist))
 			return new ResponseEntity<>(true, HttpStatus.OK);
 
-		return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
 
