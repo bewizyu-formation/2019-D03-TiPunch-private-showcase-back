@@ -12,12 +12,12 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type Commune controller.
  */
 @RestController
-@Secured(SecurityConstants.ROLE_USER)
 @RequestMapping("/communes")
 public class CommuneController {
 

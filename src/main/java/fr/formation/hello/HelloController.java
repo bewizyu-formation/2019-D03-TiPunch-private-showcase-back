@@ -31,7 +31,7 @@ public class HelloController {
 	 * @return the hello
 	 */
 	@GetMapping("/admin")
-	@Secured(SecurityConstants.ROLE_ADMIN)
+	@Secured({SecurityConstants.ROLE_ADMIN})
 	Hello sayHelloAdmin() {
 
 		//SecurityContextHolder.getContext().getAuthentication().
