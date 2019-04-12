@@ -127,7 +127,7 @@ public class UserController extends AbstractController {
 		return new ResponseEntity<>(artists,HttpStatus.OK);
 	}
 
-}
+
 
 	@GetMapping("/home")
 	@Secured(SecurityConstants.ROLE_USER)
