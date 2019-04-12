@@ -1,7 +1,9 @@
 package fr.formation.user;
 
+import fr.formation.artist.ArtistRepository;
 import fr.formation.geo.services.CommuneService;
 import fr.formation.geo.services.DepartementService;
+import fr.formation.models.Artist;
 import fr.formation.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,9 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * The type User service.
@@ -24,6 +24,7 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
 	private UserRepository userRepository;
+	private ArtistRepository artistRepository;
 
 	private UserRoleRepository userRoleRepository;
 
@@ -40,12 +41,13 @@ public class UserService implements UserDetailsService {
 	 */
 	@Autowired
 	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
-					   CommuneService communeService, DepartementService departementService) {
+					   CommuneService communeService, DepartementService departementService, ArtistRepository artistRepository) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.communeService = communeService;
 		this.departementService = departementService;
+		this.artistRepository =artistRepository;
 	}
 
 	/**
@@ -84,7 +86,6 @@ public class UserService implements UserDetailsService {
 	 */
 
 	public boolean addNewUser(String username, String password, String mail, String city ,String... roles) {
-
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(password);
@@ -107,8 +108,6 @@ public class UserService implements UserDetailsService {
 					}
 				}
 			}
-
-
 
 		}
 
@@ -138,6 +137,11 @@ public class UserService implements UserDetailsService {
 		User user = userRepository.findByUsername(name);
 		return user;
 	}
+	public User getUser(User user){
+		user = userRepository.findByUsername(user.getUsername());
+		return user;
+
+	}
 
 	/**
 	 * checked password with 8 character minimum, 1 MAJ, 1 number
@@ -155,5 +159,6 @@ public class UserService implements UserDetailsService {
 		}
 		return false;
 	}
+
 
 	}

@@ -3,6 +3,7 @@ package fr.formation.artist;
 import fr.formation.geo.model.Commune;
 import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
+import fr.formation.geo.services.DepartementAcceptedRepository;
 import fr.formation.geo.services.DepartementService;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
@@ -23,6 +24,7 @@ public class ArtistService {
 
     private ArtistRepository artistRepository;
     private UserRoleRepository userRoleRepository;
+    private DepartementAcceptedRepository departementAcceptedRepository;
     private CommuneService communeService;
     private DepartementService departementService;
     private Artist artist;
@@ -40,12 +42,14 @@ public class ArtistService {
      */
     @Autowired
     public ArtistService(ArtistRepository artistRepository, UserRoleRepository userRoleRepository,
-                         PasswordEncoder passwordEncoder, CommuneService communeService, DepartementService departementService) {
+                         PasswordEncoder passwordEncoder, CommuneService communeService, DepartementService departementService,
+                         DepartementAcceptedRepository departementAcceptedRepository) {
         this.artistRepository = artistRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.communeService = communeService;
-        this.departementService =departementService;
+        this.departementService = departementService;
+        this.departementAcceptedRepository = departementAcceptedRepository;
 
 
     }
@@ -54,6 +58,7 @@ public class ArtistService {
                              String city, String artistName,
                              String description, String... roles) {
         Artist artist = new Artist();
+        DepartementAccepted departementAccepted = new DepartementAccepted();
         artist.setUsername(username);
         artist.setPasswordArtist(password);
         artist.setMailArtist(mail);
@@ -70,12 +75,14 @@ public class ArtistService {
                  for (LinkedHashMap<String, String> d : departements){
                      String nomDepartement = d.get("nom");
                      artist.setNameDepartement(nomDepartement);
-
+                     departementAccepted.setNomDepartements(artist.getNameDepartement());
+                     departementAccepted.setArtist(artist);
+                     Set<DepartementAccepted> listDepartementAccepeted = new HashSet<>();
+                     listDepartementAccepeted.add(departementAccepted);
+                     artist.setDepartments(listDepartementAccepeted);
                  }
              }
           }
-
-
 
         }
 
@@ -85,6 +92,7 @@ public class ArtistService {
         if(!artistRepository.existsByNameArtist(artist.getNameArtist())){
             artist.setPasswordArtist(passwordEncoder.encode(artist.getPasswordArtist()));
             artist = artistRepository.save(artist);
+            departementAcceptedRepository.save(departementAccepted);
 
             for (String role : roles){
                 UserRole artistRole = new UserRole();
@@ -111,15 +119,20 @@ public class ArtistService {
         return  artists;
     }
 
+
     public Artist findArtistByNameArtist(String nameArtist){
         Artist artist = artistRepository.findArtistByNameArtist(nameArtist);
         return  artist;
     }
-    public Artist findArtistById(Long id){
+    public Artist getArtistById(Long id){
         Artist artist = artistRepository.findArtistById(id);
-
-        return  artist;
+        // TODO: Est-ce que l'artiste est trouvé ???
+        if (artist != null) {
+            return artist;
+        }
+        return  null;
     }
+
 
     public boolean isValidPassword(String password){
 
@@ -147,12 +160,6 @@ public class ArtistService {
         return false;
     }
 
-    public Artist finArtistById(Long id){
-
-        Artist artist = artistRepository.findArtistsById(id);
-        return artist;
-    }
-
     public Set<Artist>findArtistByCity(String city){
         List<Commune> communeList  =  communeService.getCommunesObject(city); // recupére la liste de commune du user
         Set<DepartementAccepted> codeDepartement = artist.getDepartments(); // recupère la list des departements lié aux artistes
@@ -175,6 +182,38 @@ public class ArtistService {
        return listArtists;
 
     }
+    public Set<Artist> update(User authenticatedUser, Long idArtist, Artist artistToUpdate ){
+
+        // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
+
+        if (authenticatedUser.getListArtist().contains(artistToUpdate)) {
+            // => Récupération de la liste d'artiste du user
+            Set<Artist> listArtist = authenticatedUser.getListArtist();
+            // 2- Récupération de l'artiste à update par son id
+            for (Artist artist : listArtist){
+                if (idArtist == artist.getId()){
+                    // 3- Update de l'artiste et sauvegarde en BDD
+                    artist.setContactMail(artistToUpdate.getContactMail());
+                    artist.setDepartments(artistToUpdate.getDepartments());
+                    artist.setMailArtist(artistToUpdate.getMailArtist());
+                    artist.setShortDescriptionArtist(artistToUpdate.getShortDescriptionArtist());
+                    artist.setUrlSiteArtist(artistToUpdate.getUrlSiteArtist());
+                    artist.setUrlImage(artistToUpdate.getUrlImage()); // A Modifier une fois implementation de l'upload image (au minimum le type dans le Model)
+
+                    artistRepository.save(artist);
+                }
+            }
+            return listArtist;
+
+        }
+        return new HashSet<>();
+
+
+        // 4- Retourne l'artiste modifié
+
+    }
+
+
 
 
 

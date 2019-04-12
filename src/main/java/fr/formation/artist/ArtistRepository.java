@@ -2,6 +2,7 @@ package fr.formation.artist;
 
 import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.models.Artist;
+import fr.formation.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     public List<Artist> findAll();
 
+
     /**
      * Delete artist by id
      * @param id the id
@@ -49,11 +51,11 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
      */
     public boolean existsByUsername(String username);
 
-    public Artist findArtistsById(Long id);
 
     public Set<Artist> findArtistBycityArtist(String city);
 
     public  Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist);
+
 
 
 

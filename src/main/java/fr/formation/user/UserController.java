@@ -138,6 +138,14 @@ public class UserController extends AbstractController {
 
 	}
 
+	@GetMapping("/getUser")
+	@Secured(SecurityConstants.ROLE_USER)
+	public User getUser(){
+		User user = userService.getUser(getAuthenticatedUser());
+		return user;
+	}
+
+
 	}
 
 

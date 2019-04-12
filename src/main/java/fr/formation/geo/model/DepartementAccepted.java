@@ -16,7 +16,8 @@ public class DepartementAccepted {
     @ManyToOne
     private Artist artist;
 
-    private String codeDepartements;
+    private String nomDepartements;
+
 
     /**
      * Constructors
@@ -24,10 +25,10 @@ public class DepartementAccepted {
     public DepartementAccepted() {
     }
 
-    public DepartementAccepted(Long id, Artist artist, String codeDepartements) {
+    public DepartementAccepted(Long id, Artist artist, String nomDepartements) {
         this.id = id;
         this.artist = artist;
-        this.codeDepartements = codeDepartements;
+        this.nomDepartements = nomDepartements;
     }
 
     /**
@@ -42,7 +43,7 @@ public class DepartementAccepted {
     }
 
     public String getCodeDepartements() {
-        return codeDepartements;
+        return nomDepartements;
     }
 
     /**
@@ -56,7 +57,7 @@ public class DepartementAccepted {
         this.artist = artist;
     }
 
-    public void setCodeDepartements(String codeDepartements) {
-        this.codeDepartements = codeDepartements;
+    public void setNomDepartements(String nomDepartements) {
+        this.nomDepartements = nomDepartements;
     }
 }
