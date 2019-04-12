@@ -5,6 +5,7 @@ import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
 import fr.formation.geo.services.DepartementService;
 import fr.formation.models.Artist;
+import fr.formation.models.User;
 import fr.formation.user.UserRole;
 import fr.formation.user.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +101,13 @@ public class ArtistService {
         return false;
     }
 
-    public List<Artist> getArtists(){
+
+    public List<Artist> getArtists(User user){
         List<Artist> artists = artistRepository.findAll();
+        // TODO
+        /*
+            search artist by departement user
+         */
         return  artists;
     }
 
@@ -125,6 +131,25 @@ public class ArtistService {
     }
     public Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist){
         Artist artist = artistRepository.findArtistByDepartments(codeDepartementArtist);
+        return artist;
+    }
+    public boolean artistExist(String username){
+        if (artistRepository.existsByUsername(username)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean existsByNameArtist(String nameArtist){
+        if(artistRepository.existsByNameArtist(nameArtist)){
+            return true;
+        }
+        return false;
+    }
+
+    public Artist finArtistById(Long id){
+
+        Artist artist = artistRepository.findArtistsById(id);
         return artist;
     }
 

@@ -7,12 +7,24 @@ import fr.formation.modelDto.UserDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import fr.formation.security.SecurityConstants;
+
+import io.swagger.annotations.Authorization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+
+import java.util.stream.Collectors;
+
 
 
 /**
@@ -27,25 +39,95 @@ public class UserController extends AbstractController {
 	@Autowired
 	private ArtistService artistService;
 
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
 	/**
-	 * Signup.
-	 *
+	 * Signup user
+	 * @param data
+	 * @return string success/failed
+
 	 */
 	@PutMapping(value = "/")
-	public void signup(@RequestBody UserDto data) {
+	public ResponseEntity<String> signup(@RequestBody UserDto data) {
 
+		boolean addUser = userService.addNewUser(data.getUsername(), data.getPassword(), data.getMail(), data.getCity());
 
-		userService.addNewUser(data.getUsername(), data.getPassword(), data.getMail(), data.getCity() );
+		if(addUser) return new ResponseEntity("success",HttpStatus.OK);
+
+		return new ResponseEntity("failed",HttpStatus.BAD_REQUEST);
 
 	}
 
+	/**
+	 * Signup artist
+	 * @param artist
+	 * @return string success/failed
+	 */
 	@PutMapping("/artist/")
-	public void signup (@RequestBody ArtistDto artist){
+	public ResponseEntity<String> signup(@RequestBody ArtistDto artist){
 
-	    artistService.addNewArtist(artist.getUsername(), artist.getPasswordArtist(), artist.getMailArtist(), artist.getCityArtist(), artist.getNameArtist(),artist.getDescriptionArtist());
-        userService.addNewUser(artist.getUsername(), artist.getPasswordArtist(), artist.getMailArtist(), artist.getCityArtist() );
+		boolean addArtist = artistService.addNewArtist(artist.getUsername(), artist.getPasswordArtist(),
+				artist.getMailArtist(), artist.getCityArtist(), artist.getNameArtist(),artist.getDescriptionArtist());
+
+		boolean addUser = false;
+
+		if(addArtist){
+			addUser = userService.addNewUser(artist.getUsername(), artist.getPasswordArtist(),
+					artist.getMailArtist(), artist.getCityArtist() );
+		}
+
+        if (addArtist && addUser) return new ResponseEntity("success",HttpStatus.OK);
+
+		return new ResponseEntity("failed",HttpStatus.BAD_REQUEST);
 
     }
+
+
+	/**
+	 * user exist
+	 * @param username
+	 * @return boolean
+	 */
+	@GetMapping("/exists")
+	public ResponseEntity<Boolean> userExist(@RequestParam String username){
+
+		if(userService.userExist(username))
+			return new ResponseEntity<>(true, HttpStatus.OK);
+
+		return new ResponseEntity<>(false, HttpStatus.OK);
+	}
+
+	/**
+	 * artist exist
+	 * @param nameArtist
+	 * @return boolean
+	 */
+	@GetMapping("/artist/exists")
+	public ResponseEntity<Boolean> artistExist(@RequestParam String nameArtist){
+
+		if(artistService.existsByNameArtist(nameArtist))
+			return new ResponseEntity<>(true, HttpStatus.OK);
+
+		return new ResponseEntity<>(false, HttpStatus.OK);
+	}
+
+
+	/**
+	 * All artists
+	 * @return list artists
+	 */
+	@GetMapping("/artist/list")
+	@Secured({SecurityConstants.ROLE_USER})
+	public ResponseEntity<List<Artist>> allArtist(){
+
+		List<Artist> artists = this.artistService.getArtists(getAuthenticatedUser());
+
+		if (artists.isEmpty()) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(artists,HttpStatus.OK);
+	}
+
+
 
 	@GetMapping("/home")
 	@Secured(SecurityConstants.ROLE_USER)
@@ -57,6 +139,5 @@ public class UserController extends AbstractController {
 	}
 
 	}
-
 
 
