@@ -20,11 +20,6 @@ public class Artist {
     @OneToMany(mappedBy = "artist")
     private  Set<DepartementAccepted> departments;
 
-    @Column(name = "codeDepartement")
-    private String codeDepartement;
-
-    @Column(name="nameDepartement")
-    private String nameDepartement;
 
     @Column(name="descriptionArtist")
     private String descriptionArtist;
@@ -35,11 +30,9 @@ public class Artist {
     @Column(name="noteArtist")
     private Integer noteArtist;
 
-
     @Column(name="userList")
     @ManyToMany(mappedBy = "listArtist")
     private Set<User> userList;
-
 
 
     @OneToOne
@@ -129,17 +122,12 @@ public class Artist {
         return urlSiteArtist;
     }
 
-    public String getCodeDepartement() {
-        return codeDepartement;
-    }
 
     public String getContactPhone() {
         return contactPhone;
     }
 
-    public String getNameDepartement() {
-        return nameDepartement;
-    }
+
 
     /**
      * Setteur Artist
@@ -197,12 +185,5 @@ public class Artist {
         this.urlSiteArtist = urlSiteArtist;
     }
 
-    public void setCodeDepartement(String codeDepartement) {
-        this.codeDepartement = codeDepartement;
-    }
-
-    public void setNameDepartement(String nameDepartement) {
-        this.nameDepartement = nameDepartement;
-    }
 }
 

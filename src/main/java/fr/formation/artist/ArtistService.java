@@ -186,7 +186,7 @@ public class ArtistService {
 
         // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
 
-        if (authenticatedUser.getListArtist().contains(artistToUpdate)) {
+        if (authenticatedUser.getListArtist().contains(artistToUpdate)) { //pas les meme adresses mémoires
             // => Récupération de la liste d'artiste du user
             Set<Artist> listArtist = authenticatedUser.getListArtist();
             // 2- Récupération de l'artiste à update par son id
@@ -195,7 +195,7 @@ public class ArtistService {
                     // 3- Update de l'artiste et sauvegarde en BDD
                     artist.setContactMail(artistToUpdate.getContactMail());
                     artist.setDepartments(artistToUpdate.getDepartments());
-                    artist.setContactMail(artistToUpdate.getContactMail());
+                    artist.setContactPhone(artistToUpdate.getContactPhone());
                     artist.setShortDescriptionArtist(artistToUpdate.getShortDescriptionArtist());
                     artist.setUrlSiteArtist(artistToUpdate.getUrlSiteArtist());
                     artist.setUrlImage(artistToUpdate.getUrlImage()); // A Modifier une fois implementation de l'upload image (au minimum le type dans le Model)

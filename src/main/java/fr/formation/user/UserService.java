@@ -101,6 +101,7 @@ public class UserService implements UserDetailsService {
 
 		List<LinkedHashMap> communes = communeService.getCommunes(city) ;
 		List<LinkedHashMap> departements ;
+
 		for ( LinkedHashMap <String ,String> c : communes){
 			boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
 			if (cityApi){
@@ -121,15 +122,29 @@ public class UserService implements UserDetailsService {
 				&& isValidPassword(user.getPassword() )){
 
 		if(artistDto != null) {
+
 			Artist artist = new Artist();
+			Set<User> listUSer = new HashSet<>();
+			Set<Artist> listArtist = new HashSet<>();
 			DepartementAccepted departementAccepted = new DepartementAccepted();
+
+
 			artist.setNameArtist(artistDto.getNameArtist());
 			artist.setDescriptionArtist(artistDto.getDescriptionArtist());
+
 			departementAccepted.setNomDepartements(user.getNameDepartement());
 			departementAccepted.setArtist(artist);
+
 			Set<DepartementAccepted> listDepartementAccepeted = new HashSet<>();
+
 			listDepartementAccepeted.add(departementAccepted);
 			artist.setDepartments(listDepartementAccepeted);
+
+			listUSer.add(user);
+			artist.setUserList(listUSer);
+			listArtist.add(artist);
+			user.setListArtist(listArtist);
+
 			 artistRepository.save(artist);
 			 departementAcceptedRepository.save(departementAccepted);
 

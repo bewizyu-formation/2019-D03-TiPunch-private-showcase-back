@@ -38,6 +38,7 @@ public class ArtistController extends AbstractController {
 
 
 
+
         // 2- Update de l'artiste
         Set<Artist> listUpdatedArtists = artistService.update(authentificatedUser, id, artist);
         if (listUpdatedArtists.isEmpty()){
