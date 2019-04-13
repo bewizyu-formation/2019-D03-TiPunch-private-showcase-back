@@ -31,6 +31,7 @@ public class ArtistService {
     private Commune commune;
     private DepartementAccepted departementAccepted;
     private PasswordEncoder passwordEncoder;
+    private ArtistService artistService;
 
 
 
@@ -50,6 +51,7 @@ public class ArtistService {
         this.communeService = communeService;
         this.departementService = departementService;
         this.departementAcceptedRepository = departementAcceptedRepository;
+
 
 
     }
@@ -159,6 +161,11 @@ public class ArtistService {
         }
         return false;
     }
+    public boolean findArtistByuserList(Long userId){
+
+      boolean findArtist =  artistRepository.findArtistByuserList(userId);
+        return findArtist;
+    }
 
 /*    public Set<Artist>findArtistByCity(String city){
         List<Commune> communeList  =  communeService.getCommunesObject(city); // recupére la liste de commune du user
@@ -182,11 +189,11 @@ public class ArtistService {
        return listArtists;
 
     }*/
-    public Set<Artist> update(User authenticatedUser, Long idArtist, Artist artistToUpdate ){
+    public Artist update(User authenticatedUser, Long idArtist, Artist artistToUpdate ){
 
         // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
 
-        if (authenticatedUser.getListArtist().contains(artistToUpdate)) { //pas les meme adresses mémoires
+        if (artistService.findArtistByuserList(authenticatedUser.getId())) { //pas les meme adresses mémoires
             // => Récupération de la liste d'artiste du user
             Set<Artist> listArtist = authenticatedUser.getListArtist();
             // 2- Récupération de l'artiste à update par son id
@@ -203,10 +210,10 @@ public class ArtistService {
                     artistRepository.save(artist);
                 }
             }
-            return listArtist;
+            return artist;
 
         }
-        return new HashSet<>();
+        return null;
 
 
         // 4- Retourne l'artiste modifié

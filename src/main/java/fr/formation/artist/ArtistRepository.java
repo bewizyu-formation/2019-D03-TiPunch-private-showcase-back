@@ -56,6 +56,8 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     public  Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist);
 
+    public boolean findArtistByuserList(Long userId);
+
 
 
 

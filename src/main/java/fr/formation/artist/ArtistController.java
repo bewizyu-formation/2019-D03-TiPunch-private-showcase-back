@@ -31,22 +31,33 @@ public class ArtistController extends AbstractController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Set<Artist>> update(@RequestBody Artist artist, @PathVariable Long id){
+    public ResponseEntity<Artist> update(@RequestBody Artist artist, @PathVariable Long id){
 
         // 1- Récupération du user authentifié
         User authentificatedUser = userService.getUser(getAuthenticatedUser());
 
 
-
-
         // 2- Update de l'artiste
-        Set<Artist> listUpdatedArtists = artistService.update(authentificatedUser, id, artist);
-        if (listUpdatedArtists.isEmpty()){
-            return new ResponseEntity<>(listUpdatedArtists, HttpStatus.NOT_FOUND);
+        Artist updatedArtists = artistService.update(authentificatedUser, id, artist);
+        if (updatedArtists != null){
+            return new ResponseEntity<>(updatedArtists, HttpStatus.NOT_FOUND);
         }
         // 3- Retourne l'artiste modifié
 
-        return new ResponseEntity<>(listUpdatedArtists, HttpStatus.OK) ;
+        return new ResponseEntity<>(updatedArtists, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Boolean> checkupdate  (){
+        User authentifiedUser = userService.getUser(getAuthenticatedUser());
+        Long idUser = authentifiedUser.getId();
+        boolean foundArtistLinkToUser = artistService.findArtistByuserList(idUser);
+        if (foundArtistLinkToUser){
+            return new ResponseEntity<>(foundArtistLinkToUser, HttpStatus.FOUND);
+
+        }
+        return new ResponseEntity<>(foundArtistLinkToUser, HttpStatus.NOT_FOUND);
+
     }
 
 
