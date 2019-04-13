@@ -1,6 +1,7 @@
 package fr.formation;
 
 import fr.formation.artist.ArtistService;
+import fr.formation.modelDto.ArtistDto;
 import fr.formation.security.SecurityConstants;
 import fr.formation.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,49 +40,48 @@ public class BoostrapData {
 	@EventListener(ContextRefreshedEvent.class)
 	public void onStart() {
 
-		userService.addNewUser(
+		userService.addNewUserAndArtist(
 				"admin",
 				"adminAdmin1",
 				"mail@test",
 				"Lyon",
+				null,
 				SecurityConstants.ROLE_ADMIN
 
 
 		);
-		userService.addNewUser(
+		userService.addNewUserAndArtist(
 				"user",
 				"userUser2",
 				"mailuser@test",
 				"Lyon",
+				null,
 				SecurityConstants.ROLE_USER
 		);
-		artistService.addNewArtist(
+		userService.addNewUserAndArtist(
 				"userArtist",
 				"artistArtist1",
 				"mailArtiste@test",
 				"Marseille",
-				"Les PatateRats",
-				"Ska-Punk",
+				new ArtistDto("Les PatateRats","Ska-Punk"),
 				SecurityConstants.ROLE_ARTIST
 
 		);
-		artistService.addNewArtist(
+		userService.addNewUserAndArtist(
 				"userArtist2",
 				"artistArtist2",
 				"mailArtiste@test",
 				"Lyon",
-				"Les PatateRats2",
-				"Ska-Punk2",
+				new ArtistDto("Les PatateRats2", "Ska-Punk2"),
 				SecurityConstants.ROLE_ARTIST
 
 		);
-		artistService.addNewArtist(
+		userService.addNewUserAndArtist(
 				"userArtist3",
 				"artistArtist3",
 				"mailArtiste@test",
 				"Lyon",
-				"Les PatateRats3",
-				"Ska-Punk3",
+				new ArtistDto("Les PatateRats3", "Ska-Punk3"),
 				SecurityConstants.ROLE_ARTIST
 
 		);

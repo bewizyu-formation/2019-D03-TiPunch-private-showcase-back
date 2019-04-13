@@ -1,8 +1,11 @@
 package fr.formation.user;
 
 import fr.formation.artist.ArtistRepository;
+import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
+import fr.formation.geo.services.DepartementAcceptedRepository;
 import fr.formation.geo.services.DepartementService;
+import fr.formation.modelDto.ArtistDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +28,14 @@ public class UserService implements UserDetailsService {
 
 	private UserRepository userRepository;
 	private ArtistRepository artistRepository;
-
+	private DepartementAcceptedRepository departementAcceptedRepository;
 	private UserRoleRepository userRoleRepository;
 
 	private PasswordEncoder passwordEncoder;
 
 	private CommuneService communeService;
 	private DepartementService departementService;
+	private DepartementAccepted departementAccepted;
 
 	/**
 	 * Instantiates a new User service.
@@ -41,13 +45,16 @@ public class UserService implements UserDetailsService {
 	 */
 	@Autowired
 	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
-					   CommuneService communeService, DepartementService departementService, ArtistRepository artistRepository) {
+					   CommuneService communeService,
+					   DepartementService departementService, ArtistRepository artistRepository,
+					   DepartementAcceptedRepository departementAcceptedRepository) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.communeService = communeService;
 		this.departementService = departementService;
-		this.artistRepository =artistRepository;
+		this.artistRepository = artistRepository;
+		this.departementAcceptedRepository = departementAcceptedRepository;
 	}
 
 	/**
@@ -85,7 +92,7 @@ public class UserService implements UserDetailsService {
 	 * @param roles the roles
 	 */
 
-	public boolean addNewUser(String username, String password, String mail, String city ,String... roles) {
+	public boolean addNewUserAndArtist(String username, String password, String mail, String city , ArtistDto artistDto, String... roles) {
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(password);
@@ -110,12 +117,29 @@ public class UserService implements UserDetailsService {
 			}
 
 		}
-
 		if(!userRepository.existsByUsername(user.getUsername())
 				&& isValidPassword(user.getPassword() )){
 
+		if(artistDto != null) {
+			Artist artist = new Artist();
+			DepartementAccepted departementAccepted = new DepartementAccepted();
+			artist.setNameArtist(artistDto.getNameArtist());
+			artist.setDescriptionArtist(artistDto.getDescriptionArtist());
+			departementAccepted.setNomDepartements(user.getNameDepartement());
+			departementAccepted.setArtist(artist);
+			Set<DepartementAccepted> listDepartementAccepeted = new HashSet<>();
+			listDepartementAccepeted.add(departementAccepted);
+			artist.setDepartments(listDepartementAccepeted);
+			 artistRepository.save(artist);
+			 departementAcceptedRepository.save(departementAccepted);
+
+		}
+
+
+
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user = userRepository.save(user);
+
 
 			for (String role : roles) {
 

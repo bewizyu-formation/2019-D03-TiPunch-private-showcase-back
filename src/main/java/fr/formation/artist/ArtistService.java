@@ -54,7 +54,7 @@ public class ArtistService {
 
     }
 
-    public boolean addNewArtist(String username, String password, String mail,
+   /* public boolean addNewArtist(String username, String password, String mail,
                              String city, String artistName,
                              String description, String... roles) {
         Artist artist = new Artist();
@@ -108,7 +108,7 @@ public class ArtistService {
 
         return false;
     }
-
+*/
 
     public List<Artist> getArtists(User user){
         List<Artist> artists = artistRepository.findAll();
@@ -146,12 +146,12 @@ public class ArtistService {
         Artist artist = artistRepository.findArtistByDepartments(codeDepartementArtist);
         return artist;
     }
-    public boolean artistExist(String username){
+/*    public boolean artistExist(String username){
         if (artistRepository.existsByUsername(username)){
             return true;
         }
         return false;
-    }
+    }*/
 
     public boolean existsByNameArtist(String nameArtist){
         if(artistRepository.existsByNameArtist(nameArtist)){
@@ -160,7 +160,7 @@ public class ArtistService {
         return false;
     }
 
-    public Set<Artist>findArtistByCity(String city){
+/*    public Set<Artist>findArtistByCity(String city){
         List<Commune> communeList  =  communeService.getCommunesObject(city); // recupére la liste de commune du user
         Set<DepartementAccepted> codeDepartement = artist.getDepartments(); // recupère la list des departements lié aux artistes
         List<String> listDepartementApi= new ArrayList<>();
@@ -181,7 +181,7 @@ public class ArtistService {
        }
        return listArtists;
 
-    }
+    }*/
     public Set<Artist> update(User authenticatedUser, Long idArtist, Artist artistToUpdate ){
 
         // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
@@ -195,7 +195,7 @@ public class ArtistService {
                     // 3- Update de l'artiste et sauvegarde en BDD
                     artist.setContactMail(artistToUpdate.getContactMail());
                     artist.setDepartments(artistToUpdate.getDepartments());
-                    artist.setMailArtist(artistToUpdate.getMailArtist());
+                    artist.setContactMail(artistToUpdate.getContactMail());
                     artist.setShortDescriptionArtist(artistToUpdate.getShortDescriptionArtist());
                     artist.setUrlSiteArtist(artistToUpdate.getUrlSiteArtist());
                     artist.setUrlImage(artistToUpdate.getUrlImage()); // A Modifier une fois implementation de l'upload image (au minimum le type dans le Model)

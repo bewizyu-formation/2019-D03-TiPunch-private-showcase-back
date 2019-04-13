@@ -49,10 +49,10 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
      * @param username
      * @return
      */
-    public boolean existsByUsername(String username);
+   // public boolean existsByUsername(String username);
 
 
-    public Set<Artist> findArtistBycityArtist(String city);
+   // public Set<Artist> findArtistBycityArtist(String city);
 
     public  Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist);
 

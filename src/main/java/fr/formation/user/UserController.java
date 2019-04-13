@@ -50,7 +50,7 @@ public class UserController extends AbstractController {
 	@PutMapping(value = "/")
 	public ResponseEntity<String> signup(@RequestBody UserDto data) {
 
-		boolean addUser = userService.addNewUser(data.getUsername(), data.getPassword(), data.getMail(), data.getCity());
+		boolean addUser = userService.addNewUserAndArtist(data.getUsername(), data.getPassword(), data.getMail(), data.getCity(), null);
 
 		if(addUser) return new ResponseEntity("success",HttpStatus.OK);
 
@@ -64,19 +64,12 @@ public class UserController extends AbstractController {
 	 * @return string success/failed
 	 */
 	@PutMapping("/artist/")
-	public ResponseEntity<String> signup(@RequestBody ArtistDto artist){
+	public ResponseEntity<String> signup(@RequestBody ArtistDto artist, @RequestBody UserDto data){
 
-		boolean addArtist = artistService.addNewArtist(artist.getUsername(), artist.getPasswordArtist(),
-				artist.getMailArtist(), artist.getCityArtist(), artist.getNameArtist(),artist.getDescriptionArtist());
+		boolean addArtist = userService.addNewUserAndArtist(data.getUsername(), data.getPassword(), data.getMail(), data.getCity(), artist);
 
-		boolean addUser = false;
 
-		if(addArtist){
-			addUser = userService.addNewUser(artist.getUsername(), artist.getPasswordArtist(),
-					artist.getMailArtist(), artist.getCityArtist() );
-		}
-
-        if (addArtist && addUser) return new ResponseEntity("success",HttpStatus.OK);
+        if (addArtist) return new ResponseEntity("success",HttpStatus.OK);
 
 		return new ResponseEntity("failed",HttpStatus.BAD_REQUEST);
 
@@ -129,14 +122,14 @@ public class UserController extends AbstractController {
 
 
 
-	@GetMapping("/home")
+/*	@GetMapping("/home")
 	@Secured(SecurityConstants.ROLE_USER)
 	public Set<Artist> getArtistByCityUser(){
 	    String cityUser = getAuthenticatedUser().getCity();
 	   Set<Artist> listArtistbyUserCity = artistService.findArtistByCity(cityUser);
 	   return listArtistbyUserCity;
 
-	}
+	}*/
 
 	@GetMapping("/getUser")
 	@Secured(SecurityConstants.ROLE_USER)

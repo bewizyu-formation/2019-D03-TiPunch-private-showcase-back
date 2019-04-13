@@ -15,17 +15,6 @@ public class Artist {
 
     @Column(name= "nameArtist")
     private String nameArtist;
-    @Column(name= "username")
-    private String username;
-    @Column(name="passwordArtist")
-    private String passwordArtist;
-
-    @Column(name = "mailArtist")
-    private String mailArtist;
-
-    @Column(name ="cityArtist")
-    private String cityArtist;
-
 
     @Column(name ="departments")
     @OneToMany(mappedBy = "artist")
@@ -68,6 +57,8 @@ public class Artist {
     @Column(name="contactMail")
     private String contactMail;
 
+
+
     @Column(name="urlSiteArtist")
     private String urlSiteArtist;
 
@@ -78,12 +69,8 @@ public class Artist {
     public Artist() {
     }
 
-    public Artist(String nameArtist, String username, String passwordArtist, String mailArtist, String cityArtist, Set<DepartementAccepted> departments, String descriptionArtist) {
+    public Artist(String nameArtist,   Set<DepartementAccepted> departments, String descriptionArtist) {
         this.nameArtist = nameArtist;
-        this.username = username;
-        this.passwordArtist = passwordArtist;
-        this.mailArtist = mailArtist;
-        this.cityArtist = cityArtist;
         this.departments = departments;
         this.descriptionArtist = descriptionArtist;
     }
@@ -100,12 +87,9 @@ public class Artist {
         return nameArtist;
     }
 
-    public String getMailArtist() {
-        return mailArtist;
-    }
 
-    public String getCityArtist() {
-        return cityArtist;
+    public String getContactMail() {
+        return contactMail;
     }
 
     public Set<DepartementAccepted> getDepartments() {
@@ -132,13 +116,6 @@ public class Artist {
         return eventBooked;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPasswordArtist() {
-        return passwordArtist;
-    }
 
     public String getUrlImage() {
         return urlImage;
@@ -146,10 +123,6 @@ public class Artist {
 
     public String getShortDescriptionArtist() {
         return shortDescriptionArtist;
-    }
-
-    public String getContactMail() {
-        return contactMail;
     }
 
     public String getUrlSiteArtist() {
@@ -179,12 +152,8 @@ public class Artist {
         this.nameArtist = nameArtist;
     }
 
-    public void setMailArtist(String mailArtist) {
-        this.mailArtist = mailArtist;
-    }
-
-    public void setCityArtist(String cityArtist) {
-        this.cityArtist = cityArtist;
+    public void setContactMail(String contactMail) {
+        this.contactMail = contactMail;
     }
 
     public void setDepartments(Set<DepartementAccepted> departments) {
@@ -211,13 +180,6 @@ public class Artist {
         this.eventBooked = eventBooked;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPasswordArtist(String passwordArtist) {
-        this.passwordArtist = passwordArtist;
-    }
 
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
@@ -229,10 +191,6 @@ public class Artist {
 
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
-    }
-
-    public void setContactMail(String contactMail) {
-        this.contactMail = contactMail;
     }
 
     public void setUrlSiteArtist(String urlSiteArtist) {
