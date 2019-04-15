@@ -4,6 +4,8 @@ import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Set;
@@ -56,7 +58,9 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     public  Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist);
 
-    public boolean findArtistByuserList(Long userId);
+
+    @Query("Select artist from Artist join artist.user where user.id = user_list_id")
+    public Artist findArtistByuserList();
 
 
 

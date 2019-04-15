@@ -48,11 +48,11 @@ public class ArtistController extends AbstractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Boolean> checkupdate  (){
+    public ResponseEntity<Artist> checkupdate  (){
         User authentifiedUser = userService.getUser(getAuthenticatedUser());
         Long idUser = authentifiedUser.getId();
-        boolean foundArtistLinkToUser = artistService.findArtistByuserList(idUser);
-        if (foundArtistLinkToUser){
+        Artist foundArtistLinkToUser = artistService.findArtistByuserList();
+        if (foundArtistLinkToUser != null){
             return new ResponseEntity<>(foundArtistLinkToUser, HttpStatus.FOUND);
 
         }

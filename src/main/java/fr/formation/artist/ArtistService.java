@@ -161,9 +161,9 @@ public class ArtistService {
         }
         return false;
     }
-    public boolean findArtistByuserList(Long userId){
+    public Artist findArtistByuserList(){
 
-      boolean findArtist =  artistRepository.findArtistByuserList(userId);
+      Artist findArtist =  artistRepository.findArtistByuserList();
         return findArtist;
     }
 
@@ -192,8 +192,9 @@ public class ArtistService {
     public Artist update(User authenticatedUser, Long idArtist, Artist artistToUpdate ){
 
         // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
+        Artist findArtist = artistService.findArtistByuserList();
 
-        if (artistService.findArtistByuserList(authenticatedUser.getId())) { //pas les meme adresses mémoires
+        if (findArtist != null) { //pas les meme adresses mémoires
             // => Récupération de la liste d'artiste du user
             Set<Artist> listArtist = authenticatedUser.getListArtist();
             // 2- Récupération de l'artiste à update par son id
