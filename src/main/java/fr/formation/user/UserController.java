@@ -64,9 +64,9 @@ public class UserController extends AbstractController {
 	 * @return string success/failed
 	 */
 	@PutMapping("/artist/")
-	public ResponseEntity<String> signup(@RequestBody ArtistDto artist, @RequestBody UserDto data){
+	public ResponseEntity<String> signupArtist(@RequestBody UserDto data){
 
-		boolean addArtist = userService.addNewUserAndArtist(data.getUsername(), data.getPassword(), data.getMail(), data.getCity(), artist);
+		boolean addArtist = userService.addNewUserAndArtist(data.getUsername(), data.getPassword(), data.getMail(), data.getCity(), data.getArtistDto());
 
 
         if (addArtist) return new ResponseEntity("success",HttpStatus.OK);
