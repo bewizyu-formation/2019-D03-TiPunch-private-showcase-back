@@ -133,21 +133,18 @@ public class UserService implements UserDetailsService {
 			artist.setDescriptionArtist(artistDto.getDescriptionArtist());
 
 			departementAccepted.setNomDepartements(user.getNameDepartement());
-			departementAccepted.setArtist(artist);
 
 			Set<DepartementAccepted> listDepartementAccepeted = new HashSet<>();
 
 			listDepartementAccepeted.add(departementAccepted);
 			artist.setDepartments(listDepartementAccepeted);
+			departementAcceptedRepository.save(departementAccepted);
 
 			listUSer.add(user);
 			artist.setUserList(listUSer);
 			listArtist.add(artist);
 			user.setListArtist(listArtist);
-
 			 artistRepository.save(artist);
-			 departementAcceptedRepository.save(departementAccepted);
-
 		}
 
 

@@ -13,11 +13,7 @@ public class DepartementAccepted {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private Artist artist;
-
     private String nomDepartements;
-
 
     /**
      * Constructors
@@ -25,9 +21,8 @@ public class DepartementAccepted {
     public DepartementAccepted() {
     }
 
-    public DepartementAccepted(Long id, Artist artist, String nomDepartements) {
+    public DepartementAccepted(Long id, String nomDepartements) {
         this.id = id;
-        this.artist = artist;
         this.nomDepartements = nomDepartements;
     }
 
@@ -36,10 +31,6 @@ public class DepartementAccepted {
      */
     public Long getId() {
         return id;
-    }
-
-    public Artist getArtist() {
-        return artist;
     }
 
     public String getCodeDepartements() {
@@ -51,10 +42,6 @@ public class DepartementAccepted {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setArtist(Artist artist) {
-        this.artist = artist;
     }
 
     public void setNomDepartements(String nomDepartements) {

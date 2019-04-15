@@ -2,6 +2,7 @@ package fr.formation.artist;
 
 
 import fr.formation.controller.AbstractController;
+import fr.formation.modelDto.UpdateArtistDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import fr.formation.security.SecurityConstants;
@@ -38,7 +39,7 @@ public class ArtistController extends AbstractController {
 
         // 2- Update de l'artiste
         Artist updatedArtists = artistService.update(authentificatedUser, id, artist);
-        if (updatedArtists != null){
+        if (updatedArtists == null){
             return new ResponseEntity<>(updatedArtists, HttpStatus.NOT_FOUND);
         }
         // 3- Retourne l'artiste modifié
@@ -47,16 +48,27 @@ public class ArtistController extends AbstractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Set<Artist>> checkupdate(){
+    public ResponseEntity<UpdateArtistDto> checkupdate(@PathVariable Long id){
+        System.out.println("bonne fonction");
+        boolean match=false;
         User authentifiedUser = userService.getUser(getAuthenticatedUser());
         Long idUser = authentifiedUser.getId();
-        Set<Artist> foundArtistLinkToUser = artistService.findArtistByuserList(idUser);
-        if (!foundArtistLinkToUser.isEmpty() ){
-            return new ResponseEntity<>(foundArtistLinkToUser, HttpStatus.FOUND);
-
+       Set<Artist> foundArtistLinkToUser = artistService.findArtistByuserList(idUser);
+        for (Artist artist : foundArtistLinkToUser){
+            Long idArtist = artist.getId();
+            if (id == idArtist) {
+                match = true;
+            }
         }
-        return new ResponseEntity<>(foundArtistLinkToUser, HttpStatus.NOT_FOUND);
+        Artist artist = artistService.getArtistById(id);
 
+        if(artist != null){
+            UpdateArtistDto updateArtistDto = new UpdateArtistDto(artist.getId(), artist.getNameArtist(), artist.getDepartments(), artist.getDescriptionArtist(), artist.getNbVote(), artist.getNoteArtist(), artist.getUrlImage(), artist.getShortDescriptionArtist(), artist.getContactPhone(), artist.getContactMail(), artist.getUrlSiteArtist(), match);
+
+            return  new ResponseEntity<>(updateArtistDto, HttpStatus.FOUND);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

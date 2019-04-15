@@ -206,9 +206,10 @@ public class ArtistService {
                     artist.setUrlImage(artistToUpdate.getUrlImage()); // A Modifier une fois implementation de l'upload image (au minimum le type dans le Model)
 
                     artistRepository.save(artist);
+                    return artist;
                 }
+                break;
             }
-            return artist;
 
         }
         return null;

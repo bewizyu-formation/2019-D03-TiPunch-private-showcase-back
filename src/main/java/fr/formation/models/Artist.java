@@ -1,5 +1,6 @@
 package fr.formation.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.formation.geo.model.DepartementAccepted;
 
 import javax.persistence.*;
@@ -17,9 +18,8 @@ public class Artist {
     private String nameArtist;
 
     @Column(name ="departments")
-    @OneToMany(mappedBy = "artist")
+    @OneToMany()
     private  Set<DepartementAccepted> departments;
-
 
     @Column(name="descriptionArtist")
     private String descriptionArtist;
@@ -32,8 +32,8 @@ public class Artist {
 
     @Column(name="userList")
     @ManyToMany(mappedBy = "listArtist")
+    @JsonIgnore
     private Set<User> userList;
-
 
     @OneToOne
     private Event eventBooked;
