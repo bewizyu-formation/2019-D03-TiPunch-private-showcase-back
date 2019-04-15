@@ -85,9 +85,6 @@
 	<profiles>
 		<profile>
 			<id>dev-h2</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<jdbc.driver>org.h2.Driver</jdbc.driver>
 				<jdbc.url>jdbc:h2:mem:db</jdbc.url>
@@ -107,6 +104,9 @@
 		</profile>
 		<profile>
 			<id>dev-mysql</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 			<properties>
 				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
 				<jdbc.url>jdbc:mysql://localhost:3306/showcase</jdbc.url>

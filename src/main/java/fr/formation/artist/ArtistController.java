@@ -17,7 +17,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/artists")
-@Secured(SecurityConstants.ROLE_ARTIST)
+@Secured(SecurityConstants.ROLE_USER)
 public class ArtistController extends AbstractController {
 
 
@@ -36,7 +36,6 @@ public class ArtistController extends AbstractController {
         // 1- Récupération du user authentifié
         User authentificatedUser = userService.getUser(getAuthenticatedUser());
 
-
         // 2- Update de l'artiste
         Artist updatedArtists = artistService.update(authentificatedUser, id, artist);
         if (updatedArtists != null){
@@ -48,11 +47,11 @@ public class ArtistController extends AbstractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Artist> checkupdate  (){
+    public ResponseEntity<Set<Artist>> checkupdate(){
         User authentifiedUser = userService.getUser(getAuthenticatedUser());
         Long idUser = authentifiedUser.getId();
-        Artist foundArtistLinkToUser = artistService.findArtistByuserList();
-        if (foundArtistLinkToUser != null){
+        Set<Artist> foundArtistLinkToUser = artistService.findArtistByuserList(idUser);
+        if (!foundArtistLinkToUser.isEmpty() ){
             return new ResponseEntity<>(foundArtistLinkToUser, HttpStatus.FOUND);
 
         }
