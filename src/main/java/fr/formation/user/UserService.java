@@ -1,8 +1,13 @@
 package fr.formation.user;
 
+import fr.formation.artist.ArtistRepository;
+import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
 import fr.formation.geo.services.DepartementService;
+import fr.formation.modelDto.ArtistDto;
+import fr.formation.models.Artist;
 import fr.formation.models.User;
+import fr.formation.validator.CustomValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -13,9 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * The type User service.
@@ -24,6 +27,7 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
 	private UserRepository userRepository;
+	private ArtistRepository artistRepository;
 
 	private UserRoleRepository userRoleRepository;
 
@@ -31,6 +35,9 @@ public class UserService implements UserDetailsService {
 
 	private CommuneService communeService;
 	private DepartementService departementService;
+	private CustomValidator passwordValidator;
+
+
 
 	/**
 	 * Instantiates a new User service.
@@ -40,12 +47,13 @@ public class UserService implements UserDetailsService {
 	 */
 	@Autowired
 	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
-					   CommuneService communeService, DepartementService departementService) {
+					   CommuneService communeService, DepartementService departementService, ArtistRepository artistRepository) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.communeService = communeService;
 		this.departementService = departementService;
+		this.artistRepository = artistRepository;
 	}
 
 	/**
@@ -83,7 +91,7 @@ public class UserService implements UserDetailsService {
 	 * @param roles the roles
 	 */
 
-	public boolean addNewUser(String username, String password, String mail, String city ,String... roles) {
+	public boolean addNewUser(String username, String password, String mail, String city, ArtistDto artistDto, String... roles) {
 
 		User user = new User();
 		user.setUsername(username);
@@ -113,7 +121,35 @@ public class UserService implements UserDetailsService {
 		}
 
 		if(!userRepository.existsByUsername(user.getUsername())
-				&& isValidPassword(user.getPassword() )){
+				&& passwordValidator.isValidPassword(user.getPassword() )){
+
+			if(artistDto != null) {
+
+				Artist artist = new Artist();
+				Set<User> listUSer = new HashSet<>();
+				Set<Artist> listArtist = new HashSet<>();
+				DepartementAccepted departementAccepted = new DepartementAccepted();
+
+				artist.setNameArtist(artistDto.getNameArtist());
+				artist.setDescriptionArtist(artistDto.getDescriptionArtist());
+
+				departementAccepted.setNomDepartements(user.getNameDepartement());
+				departementAccepted.setArtist(artist);
+
+				Set<DepartementAccepted> listDepartementAccepeted = new HashSet<>();
+
+				listDepartementAccepeted.add(departementAccepted);
+				artist.setDepartments(listDepartementAccepeted);
+
+				listUSer.add(user);
+				artist.setUserList(listUSer);
+				listArtist.add(artist);
+				user.setListArtist(listArtist);
+
+				artistRepository.save(artist);
+				//departementAcceptedRepository.save(departementAccepted);
+
+			}
 
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user = userRepository.save(user);
@@ -134,19 +170,20 @@ public class UserService implements UserDetailsService {
 
 	}
 
+	public boolean updatePassword(String email, String password) {
+		//user get mail
+
+		//user get password
+
+		//user checked passaword encoder
+
+		//user save new password
+		return true;
+	}
+
 	public User getUserByUsername(String name) {
 		User user = userRepository.findByUsername(name);
 		return user;
-	}
-
-	/**
-	 * checked password with 8 character minimum, 1 MAJ, 1 number
-	 * @param password
-	 * @return boolean
-	 */
-	public boolean isValidPassword(String password){
-
-		return password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$");
 	}
 
 	public boolean userExist(String username){
@@ -155,5 +192,7 @@ public class UserService implements UserDetailsService {
 		}
 		return false;
 	}
+
+
 
 	}

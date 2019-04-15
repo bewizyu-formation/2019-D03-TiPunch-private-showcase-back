@@ -41,14 +41,6 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
      */
     public boolean existsByNameArtist(String nameArtist); //A débatre
 
-
-    /**
-     * Find by artist username
-     * @param username
-     * @return
-     */
-    public boolean existsByUsername(String username);
-
     public Artist findArtistsById(Long id);
 
     public Set<Artist> findArtistBycityArtist(String city);

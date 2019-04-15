@@ -1,6 +1,7 @@
 package fr.formation;
 
 import fr.formation.artist.ArtistService;
+import fr.formation.modelDto.ArtistDto;
 import fr.formation.security.SecurityConstants;
 import fr.formation.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.util.Base64;
+
 
 /**
  * This class configure the dataset at application start
@@ -39,13 +44,15 @@ public class BoostrapData {
 	@EventListener(ContextRefreshedEvent.class)
 	public void onStart() {
 
+		File file = new File("image/default.png");
+		byte[] defaultPicture = new byte[(int) file.length()];
+
 		userService.addNewUser(
 				"admin",
 				"adminAdmin1",
 				"mail@test",
 				"Lyon",
 				SecurityConstants.ROLE_ADMIN
-
 
 		);
 		userService.addNewUser(
@@ -55,33 +62,30 @@ public class BoostrapData {
 				"Lyon",
 				SecurityConstants.ROLE_USER
 		);
-		artistService.addNewArtist(
+		userService.addNewUser(
 				"userArtist",
 				"artistArtist1",
 				"mailArtiste@test",
 				"Marseille",
-				"Les PatateRats",
-				"Ska-Punk",
+				new ArtistDto("Les PatateRats","Ska-Punk"),
 				SecurityConstants.ROLE_ARTIST
 
 		);
-		artistService.addNewArtist(
+		userService.addNewUser(
 				"userArtist2",
 				"artistArtist2",
 				"mailArtiste@test",
 				"Lyon",
-				"Les PatateRats2",
-				"Ska-Punk2",
+				new ArtistDto("Les PatateRats2", "Ska-Punk2"),
 				SecurityConstants.ROLE_ARTIST
 
 		);
-		artistService.addNewArtist(
+		userService.addNewUser(
 				"userArtist3",
 				"artistArtist3",
 				"mailArtiste@test",
 				"Lyon",
-				"Les PatateRats3",
-				"Ska-Punk3",
+				new ArtistDto("Les PatateRats3", "Ska-Punk3"),
 				SecurityConstants.ROLE_ARTIST
 
 		);

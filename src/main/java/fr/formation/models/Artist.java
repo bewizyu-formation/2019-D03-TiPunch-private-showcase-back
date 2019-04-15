@@ -15,17 +15,6 @@ public class Artist {
 
     @Column(name= "nameArtist")
     private String nameArtist;
-    @Column(name= "username")
-    private String username;
-    @Column(name="passwordArtist")
-    private String passwordArtist;
-
-    @Column(name = "mailArtist")
-    private String mailArtist;
-
-    @Column(name ="cityArtist")
-    private String cityArtist;
-
 
     @Column(name ="departments")
     @OneToMany(mappedBy = "artist")
@@ -51,8 +40,6 @@ public class Artist {
     @ManyToMany(mappedBy = "listArtist")
     private Set<User> userList;
 
-
-
     @OneToOne
     private Event eventBooked;
 
@@ -71,6 +58,11 @@ public class Artist {
     @Column(name="urlSiteArtist")
     private String urlSiteArtist;
 
+    @Lob
+    @Column(name="image")
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] image;
+
     /**
      * Constructeurs
      */
@@ -78,12 +70,7 @@ public class Artist {
     public Artist() {
     }
 
-    public Artist(String nameArtist, String username, String passwordArtist, String mailArtist, String cityArtist, Set<DepartementAccepted> departments, String descriptionArtist) {
-        this.nameArtist = nameArtist;
-        this.username = username;
-        this.passwordArtist = passwordArtist;
-        this.mailArtist = mailArtist;
-        this.cityArtist = cityArtist;
+    public Artist( Set<DepartementAccepted> departments, String descriptionArtist) {
         this.departments = departments;
         this.descriptionArtist = descriptionArtist;
     }
@@ -94,18 +81,6 @@ public class Artist {
      */
     public Long getId() {
         return id;
-    }
-
-    public String getNameArtist() {
-        return nameArtist;
-    }
-
-    public String getMailArtist() {
-        return mailArtist;
-    }
-
-    public String getCityArtist() {
-        return cityArtist;
     }
 
     public Set<DepartementAccepted> getDepartments() {
@@ -130,14 +105,6 @@ public class Artist {
 
     public Event getEventBooked() {
         return eventBooked;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPasswordArtist() {
-        return passwordArtist;
     }
 
     public String getUrlImage() {
@@ -167,6 +134,10 @@ public class Artist {
     public String getNameDepartement() {
         return nameDepartement;
     }
+    public byte[] getImage() { return image; }
+
+    public String getNameArtist() { return nameArtist; }
+
 
     /**
      * Setteur Artist
@@ -179,13 +150,6 @@ public class Artist {
         this.nameArtist = nameArtist;
     }
 
-    public void setMailArtist(String mailArtist) {
-        this.mailArtist = mailArtist;
-    }
-
-    public void setCityArtist(String cityArtist) {
-        this.cityArtist = cityArtist;
-    }
 
     public void setDepartments(Set<DepartementAccepted> departments) {
         this.departments = departments;
@@ -209,14 +173,6 @@ public class Artist {
 
     public void setEventBooked(Event eventBooked) {
         this.eventBooked = eventBooked;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPasswordArtist(String passwordArtist) {
-        this.passwordArtist = passwordArtist;
     }
 
     public void setUrlImage(String urlImage) {
@@ -246,5 +202,11 @@ public class Artist {
     public void setNameDepartement(String nameDepartement) {
         this.nameDepartement = nameDepartement;
     }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+
 }
 

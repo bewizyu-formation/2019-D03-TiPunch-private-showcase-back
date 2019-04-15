@@ -18,6 +18,8 @@ public class DepartementAccepted {
 
     private String codeDepartements;
 
+    private String nomDepartements;
+
     /**
      * Constructors
      */
@@ -45,6 +47,10 @@ public class DepartementAccepted {
         return codeDepartements;
     }
 
+    public String getNomDepartements() {
+        return nomDepartements;
+    }
+
     /**
      * Setter
      */
@@ -58,5 +64,9 @@ public class DepartementAccepted {
 
     public void setCodeDepartements(String codeDepartements) {
         this.codeDepartements = codeDepartements;
+    }
+
+    public void setNomDepartements(String nomDepartements) {
+        this.nomDepartements = nomDepartements;
     }
 }

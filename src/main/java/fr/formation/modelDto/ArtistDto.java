@@ -7,11 +7,14 @@ public class ArtistDto {
 
     private Long id;
     private String nameArtist;
-    private String username;
-    private String passwordArtist;
-    private String mailArtist;
-    private String cityArtist;
     private String descriptionArtist;
+    private String urlImage;
+    private byte[] image;
+    private Integer noteArtist;
+    private String shortDescriptionArtist;
+    private String contactPhone;
+    private String contactMail;
+    private String urlSiteArtist;
 
     /**
      * Constructeurs
@@ -20,11 +23,8 @@ public class ArtistDto {
     public ArtistDto() {
     }
 
-    public ArtistDto(String nameArtist, String mailArtist,
-                  String cityArtist, String descriptionArtist) {
+    public ArtistDto(String nameArtist, String descriptionArtist) {
         this.nameArtist = nameArtist;
-        this.mailArtist = mailArtist;
-        this.cityArtist = cityArtist;
         this.descriptionArtist = descriptionArtist;
 
     }
@@ -42,25 +42,23 @@ public class ArtistDto {
         return nameArtist;
     }
 
-    public String getMailArtist() {
-        return mailArtist;
-    }
-
-    public String getCityArtist() {
-        return cityArtist;
-    }
-
     public String getDescriptionArtist() {
         return descriptionArtist;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUrlImage() {
+        return urlImage;
     }
 
-    public String getPasswordArtist() {
-        return passwordArtist;
-    }
+    public Integer getNoteArtist() { return noteArtist; }
+
+    public String getShortDescriptionArtist() { return shortDescriptionArtist; }
+
+    public String getContactPhone() { return contactPhone; }
+
+    public String getContactMail() { return contactMail; }
+
+    public String getUrlSiteArtist() { return urlSiteArtist; }
 
     /**
      * Setteur Artist
@@ -73,25 +71,32 @@ public class ArtistDto {
         this.nameArtist = nameArtist;
     }
 
-    public void setMailArtist(String mail) {
-        this.mailArtist = mail;
-    }
-
-    public void setCityArtist(String city) {
-        this.cityArtist = city;
-    }
-
     public void setDescriptionArtist(String description) {
         this.descriptionArtist = description;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
-    public void setPasswordArtist(String password) {
-        this.passwordArtist = password;
+    public byte[] getImage() {
+        return image;
     }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public void setNoteArtist(Integer noteArtist) { this.noteArtist = noteArtist; }
+
+    public void setShortDescriptionArtist(String shortDescriptionArtist) {
+        this.shortDescriptionArtist = shortDescriptionArtist; }
+
+    public void setContactPhone(String contactPhone) { this.contactPhone = contactPhone; }
+
+    public void setContactMail(String contactMail) { this.contactMail = contactMail; }
+
+    public void setUrlSiteArtist(String urlSiteArtist) { this.urlSiteArtist = urlSiteArtist; }
 }
 
 

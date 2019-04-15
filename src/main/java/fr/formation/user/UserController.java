@@ -64,19 +64,12 @@ public class UserController extends AbstractController {
 	 * @return string success/failed
 	 */
 	@PutMapping("/artist/")
-	public ResponseEntity<String> signup(@RequestBody ArtistDto artist){
+	public ResponseEntity<String> signup(@RequestBody ArtistDto artist, @RequestBody UserDto data){
 
-		boolean addArtist = artistService.addNewArtist(artist.getUsername(), artist.getPasswordArtist(),
-				artist.getMailArtist(), artist.getCityArtist(), artist.getNameArtist(),artist.getDescriptionArtist());
+		boolean addArtist = userService.addNewUser(data.getUsername(), data.getPassword(),
+				data.getMail(), data.getCity(), artist);
 
-		boolean addUser = false;
-
-		if(addArtist){
-			addUser = userService.addNewUser(artist.getUsername(), artist.getPasswordArtist(),
-					artist.getMailArtist(), artist.getCityArtist() );
-		}
-
-        if (addArtist && addUser) return new ResponseEntity("success",HttpStatus.OK);
+        if (addArtist) return new ResponseEntity("success",HttpStatus.OK);
 
 		return new ResponseEntity("failed",HttpStatus.BAD_REQUEST);
 
@@ -111,32 +104,17 @@ public class UserController extends AbstractController {
 		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
-
-	/**
-	 * All artists
-	 * @return list artists
-	 */
-	@GetMapping("/artist/list")
-	@Secured({SecurityConstants.ROLE_USER})
-	public ResponseEntity<List<Artist>> allArtist(){
-
-		List<Artist> artists = this.artistService.getArtists(getAuthenticatedUser());
-
-		if (artists.isEmpty()) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
-
-		return new ResponseEntity<>(artists,HttpStatus.OK);
+	@PutMapping("/updateMyPassword/")
+	public Response updatePassword(@RequestBody String oldPassword , @RequestBody String newPassword, @RequestBody String mail) {
+		User user = getAuthenticatedUser();
+		if (userService.getUserByUsername(user) != null){
+			userService.updatePassword(user.getEmail(), newPassword);
+			return  Response.status(200).entity(new Message("Your password has been reset successfully", null)).build();
+		}
+		return  Response.status(200).entity(new Message("*Request not authorized", null)).build();
 	}
 
 
-
-	@GetMapping("/home")
-	@Secured(SecurityConstants.ROLE_USER)
-	public Set<Artist> getArtistByCityUser(){
-	    String cityUser = getAuthenticatedUser().getCity();
-	   Set<Artist> listArtistbyUserCity = artistService.findArtistByCity(cityUser);
-	   return listArtistbyUserCity;
-
-	}
 
 	}
 
