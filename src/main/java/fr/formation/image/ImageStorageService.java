@@ -30,9 +30,6 @@ import javax.annotation.PostConstruct;
 @Service
 public class ImageStorageService {
 
-    @Autowired
-    private ArtistRepository artistRepository;
-
     /**
      * Save image
      * @param file
@@ -51,6 +48,10 @@ public class ImageStorageService {
     }
 
 
+    /**
+     * default image
+     * @return byte
+     */
     public byte[] getDefaultPicture(){
 
         File file = new File("image/default.png");

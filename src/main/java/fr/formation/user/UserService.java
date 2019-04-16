@@ -6,6 +6,7 @@ import fr.formation.geo.services.CommuneService;
 import fr.formation.geo.services.DepartementService;
 import fr.formation.image.ImageStorageService;
 import fr.formation.modelDto.ArtistDto;
+import fr.formation.modelDto.UserDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import fr.formation.validator.CustomValidator;
@@ -87,25 +88,22 @@ public class UserService implements UserDetailsService {
 
 	/**
 	 * * Add a new user with the user repository
-	 * @param username the username
-	 * @param password the password
-	 * @param mail the mail
-	 * @param city the city
+	 * @param userDto the username
 	 * @param roles the roles
 	 */
 
-	public boolean addNewUser(String username, String password, String mail, String city, ArtistDto artistDto, String... roles) {
+	public boolean addNewUser(UserDto userDto, String... roles) {
 
 		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setMail(mail);
-		user.setCity(city);
+		user.setUsername(userDto.getUsername());
+		user.setPassword(userDto.getPassword());
+		user.setMail(userDto.getMail());
+		user.setCity(userDto.getCity());
 
-		List<LinkedHashMap> communes = communeService.getCommunes(city) ;
+		List<LinkedHashMap> communes = communeService.getCommunes(userDto.getCity()) ;
 		List<LinkedHashMap> departements ;
 		for ( LinkedHashMap <String ,String> c : communes){
-			boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
+			boolean cityApi =  c.get("nom").equalsIgnoreCase(userDto.getCity());
 			if (cityApi){
 				String codeDepartement =  c.get("codeDepartement");
 				if (!codeDepartement.isEmpty()){
@@ -126,15 +124,15 @@ public class UserService implements UserDetailsService {
 		if(!userRepository.existsByUsername(user.getUsername())
 				&& passwordValidator.isValidPassword(user.getPassword() )){
 
-			if(artistDto != null) {
+			if(userDto.getArtistDto() != null) {
 
 				Artist artist = new Artist();
 				Set<User> listUSer = new HashSet<>();
 				Set<Artist> listArtist = new HashSet<>();
 				DepartementAccepted departementAccepted = new DepartementAccepted();
 
-				artist.setNameArtist(artistDto.getNameArtist());
-				artist.setDescriptionArtist(artistDto.getDescriptionArtist());
+				artist.setNameArtist(userDto.getArtistDto().getNameArtist());
+				artist.setDescriptionArtist(userDto.getArtistDto().getDescriptionArtist());
 
 				departementAccepted.setNomDepartements(user.getNameDepartement());
 				departementAccepted.setArtist(artist);
@@ -144,10 +142,10 @@ public class UserService implements UserDetailsService {
 				listDepartementAccepeted.add(departementAccepted);
 				artist.setDepartments(listDepartementAccepeted);
 
-				if(artistDto.getImage() == null){
+				if(userDto.getArtistDto().getImage() == null){
 				    artist.setImage(storageService.getDefaultPicture());
                 }else{
-                    artist.setImage(artistDto.getImage());
+                    artist.setImage(userDto.getArtistDto().getImage());
                 }
 
 

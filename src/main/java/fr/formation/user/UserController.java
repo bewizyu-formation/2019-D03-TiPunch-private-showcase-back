@@ -50,7 +50,7 @@ public class UserController extends AbstractController {
 	@PutMapping(value = "/")
 	public ResponseEntity<String> signup(@RequestBody UserDto data) {
 
-		boolean addUser = userService.addNewUser(data.getUsername(), data.getPassword(), data.getMail(), data.getCity(), null, SecurityConstants.ROLE_USER);
+		boolean addUser = userService.addNewUser(data,  SecurityConstants.ROLE_USER);
 
 		if(addUser) return new ResponseEntity("success",HttpStatus.OK);
 
@@ -60,14 +60,13 @@ public class UserController extends AbstractController {
 
 	/**
 	 * Signup artist
-	 * @param artist
+	 * @param data the user dto
 	 * @return string success/failed
 	 */
 	@PutMapping("/artist/")
 	public ResponseEntity<String> signupArtist(@RequestBody UserDto data){
 
-		boolean addArtist = userService.addNewUser(data.getUsername(), data.getPassword(),
-				data.getMail(), data.getCity(), data.getArtistDto(),SecurityConstants.ROLE_USER);
+		boolean addArtist = userService.addNewUser(data,SecurityConstants.ROLE_USER);
 
         if (addArtist) return new ResponseEntity("success",HttpStatus.OK);
 

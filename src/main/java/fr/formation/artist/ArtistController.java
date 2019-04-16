@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import org.springframework.core.io.Resource;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,27 +37,32 @@ public class ArtistController extends AbstractController {
     private ImageStorageService storageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity handleFileUpload(@RequestBody MultipartFile file) throws IOException {
+        Long id = getAuthenticatedUser().getId();
+        Artist artist = artistRepository.findArtistById(id);
         try {
-            storageService.store(file);
 
-            return new ResponseEntity<>("sucess",HttpStatus.OK);
+            byte[] image = storageService.store(file);
+            artist.setImage(image);
+            return new ResponseEntity<>(artist,HttpStatus.OK);
 
         } catch (Exception e) {
-
-            return new ResponseEntity<>("failed",HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(artist,HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/{id}/picture")
-    public ResponseEntity showPicture(@PathVariable Long id){
+    public ResponseEntity getPicture(@PathVariable Long id){
         Long userId = getAuthenticatedUser().getId();
         Artist artist = artistRepository.findArtistById(userId);
+        String test = DatatypeConverter.printBase64Binary(artist.getImage());
 
         return ResponseEntity.ok()
                 .contentType(MediaType.ALL)
-                .body(artist);
+                .body(test);
     }
+
+
 
 }
 
