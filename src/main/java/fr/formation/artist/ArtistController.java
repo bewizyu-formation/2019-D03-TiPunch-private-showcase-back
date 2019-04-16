@@ -51,7 +51,7 @@ public class ArtistController extends AbstractController {
     public ResponseEntity<Artist> checkupdate(@PathVariable Long id){
       Artist artist =artistService.getArtistById(id);
       if (artist != null){
-          return new ResponseEntity<>(artist,  HttpStatus.FOUND);
+          return new ResponseEntity<>(artist,  HttpStatus.OK);
       }
 
       return  new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

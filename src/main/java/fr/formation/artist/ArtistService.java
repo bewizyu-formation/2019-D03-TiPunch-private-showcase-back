@@ -27,9 +27,6 @@ public class ArtistService {
     private DepartementAcceptedRepository departementAcceptedRepository;
     private CommuneService communeService;
     private DepartementService departementService;
-    private Artist artist;
-    private Commune commune;
-    private DepartementAccepted departementAccepted;
     private PasswordEncoder passwordEncoder;
 
     /**
@@ -52,62 +49,6 @@ public class ArtistService {
 
 
     }
-
-   /* public boolean addNewArtist(String username, String password, String mail,
-                             String city, String artistName,
-                             String description, String... roles) {
-        Artist artist = new Artist();
-        DepartementAccepted departementAccepted = new DepartementAccepted();
-        artist.setUsername(username);
-        artist.setPasswordArtist(password);
-        artist.setMailArtist(mail);
-        artist.setCityArtist(city);
-        List<LinkedHashMap> communes = communeService.getCommunes(city) ;
-        List<LinkedHashMap> departements ;
-        for ( LinkedHashMap <String ,String> c : communes){
-          boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
-          if (cityApi){
-             String codeDepartement =  c.get("codeDepartement");
-             if (!codeDepartement.isEmpty()){
-                 artist.setCodeDepartement(codeDepartement);
-                 departements = departementService.getDepartementByCode(codeDepartement);
-                 for (LinkedHashMap<String, String> d : departements){
-                     String nomDepartement = d.get("nom");
-                     artist.setNameDepartement(nomDepartement);
-                     departementAccepted.setNomDepartements(artist.getNameDepartement());
-                     departementAccepted.setArtist(artist);
-                     Set<DepartementAccepted> listDepartementAccepeted = new HashSet<>();
-                     listDepartementAccepeted.add(departementAccepted);
-                     artist.setDepartments(listDepartementAccepeted);
-                 }
-             }
-          }
-
-        }
-
-        artist.setNameArtist(artistName);
-        artist.setDescriptionArtist(description);
-
-        if(!artistRepository.existsByNameArtist(artist.getNameArtist())){
-            artist.setPasswordArtist(passwordEncoder.encode(artist.getPasswordArtist()));
-            artist = artistRepository.save(artist);
-            departementAcceptedRepository.save(departementAccepted);
-
-            for (String role : roles){
-                UserRole artistRole = new UserRole();
-                artistRole.setRole(role);
-                artistRole.setUserId(artist.getId());
-
-                userRoleRepository.save(artistRole);
-
-            }
-            return true;
-
-        }
-
-        return false;
-    }
-*/
 
     public List<Artist> getArtists(User user){
         List<Artist> artists = artistRepository.findAll();
@@ -164,28 +105,7 @@ public class ArtistService {
         return findArtist;
     }
 
-/*    public Set<Artist>findArtistByCity(String city){
-        List<Commune> communeList  =  communeService.getCommunesObject(city); // recupére la liste de commune du user
-        Set<DepartementAccepted> codeDepartement = artist.getDepartments(); // recupère la list des departements lié aux artistes
-        List<String> listDepartementApi= new ArrayList<>();
 
-       for ( Commune c: communeList){
-
-           listDepartementApi = communeList.stream().map(commune -> commune.getCodeDepartement()).collect(Collectors.toList());
-       }
-       Set<Artist> listArtists = new HashSet<>();
-       for (DepartementAccepted codeDepartementArtist: codeDepartement){
-           for (String codeDepartementApi : listDepartementApi){
-               if (codeDepartementArtist.toString().equals(codeDepartementApi)){
-                   listArtists.add(artistRepository.findArtistByDepartments(codeDepartementArtist));
-
-               }
-
-           }
-       }
-       return listArtists;
-
-    }*/
     public Artist update(User authenticatedUser, Long idArtist, Artist artistToUpdate ){
 
         // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
@@ -203,9 +123,14 @@ public class ArtistService {
                         artist.setContactMail(updateMail);
                     }
                    Set<DepartementAccepted> updateDepartement = artistToUpdate.getDepartments();
-                    if( !updateDepartement.isEmpty()){
+                    if (!updateDepartement.isEmpty())
+                        for (DepartementAccepted d : updateDepartement){
+                            if(d != null){
+                                departementAcceptedRepository.save(d);
+                            }
+                        }
                         artist.setDepartments(updateDepartement);
-                    }
+
                     String updatePhone = artistToUpdate.getContactPhone();
                     if(updatePhone != null){
                         artist.setContactPhone(updatePhone);
@@ -226,6 +151,7 @@ public class ArtistService {
                     if (updateImage != null){
                         artist.setUrlImage(updateImage);
                     }
+
                     artistRepository.save(artist);
                     return artist;
                 }
