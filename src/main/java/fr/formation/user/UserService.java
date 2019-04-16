@@ -10,7 +10,6 @@ import fr.formation.modelDto.ArtistDto;
 import fr.formation.modelDto.UserDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
-import fr.formation.validator.CustomValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;

@@ -4,22 +4,16 @@ package fr.formation.artist;
 import fr.formation.controller.AbstractController;
 import fr.formation.user.UserService;
 import fr.formation.image.ImageStorageService;
-import fr.formation.modelDto.ArtistDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import fr.formation.security.SecurityConstants;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import java.io.File;
 import java.io.IOException;
 @RestController
 @RequestMapping("/artists")
@@ -81,11 +75,6 @@ public class ArtistController extends AbstractController {
 
       return  new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
-
-
-
-
-
 
 }
 

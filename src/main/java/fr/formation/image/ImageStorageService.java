@@ -77,6 +77,11 @@ public class ImageStorageService {
          return defaultPicture;
     }
 
+    /**
+     * load image
+     * @param artist
+     * @return byte
+     */
     public byte[] loadImage(Artist artist){
         byte[] picture = artist.getImage();
         return picture;

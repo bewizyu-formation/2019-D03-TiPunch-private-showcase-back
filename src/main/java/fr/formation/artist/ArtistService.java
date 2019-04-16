@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -37,7 +38,9 @@ public class ArtistService {
     }
 
     public List<Artist> getArtists(User user){
+
         List<Artist> artists = artistRepository.findAll();
+       
         return  artists;
     }
 
