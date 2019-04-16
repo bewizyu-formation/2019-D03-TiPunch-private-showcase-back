@@ -1,6 +1,7 @@
 package fr.formation.image;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -13,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.formation.artist.ArtistRepository;
+import fr.formation.modelDto.ArtistDto;
 import fr.formation.models.Artist;
+import fr.formation.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -27,8 +30,6 @@ import javax.annotation.PostConstruct;
 @Service
 public class ImageStorageService {
 
-    private final Path rootLocation = Paths.get(ConstantPath.UPLOAD_LOCATION);
-    List<String> files = new ArrayList<String>();
     @Autowired
     private ArtistRepository artistRepository;
 
@@ -36,60 +37,34 @@ public class ImageStorageService {
      * Save image
      * @param file
      */
-    public void store(MultipartFile file) {
-
+    public byte[] store(MultipartFile file) {
+        byte[] picture;
         try {
-
             if (file.isEmpty()) {
                 throw new RuntimeException("Failed to store empty file ");
             }
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
-        } catch (Exception e) {
-            throw new RuntimeException("FAIL!" );
-        }
+            picture = file.getBytes();
+
+        } catch (Exception e) { throw new RuntimeException("FAIL!" ); }
+
+        return picture;
     }
 
-    /**
-     * Load image
-     * @param filename
-     * @return
-     */
-    public Resource loadImage(String filename) {
-        try {
-            Path file = rootLocation.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new RuntimeException("Could not read file!" + filename );
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("FAIL!");
-        }
-    }
 
-    public void getDefaultPicture(Artist artist){
+    public byte[] getDefaultPicture(){
+
         File file = new File("image/default.png");
         byte[] defaultPicture = new byte[(int) file.length()];
-        artistRepository.findArtistById(artist.getId()).setImage(defaultPicture);
 
-    }
-
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
-    }
-
-    @PostConstruct
-    public void init() {
         try {
-            deleteAll();
-            Files.createDirectory(rootLocation);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not initialize storage!");
-        }
+
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(defaultPicture);
+            fileInputStream.close();
+
+        } catch (Exception e) { e.printStackTrace(); }
+
+         return defaultPicture;
     }
-
-
-
 
 }

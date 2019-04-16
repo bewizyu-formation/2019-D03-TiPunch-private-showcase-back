@@ -19,7 +19,7 @@ public class UserDto {
         private String mail;
         private String city;
 
-
+        private ArtistDto artistDto;
 
 
         /**
@@ -57,7 +57,11 @@ public class UserDto {
             return city;
         }
 
-        /**
+    public ArtistDto getArtistDto() {
+        return artistDto;
+    }
+
+    /**
          * Setter
          *
          *
@@ -78,6 +82,9 @@ public class UserDto {
             this.city = city;
         }
 
+    public void setArtistDto(ArtistDto artistDto) {
+        this.artistDto = artistDto;
     }
+}
 
 

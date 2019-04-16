@@ -8,13 +8,8 @@ public class ArtistDto {
     private Long id;
     private String nameArtist;
     private String descriptionArtist;
-    private String urlImage;
     private byte[] image;
-    private Integer noteArtist;
-    private String shortDescriptionArtist;
-    private String contactPhone;
-    private String contactMail;
-    private String urlSiteArtist;
+
 
     /**
      * Constructeurs
@@ -28,7 +23,6 @@ public class ArtistDto {
         this.descriptionArtist = descriptionArtist;
 
     }
-
 
 
     /**
@@ -46,19 +40,9 @@ public class ArtistDto {
         return descriptionArtist;
     }
 
-    public String getUrlImage() {
-        return urlImage;
+    public byte[] getImage() {
+        return image;
     }
-
-    public Integer getNoteArtist() { return noteArtist; }
-
-    public String getShortDescriptionArtist() { return shortDescriptionArtist; }
-
-    public String getContactPhone() { return contactPhone; }
-
-    public String getContactMail() { return contactMail; }
-
-    public String getUrlSiteArtist() { return urlSiteArtist; }
 
     /**
      * Setteur Artist
@@ -75,28 +59,10 @@ public class ArtistDto {
         this.descriptionArtist = description;
     }
 
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
     public void setImage(byte[] image) {
         this.image = image;
     }
 
-    public void setNoteArtist(Integer noteArtist) { this.noteArtist = noteArtist; }
-
-    public void setShortDescriptionArtist(String shortDescriptionArtist) {
-        this.shortDescriptionArtist = shortDescriptionArtist; }
-
-    public void setContactPhone(String contactPhone) { this.contactPhone = contactPhone; }
-
-    public void setContactMail(String contactMail) { this.contactMail = contactMail; }
-
-    public void setUrlSiteArtist(String urlSiteArtist) { this.urlSiteArtist = urlSiteArtist; }
 }
 
 

@@ -43,7 +43,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     public Artist findArtistsById(Long id);
 
-    public Set<Artist> findArtistBycityArtist(String city);
+    //public Set<Artist> findArtistBycityArtist(String city);
 
     public  Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist);
 

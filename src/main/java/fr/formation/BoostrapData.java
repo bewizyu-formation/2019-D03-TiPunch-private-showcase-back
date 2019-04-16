@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Base64;
 
 
@@ -44,14 +45,12 @@ public class BoostrapData {
 	@EventListener(ContextRefreshedEvent.class)
 	public void onStart() {
 
-		File file = new File("image/default.png");
-		byte[] defaultPicture = new byte[(int) file.length()];
-
 		userService.addNewUser(
 				"admin",
 				"adminAdmin1",
 				"mail@test",
 				"Lyon",
+				null,
 				SecurityConstants.ROLE_ADMIN
 
 		);
@@ -60,6 +59,7 @@ public class BoostrapData {
 				"userUser2",
 				"mailuser@test",
 				"Lyon",
+				null,
 				SecurityConstants.ROLE_USER
 		);
 		userService.addNewUser(

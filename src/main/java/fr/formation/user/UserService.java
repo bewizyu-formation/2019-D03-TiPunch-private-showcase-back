@@ -4,6 +4,7 @@ import fr.formation.artist.ArtistRepository;
 import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
 import fr.formation.geo.services.DepartementService;
+import fr.formation.image.ImageStorageService;
 import fr.formation.modelDto.ArtistDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
@@ -35,7 +36,8 @@ public class UserService implements UserDetailsService {
 
 	private CommuneService communeService;
 	private DepartementService departementService;
-	private CustomValidator passwordValidator;
+	private CustomValidator passwordValidator = new CustomValidator();
+	private ImageStorageService storageService;
 
 
 
@@ -47,13 +49,14 @@ public class UserService implements UserDetailsService {
 	 */
 	@Autowired
 	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
-					   CommuneService communeService, DepartementService departementService, ArtistRepository artistRepository) {
+					   CommuneService communeService, DepartementService departementService, ArtistRepository artistRepository, ImageStorageService storageService) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.communeService = communeService;
 		this.departementService = departementService;
 		this.artistRepository = artistRepository;
+		this.storageService = storageService;
 	}
 
 	/**
@@ -141,6 +144,13 @@ public class UserService implements UserDetailsService {
 				listDepartementAccepeted.add(departementAccepted);
 				artist.setDepartments(listDepartementAccepeted);
 
+				if(artistDto.getImage() == null){
+				    artist.setImage(storageService.getDefaultPicture());
+                }else{
+                    artist.setImage(artistDto.getImage());
+                }
+
+
 				listUSer.add(user);
 				artist.setUserList(listUSer);
 				listArtist.add(artist);
@@ -168,17 +178,6 @@ public class UserService implements UserDetailsService {
 
 		return false;
 
-	}
-
-	public boolean updatePassword(String email, String password) {
-		//user get mail
-
-		//user get password
-
-		//user checked passaword encoder
-
-		//user save new password
-		return true;
 	}
 
 	public User getUserByUsername(String name) {

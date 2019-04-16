@@ -50,7 +50,7 @@ public class UserController extends AbstractController {
 	@PutMapping(value = "/")
 	public ResponseEntity<String> signup(@RequestBody UserDto data) {
 
-		boolean addUser = userService.addNewUser(data.getUsername(), data.getPassword(), data.getMail(), data.getCity());
+		boolean addUser = userService.addNewUser(data.getUsername(), data.getPassword(), data.getMail(), data.getCity(), null, SecurityConstants.ROLE_USER);
 
 		if(addUser) return new ResponseEntity("success",HttpStatus.OK);
 
@@ -64,10 +64,10 @@ public class UserController extends AbstractController {
 	 * @return string success/failed
 	 */
 	@PutMapping("/artist/")
-	public ResponseEntity<String> signup(@RequestBody ArtistDto artist, @RequestBody UserDto data){
+	public ResponseEntity<String> signupArtist(@RequestBody UserDto data){
 
 		boolean addArtist = userService.addNewUser(data.getUsername(), data.getPassword(),
-				data.getMail(), data.getCity(), artist);
+				data.getMail(), data.getCity(), data.getArtistDto(),SecurityConstants.ROLE_USER);
 
         if (addArtist) return new ResponseEntity("success",HttpStatus.OK);
 
@@ -104,16 +104,20 @@ public class UserController extends AbstractController {
 		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
-	@PutMapping("/updateMyPassword/")
-	public Response updatePassword(@RequestBody String oldPassword , @RequestBody String newPassword, @RequestBody String mail) {
-		User user = getAuthenticatedUser();
-		if (userService.getUserByUsername(user) != null){
-			userService.updatePassword(user.getEmail(), newPassword);
-			return  Response.status(200).entity(new Message("Your password has been reset successfully", null)).build();
-		}
-		return  Response.status(200).entity(new Message("*Request not authorized", null)).build();
-	}
+    /**
+     * All artists
+     * @return list artists
+     */
+    @GetMapping("/artist/list")
+    @Secured(SecurityConstants.ROLE_USER)
+    public ResponseEntity<List<Artist>> allArtist(){
 
+        List<Artist> artists = this.artistService.getArtists(getAuthenticatedUser());
+
+        if (artists.isEmpty()) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(artists,HttpStatus.OK);
+    }
 
 
 	}
