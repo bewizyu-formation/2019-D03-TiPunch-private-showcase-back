@@ -210,9 +210,13 @@ public class ArtistService {
                     if(updatePhone != null){
                         artist.setContactPhone(updatePhone);
                     }
-                    String updateDescription = artistToUpdate.getShortDescriptionArtist();
+                    String updateDescription = artistToUpdate.getDescriptionArtist();
                     if (updateDescription != null){
-                        artist.setShortDescriptionArtist(updateDescription);
+                        artist.setDescriptionArtist(updateDescription);
+                    }
+                    String updateShortDescription = artistToUpdate.getShortDescriptionArtist();
+                    if (updateShortDescription != null){
+                        artist.setShortDescriptionArtist(updateShortDescription);
                     }
                     String updateUrl = artistToUpdate.getUrlSiteArtist();
                     if (updateUrl != null){
