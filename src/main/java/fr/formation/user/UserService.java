@@ -1,7 +1,13 @@
 package fr.formation.user;
 
+import fr.formation.artist.ArtistRepository;
+import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
+import fr.formation.geo.services.DepartementAcceptedRepository;
 import fr.formation.geo.services.DepartementService;
+import fr.formation.modelDto.ArtistDto;
+import fr.formation.modelDto.UserDto;
+import fr.formation.models.Artist;
 import fr.formation.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,9 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * The type User service.
@@ -24,13 +28,15 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
 	private UserRepository userRepository;
-
+	private ArtistRepository artistRepository;
+	private DepartementAcceptedRepository departementAcceptedRepository;
 	private UserRoleRepository userRoleRepository;
 
 	private PasswordEncoder passwordEncoder;
 
 	private CommuneService communeService;
 	private DepartementService departementService;
+
 
 	/**
 	 * Instantiates a new User service.
@@ -40,12 +46,16 @@ public class UserService implements UserDetailsService {
 	 */
 	@Autowired
 	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
-					   CommuneService communeService, DepartementService departementService) {
+					   CommuneService communeService,
+					   DepartementService departementService, ArtistRepository artistRepository,
+					   DepartementAcceptedRepository departementAcceptedRepository) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.communeService = communeService;
 		this.departementService = departementService;
+		this.artistRepository = artistRepository;
+		this.departementAcceptedRepository = departementAcceptedRepository;
 	}
 
 	/**
@@ -76,23 +86,21 @@ public class UserService implements UserDetailsService {
 
 	/**
 	 * * Add a new user with the user repository
-	 * @param username the username
-	 * @param password the password
-	 * @param mail the mail
-	 * @param city the city
+	 *
 	 * @param roles the roles
 	 */
 
-	public boolean addNewUser(String username, String password, String mail, String city ,String... roles) {
-
+	public boolean addNewUserAndArtist(UserDto userDto, String... roles) {
 		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setMail(mail);
-		user.setCity(city);
+		user.setUsername(userDto.getUsername());
+		user.setPassword(userDto.getPassword());
+		user.setMail(userDto.getMail());
+		user.setCity(userDto.getCity());
+		String city =user.getCity();
 
 		List<LinkedHashMap> communes = communeService.getCommunes(city) ;
 		List<LinkedHashMap> departements ;
+
 		for ( LinkedHashMap <String ,String> c : communes){
 			boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
 			if (cityApi){
@@ -108,15 +116,42 @@ public class UserService implements UserDetailsService {
 				}
 			}
 
-
-
 		}
-
 		if(!userRepository.existsByUsername(user.getUsername())
 				&& isValidPassword(user.getPassword() )){
+			ArtistDto artistDto = userDto.getArtist();
+
+		if(artistDto != null) {
+
+			Artist artist = new Artist();
+			Set<User> listUser = new HashSet<>();
+			Set<Artist> listArtist = new HashSet<>();
+			DepartementAccepted departementAccepted = new DepartementAccepted();
+
+
+			artist.setNameArtist(artistDto.getNameArtist());
+			artist.setDescriptionArtist(artistDto.getDescriptionArtist());
+
+			departementAccepted.setNomDepartements(user.getNameDepartement());
+
+			Set<DepartementAccepted> listDepartementAccepeted = new HashSet<>();
+
+			listDepartementAccepeted.add(departementAccepted);
+			artist.setDepartments(listDepartementAccepeted);
+			departementAcceptedRepository.save(departementAccepted);
+
+			listUser.add(user);
+			artist.setUserList(listUser);
+			listArtist.add(artist);
+			user.setListArtist(listArtist);
+			 artistRepository.save(artist);
+		}
+
+
 
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user = userRepository.save(user);
+
 
 			for (String role : roles) {
 
@@ -138,6 +173,11 @@ public class UserService implements UserDetailsService {
 		User user = userRepository.findByUsername(name);
 		return user;
 	}
+	public User getUser(User user){
+		user = userRepository.findByUsername(user.getUsername());
+		return user;
+
+	}
 
 	/**
 	 * checked password with 8 character minimum, 1 MAJ, 1 number
@@ -155,5 +195,6 @@ public class UserService implements UserDetailsService {
 		}
 		return false;
 	}
+
 
 	}

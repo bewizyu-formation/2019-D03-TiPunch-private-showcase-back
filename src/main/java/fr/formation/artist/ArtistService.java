@@ -1,19 +1,16 @@
 package fr.formation.artist;
 
-import fr.formation.geo.model.Commune;
+
 import fr.formation.geo.model.DepartementAccepted;
-import fr.formation.geo.services.CommuneService;
-import fr.formation.geo.services.DepartementService;
+import fr.formation.geo.services.DepartementAcceptedRepository;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
-import fr.formation.user.UserRole;
-import fr.formation.user.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 /**
  * The type Artist service
@@ -22,15 +19,8 @@ import java.util.stream.Collectors;
 public class ArtistService {
 
     private ArtistRepository artistRepository;
-    private UserRoleRepository userRoleRepository;
-    private CommuneService communeService;
-    private DepartementService departementService;
-    private Artist artist;
-    private Commune commune;
-    private DepartementAccepted departementAccepted;
-    private PasswordEncoder passwordEncoder;
 
-
+    private DepartementAcceptedRepository departementAcceptedRepository;
 
     /**
      * Instanciates a new Artist service.
@@ -39,68 +29,11 @@ public class ArtistService {
      *
      */
     @Autowired
-    public ArtistService(ArtistRepository artistRepository, UserRoleRepository userRoleRepository,
-                         PasswordEncoder passwordEncoder, CommuneService communeService, DepartementService departementService) {
+    public ArtistService(ArtistRepository artistRepository, DepartementAcceptedRepository departementAcceptedRepository) {
         this.artistRepository = artistRepository;
-        this.userRoleRepository = userRoleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.communeService = communeService;
-        this.departementService =departementService;
-
+        this.departementAcceptedRepository = departementAcceptedRepository;
 
     }
-
-    public boolean addNewArtist(String username, String password, String mail,
-                             String city, String artistName,
-                             String description, String... roles) {
-        Artist artist = new Artist();
-        artist.setUsername(username);
-        artist.setPasswordArtist(password);
-        artist.setMailArtist(mail);
-        artist.setCityArtist(city);
-        List<LinkedHashMap> communes = communeService.getCommunes(city) ;
-        List<LinkedHashMap> departements ;
-        for ( LinkedHashMap <String ,String> c : communes){
-          boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
-          if (cityApi){
-             String codeDepartement =  c.get("codeDepartement");
-             if (!codeDepartement.isEmpty()){
-                 artist.setCodeDepartement(codeDepartement);
-                 departements = departementService.getDepartementByCode(codeDepartement);
-                 for (LinkedHashMap<String, String> d : departements){
-                     String nomDepartement = d.get("nom");
-                     artist.setNameDepartement(nomDepartement);
-
-                 }
-             }
-          }
-
-
-
-        }
-
-        artist.setNameArtist(artistName);
-        artist.setDescriptionArtist(description);
-
-        if(!artistRepository.existsByNameArtist(artist.getNameArtist())){
-            artist.setPasswordArtist(passwordEncoder.encode(artist.getPasswordArtist()));
-            artist = artistRepository.save(artist);
-
-            for (String role : roles){
-                UserRole artistRole = new UserRole();
-                artistRole.setRole(role);
-                artistRole.setUserId(artist.getId());
-
-                userRoleRepository.save(artistRole);
-
-            }
-            return true;
-
-        }
-
-        return false;
-    }
-
 
     public List<Artist> getArtists(User user){
         List<Artist> artists = artistRepository.findAll();
@@ -111,34 +44,23 @@ public class ArtistService {
         return  artists;
     }
 
+
     public Artist findArtistByNameArtist(String nameArtist){
         Artist artist = artistRepository.findArtistByNameArtist(nameArtist);
         return  artist;
     }
-    public Artist findArtistById(Long id){
+    public Artist getArtistById(Long id){
         Artist artist = artistRepository.findArtistById(id);
-
-        return  artist;
-    }
-
-    public boolean isValidPassword(String password){
-
-        return password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$");
-    }
-
-    public void deleteArtistById(Long id){
-        artistRepository.deleteArtistById(id);
-    }
-    public Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist){
-        Artist artist = artistRepository.findArtistByDepartments(codeDepartementArtist);
-        return artist;
-    }
-    public boolean artistExist(String username){
-        if (artistRepository.existsByUsername(username)){
-            return true;
+        if (artist != null) {
+            return artist;
         }
-        return false;
+        return  null;
     }
+
+
+
+
+
 
     public boolean existsByNameArtist(String nameArtist){
         if(artistRepository.existsByNameArtist(nameArtist)){
@@ -146,35 +68,74 @@ public class ArtistService {
         }
         return false;
     }
+    public Set<Artist> findArtistByuserList(Long userId){
 
-    public Artist finArtistById(Long id){
-
-        Artist artist = artistRepository.findArtistsById(id);
-        return artist;
+      Set<Artist> findArtist =  artistRepository.findByUserList_id(userId);
+        return findArtist;
     }
 
-    public Set<Artist>findArtistByCity(String city){
-        List<Commune> communeList  =  communeService.getCommunesObject(city); // recupére la liste de commune du user
-        Set<DepartementAccepted> codeDepartement = artist.getDepartments(); // recupère la list des departements lié aux artistes
-        List<String> listDepartementApi= new ArrayList<>();
 
-       for ( Commune c: communeList){
+    public Artist update(User authenticatedUser, Long idArtist, Artist artistToUpdate ){
 
-           listDepartementApi = communeList.stream().map(commune -> commune.getCodeDepartement()).collect(Collectors.toList());
-       }
-       Set<Artist> listArtists = new HashSet<>();
-       for (DepartementAccepted codeDepartementArtist: codeDepartement){
-           for (String codeDepartementApi : listDepartementApi){
-               if (codeDepartementArtist.toString().equals(codeDepartementApi)){
-                   listArtists.add(artistRepository.findArtistByDepartments(codeDepartementArtist));
+        // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
+        Set<Artist> artists = findArtistByuserList(authenticatedUser.getId());
 
-               }
+        if ( artists  != null && !artists.isEmpty()) {
+            // => Récupération de la liste d'artiste du user
+            Set<Artist> listArtist = authenticatedUser.getListArtist();
+            // 2- Récupération de l'artiste à update par son id
+            for (Artist artist : listArtist){
+                if (idArtist == artist.getId()){
+                    // 3- Update de l'artiste et sauvegarde en BDD
+                    String updateMail = artistToUpdate.getContactMail();
+                    if(updateMail != null){
+                        artist.setContactMail(updateMail);
+                    }
+                   Set<DepartementAccepted> updateDepartement = artistToUpdate.getDepartments();
+                    if (!updateDepartement.isEmpty())
+                        for (DepartementAccepted d : updateDepartement){
+                            if(d != null){
+                                departementAcceptedRepository.save(d);
+                            }
+                        }
+                        artist.setDepartments(updateDepartement);
 
-           }
-       }
-       return listArtists;
+                    String updatePhone = artistToUpdate.getContactPhone();
+                    if(updatePhone != null){
+                        artist.setContactPhone(updatePhone);
+                    }
+                    String updateDescription = artistToUpdate.getDescriptionArtist();
+                    if (updateDescription != null){
+                        artist.setDescriptionArtist(updateDescription);
+                    }
+                    String updateShortDescription = artistToUpdate.getShortDescriptionArtist();
+                    if (updateShortDescription != null){
+                        artist.setShortDescriptionArtist(updateShortDescription);
+                    }
+                    String updateUrl = artistToUpdate.getUrlSiteArtist();
+                    if (updateUrl != null){
+                        artist.setUrlSiteArtist(updateUrl);
+                    }
+                    String updateImage = artistToUpdate.getUrlImage();
+                    if (updateImage != null){
+                        artist.setUrlImage(updateImage);
+                    }
+                    // 4- Retourne l'artiste modifié
+                    artistRepository.save(artist);
+                    return artist;
+                }
+                break;
+            }
+
+        }
+        return null;
+
+
+
 
     }
+
+
 
 
 

@@ -1,5 +1,6 @@
 package fr.formation.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.formation.geo.model.DepartementAccepted;
 
 import javax.persistence.*;
@@ -15,27 +16,10 @@ public class Artist {
 
     @Column(name= "nameArtist")
     private String nameArtist;
-    @Column(name= "username")
-    private String username;
-    @Column(name="passwordArtist")
-    private String passwordArtist;
-
-    @Column(name = "mailArtist")
-    private String mailArtist;
-
-    @Column(name ="cityArtist")
-    private String cityArtist;
-
 
     @Column(name ="departments")
-    @OneToMany(mappedBy = "artist")
+    @OneToMany()
     private  Set<DepartementAccepted> departments;
-
-    @Column(name = "codeDepartement")
-    private String codeDepartement;
-
-    @Column(name="nameDepartement")
-    private String nameDepartement;
 
     @Column(name="descriptionArtist")
     private String descriptionArtist;
@@ -46,12 +30,10 @@ public class Artist {
     @Column(name="noteArtist")
     private Integer noteArtist;
 
-
     @Column(name="userList")
     @ManyToMany(mappedBy = "listArtist")
+    @JsonIgnore
     private Set<User> userList;
-
-
 
     @OneToOne
     private Event eventBooked;
@@ -68,6 +50,8 @@ public class Artist {
     @Column(name="contactMail")
     private String contactMail;
 
+
+
     @Column(name="urlSiteArtist")
     private String urlSiteArtist;
 
@@ -78,12 +62,8 @@ public class Artist {
     public Artist() {
     }
 
-    public Artist(String nameArtist, String username, String passwordArtist, String mailArtist, String cityArtist, Set<DepartementAccepted> departments, String descriptionArtist) {
+    public Artist(String nameArtist,   Set<DepartementAccepted> departments, String descriptionArtist) {
         this.nameArtist = nameArtist;
-        this.username = username;
-        this.passwordArtist = passwordArtist;
-        this.mailArtist = mailArtist;
-        this.cityArtist = cityArtist;
         this.departments = departments;
         this.descriptionArtist = descriptionArtist;
     }
@@ -100,12 +80,9 @@ public class Artist {
         return nameArtist;
     }
 
-    public String getMailArtist() {
-        return mailArtist;
-    }
 
-    public String getCityArtist() {
-        return cityArtist;
+    public String getContactMail() {
+        return contactMail;
     }
 
     public Set<DepartementAccepted> getDepartments() {
@@ -132,13 +109,6 @@ public class Artist {
         return eventBooked;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPasswordArtist() {
-        return passwordArtist;
-    }
 
     public String getUrlImage() {
         return urlImage;
@@ -148,25 +118,16 @@ public class Artist {
         return shortDescriptionArtist;
     }
 
-    public String getContactMail() {
-        return contactMail;
-    }
-
     public String getUrlSiteArtist() {
         return urlSiteArtist;
     }
 
-    public String getCodeDepartement() {
-        return codeDepartement;
-    }
 
     public String getContactPhone() {
         return contactPhone;
     }
 
-    public String getNameDepartement() {
-        return nameDepartement;
-    }
+
 
     /**
      * Setteur Artist
@@ -179,12 +140,8 @@ public class Artist {
         this.nameArtist = nameArtist;
     }
 
-    public void setMailArtist(String mailArtist) {
-        this.mailArtist = mailArtist;
-    }
-
-    public void setCityArtist(String cityArtist) {
-        this.cityArtist = cityArtist;
+    public void setContactMail(String contactMail) {
+        this.contactMail = contactMail;
     }
 
     public void setDepartments(Set<DepartementAccepted> departments) {
@@ -211,13 +168,6 @@ public class Artist {
         this.eventBooked = eventBooked;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPasswordArtist(String passwordArtist) {
-        this.passwordArtist = passwordArtist;
-    }
 
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
@@ -231,20 +181,9 @@ public class Artist {
         this.contactPhone = contactPhone;
     }
 
-    public void setContactMail(String contactMail) {
-        this.contactMail = contactMail;
-    }
-
     public void setUrlSiteArtist(String urlSiteArtist) {
         this.urlSiteArtist = urlSiteArtist;
     }
 
-    public void setCodeDepartement(String codeDepartement) {
-        this.codeDepartement = codeDepartement;
-    }
-
-    public void setNameDepartement(String nameDepartement) {
-        this.nameDepartement = nameDepartement;
-    }
 }
 

@@ -18,6 +18,7 @@ public class UserDto {
         private String password;
         private String mail;
         private String city;
+        private ArtistDto artist;
 
 
 
@@ -28,7 +29,15 @@ public class UserDto {
         public UserDto() {
         }
 
-        public UserDto(Long id, String username, String password, String mail, String city, Set<Artist> listArtist, Set<Event> listEvents, @NotNull Event eventOrganized) {
+    public UserDto(String username, String password, String mail, String city, ArtistDto artist) {
+        this.username = username;
+        this.password = password;
+        this.mail = mail;
+        this.city = city;
+        this.artist = artist;
+    }
+
+    public UserDto(Long id, String username, String password, String mail, String city, Set<Artist> listArtist, Set<Event> listEvents, @NotNull Event eventOrganized) {
             this.id = id;
             this.username = username;
             this.password = password;
@@ -57,7 +66,11 @@ public class UserDto {
             return city;
         }
 
-        /**
+    public ArtistDto getArtist() {
+        return artist;
+    }
+
+    /**
          * Setter
          *
          *
@@ -78,6 +91,9 @@ public class UserDto {
             this.city = city;
         }
 
+    public void setArtist(ArtistDto artist) {
+        this.artist = artist;
     }
+}
 
 
