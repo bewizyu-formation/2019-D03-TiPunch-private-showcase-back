@@ -33,7 +33,7 @@ public class DepartementAccepted {
         return id;
     }
 
-    public String getCodeDepartements() {
+    public String getNomDepartements() {
         return nomDepartements;
     }
 

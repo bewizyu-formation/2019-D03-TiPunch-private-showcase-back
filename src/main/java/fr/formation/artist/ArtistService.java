@@ -1,20 +1,16 @@
 package fr.formation.artist;
 
-import fr.formation.geo.model.Commune;
+
 import fr.formation.geo.model.DepartementAccepted;
-import fr.formation.geo.services.CommuneService;
 import fr.formation.geo.services.DepartementAcceptedRepository;
-import fr.formation.geo.services.DepartementService;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
-import fr.formation.user.UserRole;
-import fr.formation.user.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 /**
  * The type Artist service
@@ -23,11 +19,8 @@ import java.util.stream.Collectors;
 public class ArtistService {
 
     private ArtistRepository artistRepository;
-    private UserRoleRepository userRoleRepository;
+
     private DepartementAcceptedRepository departementAcceptedRepository;
-    private CommuneService communeService;
-    private DepartementService departementService;
-    private PasswordEncoder passwordEncoder;
 
     /**
      * Instanciates a new Artist service.
@@ -36,17 +29,9 @@ public class ArtistService {
      *
      */
     @Autowired
-    public ArtistService(ArtistRepository artistRepository, UserRoleRepository userRoleRepository,
-                         PasswordEncoder passwordEncoder, CommuneService communeService, DepartementService departementService,
-                         DepartementAcceptedRepository departementAcceptedRepository) {
+    public ArtistService(ArtistRepository artistRepository, DepartementAcceptedRepository departementAcceptedRepository) {
         this.artistRepository = artistRepository;
-        this.userRoleRepository = userRoleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.communeService = communeService;
-        this.departementService = departementService;
         this.departementAcceptedRepository = departementAcceptedRepository;
-
-
 
     }
 
@@ -66,7 +51,6 @@ public class ArtistService {
     }
     public Artist getArtistById(Long id){
         Artist artist = artistRepository.findArtistById(id);
-        // TODO: Est-ce que l'artiste est trouvé ???
         if (artist != null) {
             return artist;
         }
@@ -74,24 +58,9 @@ public class ArtistService {
     }
 
 
-    public boolean isValidPassword(String password){
 
-        return password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$");
-    }
 
-    public void deleteArtistById(Long id){
-        artistRepository.deleteArtistById(id);
-    }
-    public Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist){
-        Artist artist = artistRepository.findArtistByDepartments(codeDepartementArtist);
-        return artist;
-    }
-/*    public boolean artistExist(String username){
-        if (artistRepository.existsByUsername(username)){
-            return true;
-        }
-        return false;
-    }*/
+
 
     public boolean existsByNameArtist(String nameArtist){
         if(artistRepository.existsByNameArtist(nameArtist)){
@@ -151,7 +120,7 @@ public class ArtistService {
                     if (updateImage != null){
                         artist.setUrlImage(updateImage);
                     }
-
+                    // 4- Retourne l'artiste modifié
                     artistRepository.save(artist);
                     return artist;
                 }
@@ -162,7 +131,7 @@ public class ArtistService {
         return null;
 
 
-        // 4- Retourne l'artiste modifié
+
 
     }
 

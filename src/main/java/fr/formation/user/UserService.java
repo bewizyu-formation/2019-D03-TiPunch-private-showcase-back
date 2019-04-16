@@ -6,6 +6,7 @@ import fr.formation.geo.services.CommuneService;
 import fr.formation.geo.services.DepartementAcceptedRepository;
 import fr.formation.geo.services.DepartementService;
 import fr.formation.modelDto.ArtistDto;
+import fr.formation.modelDto.UserDto;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class UserService implements UserDetailsService {
 
 	private CommuneService communeService;
 	private DepartementService departementService;
-	private DepartementAccepted departementAccepted;
+
 
 	/**
 	 * Instantiates a new User service.
@@ -85,19 +86,17 @@ public class UserService implements UserDetailsService {
 
 	/**
 	 * * Add a new user with the user repository
-	 * @param username the username
-	 * @param password the password
-	 * @param mail the mail
-	 * @param city the city
+	 *
 	 * @param roles the roles
 	 */
 
-	public boolean addNewUserAndArtist(String username, String password, String mail, String city , ArtistDto artistDto, String... roles) {
+	public boolean addNewUserAndArtist(UserDto userDto, String... roles) {
 		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setMail(mail);
-		user.setCity(city);
+		user.setUsername(userDto.getUsername());
+		user.setPassword(userDto.getPassword());
+		user.setMail(userDto.getMail());
+		user.setCity(userDto.getCity());
+		String city =user.getCity();
 
 		List<LinkedHashMap> communes = communeService.getCommunes(city) ;
 		List<LinkedHashMap> departements ;
@@ -120,11 +119,12 @@ public class UserService implements UserDetailsService {
 		}
 		if(!userRepository.existsByUsername(user.getUsername())
 				&& isValidPassword(user.getPassword() )){
+			ArtistDto artistDto = userDto.getArtist();
 
 		if(artistDto != null) {
 
 			Artist artist = new Artist();
-			Set<User> listUSer = new HashSet<>();
+			Set<User> listUser = new HashSet<>();
 			Set<Artist> listArtist = new HashSet<>();
 			DepartementAccepted departementAccepted = new DepartementAccepted();
 
@@ -140,8 +140,8 @@ public class UserService implements UserDetailsService {
 			artist.setDepartments(listDepartementAccepeted);
 			departementAcceptedRepository.save(departementAccepted);
 
-			listUSer.add(user);
-			artist.setUserList(listUSer);
+			listUser.add(user);
+			artist.setUserList(listUser);
 			listArtist.add(artist);
 			user.setListArtist(listArtist);
 			 artistRepository.save(artist);

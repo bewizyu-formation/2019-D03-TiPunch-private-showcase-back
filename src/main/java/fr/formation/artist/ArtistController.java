@@ -2,7 +2,7 @@ package fr.formation.artist;
 
 
 import fr.formation.controller.AbstractController;
-import fr.formation.modelDto.UpdateArtistDto;
+
 import fr.formation.models.Artist;
 import fr.formation.models.User;
 import fr.formation.security.SecurityConstants;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
 
 
 @RestController

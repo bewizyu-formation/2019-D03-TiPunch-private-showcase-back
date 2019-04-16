@@ -2,12 +2,7 @@ package fr.formation.artist;
 
 import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.models.Artist;
-import fr.formation.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 import java.util.Set;
 
@@ -52,15 +47,14 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
      * @param username
      * @return
      */
-   // public boolean existsByUsername(String username);
 
-
-   // public Set<Artist> findArtistBycityArtist(String city);
 
     public  Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist);
 
 
     public Set<Artist> findByUserList_id(Long userId);
+
+    public  Set<Artist> findByDepartments_id(String nameDepartment);
 
 
 

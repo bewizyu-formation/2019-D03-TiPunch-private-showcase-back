@@ -1,12 +1,10 @@
 package fr.formation.user;
 
-import fr.formation.models.Artist;
 import fr.formation.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-import java.util.Set;
+
+
 
 
 /**
@@ -25,7 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	public boolean existsByUsername(String username);
 
-	//public Set<Artist> updateArtist(User authenticatedUser, Long idArtist, Artist artistToUpdate );
+
 
 
 
