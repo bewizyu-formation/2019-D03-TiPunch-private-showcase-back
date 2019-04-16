@@ -28,19 +28,28 @@ import javax.annotation.PostConstruct;
 @Service
 public class ImageStorageService {
 
+    private ArtistRepository artistRepository;
+
+    public ImageStorageService(ArtistRepository artistRepository){
+        this.artistRepository = artistRepository;
+    }
+
     /**
      * Save image
      * @param file
      */
-    public byte[] store(String pictureName, MultipartFile file) {
+    public byte[] store(String pictureName, MultipartFile file, Artist artist) {
 
         byte[] picture;
 
         try {
             if (file.isEmpty()) {
                 throw new RuntimeException("Failed to store empty file ");
+            }else {
+                picture = file.getBytes();
+                artist.setImage(picture);
+                artistRepository.save(artist);
             }
-            picture = file.getBytes();
 
         } catch (Exception e) { throw new RuntimeException("FAIL!" ); }
 
@@ -68,10 +77,9 @@ public class ImageStorageService {
          return defaultPicture;
     }
 
-    public void loadImage(String filename){
-        File file = new File(filename);
-
-
+    public byte[] loadImage(Artist artist){
+        byte[] picture = artist.getImage();
+        return picture;
     }
 
 }

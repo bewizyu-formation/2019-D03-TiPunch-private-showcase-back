@@ -45,11 +45,12 @@ public class ArtistController extends AbstractController {
         Artist artist = artistService.getArtistById(id);
 
         try {
-            byte[] image = storageService.store(pictureName ,file);
-            artist.setImage(image);
+            byte[] image = storageService.store(pictureName ,file, artist);
+
             return new ResponseEntity<>(artist,HttpStatus.OK);
 
         } catch (Exception e) {
+
             return new ResponseEntity<>(artist,HttpStatus.BAD_REQUEST);
         }
     }
