@@ -143,6 +143,12 @@ public class UserService implements UserDetailsService {
 			listDepartementAccepeted.add(departementAccepted);
 			artist.setDepartments(listDepartementAccepeted);
 			departementAcceptedRepository.save(departementAccepted);
+				if(userDto.getArtistDto().getImage() == null){
+				    artist.setImage(storageService.getDefaultPicture());
+                }else{
+                    artist.setImage(userDto.getArtistDto().getImage());
+
+                }
 
 			listUser.add(user);
 			artist.setUserList(listUser);

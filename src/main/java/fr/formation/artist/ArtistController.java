@@ -50,18 +50,6 @@ public class ArtistController extends AbstractController {
         }
     }
 
-    @GetMapping("/{id}/picture")
-    public ResponseEntity getPicture(@PathVariable Long id){
-        Long userId = getAuthenticatedUser().getId();
-        Artist artist = artistRepository.findArtistById(userId);
-        String test = DatatypeConverter.printBase64Binary(artist.getImage());
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.ALL)
-                .body(test);
-    }
-
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Artist> update(@RequestBody Artist artist, @PathVariable Long id){

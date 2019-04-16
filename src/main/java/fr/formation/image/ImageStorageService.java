@@ -1,9 +1,6 @@
 package fr.formation.image;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -11,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import fr.formation.artist.ArtistRepository;
@@ -68,6 +66,12 @@ public class ImageStorageService {
         } catch (Exception e) { e.printStackTrace(); }
 
          return defaultPicture;
+    }
+
+    public void loadImage(String filename){
+        File file = new File(filename);
+
+
     }
 
 }
