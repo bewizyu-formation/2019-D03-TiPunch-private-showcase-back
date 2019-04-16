@@ -48,28 +48,15 @@ public class ArtistController extends AbstractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UpdateArtistDto> checkupdate(@PathVariable Long id){
-        System.out.println("bonne fonction");
-        boolean match=false;
-        User authentifiedUser = userService.getUser(getAuthenticatedUser());
-        Long idUser = authentifiedUser.getId();
-       Set<Artist> foundArtistLinkToUser = artistService.findArtistByuserList(idUser);
-        for (Artist artist : foundArtistLinkToUser){
-            Long idArtist = artist.getId();
-            if (id == idArtist) {
-                match = true;
-            }
-        }
-        Artist artist = artistService.getArtistById(id);
+    public ResponseEntity<Artist> checkupdate(@PathVariable Long id){
+      Artist artist =artistService.getArtistById(id);
+      if (artist != null){
+          return new ResponseEntity<>(artist,  HttpStatus.FOUND);
+      }
 
-        if(artist != null){
-            UpdateArtistDto updateArtistDto = new UpdateArtistDto(artist.getId(), artist.getNameArtist(), artist.getDepartments(), artist.getDescriptionArtist(), artist.getNbVote(), artist.getNoteArtist(), artist.getUrlImage(), artist.getShortDescriptionArtist(), artist.getContactPhone(), artist.getContactMail(), artist.getUrlSiteArtist(), match);
-
-            return  new ResponseEntity<>(updateArtistDto, HttpStatus.FOUND);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return  new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+
 
 
 

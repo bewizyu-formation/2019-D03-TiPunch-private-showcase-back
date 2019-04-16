@@ -191,20 +191,37 @@ public class ArtistService {
         // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
         Set<Artist> artists = findArtistByuserList(authenticatedUser.getId());
 
-        if ( artists  != null && !artists.isEmpty()) { //pas les meme adresses mémoires
+        if ( artists  != null && !artists.isEmpty()) {
             // => Récupération de la liste d'artiste du user
             Set<Artist> listArtist = authenticatedUser.getListArtist();
             // 2- Récupération de l'artiste à update par son id
             for (Artist artist : listArtist){
                 if (idArtist == artist.getId()){
                     // 3- Update de l'artiste et sauvegarde en BDD
-                    artist.setContactMail(artistToUpdate.getContactMail());
-                    artist.setDepartments(artistToUpdate.getDepartments());
-                    artist.setContactPhone(artistToUpdate.getContactPhone());
-                    artist.setShortDescriptionArtist(artistToUpdate.getShortDescriptionArtist());
-                    artist.setUrlSiteArtist(artistToUpdate.getUrlSiteArtist());
-                    artist.setUrlImage(artistToUpdate.getUrlImage()); // A Modifier une fois implementation de l'upload image (au minimum le type dans le Model)
-
+                    String updateMail = artistToUpdate.getContactMail();
+                    if(updateMail != null){
+                        artist.setContactMail(updateMail);
+                    }
+                   Set<DepartementAccepted> updateDepartement = artistToUpdate.getDepartments();
+                    if( !updateDepartement.isEmpty()){
+                        artist.setDepartments(updateDepartement);
+                    }
+                    String updatePhone = artistToUpdate.getContactPhone();
+                    if(updatePhone != null){
+                        artist.setContactPhone(updatePhone);
+                    }
+                    String updateDescription = artistToUpdate.getShortDescriptionArtist();
+                    if (updateDescription != null){
+                        artist.setShortDescriptionArtist(updateDescription);
+                    }
+                    String updateUrl = artistToUpdate.getUrlSiteArtist();
+                    if (updateUrl != null){
+                        artist.setUrlSiteArtist(updateUrl);
+                    }
+                    String updateImage = artistToUpdate.getUrlImage();
+                    if (updateImage != null){
+                        artist.setUrlImage(updateImage);
+                    }
                     artistRepository.save(artist);
                     return artist;
                 }
