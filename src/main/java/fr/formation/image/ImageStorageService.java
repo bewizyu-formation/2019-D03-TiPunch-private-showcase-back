@@ -34,8 +34,10 @@ public class ImageStorageService {
      * Save image
      * @param file
      */
-    public byte[] store(MultipartFile file) {
+    public byte[] store(String pictureName, MultipartFile file) {
+
         byte[] picture;
+
         try {
             if (file.isEmpty()) {
                 throw new RuntimeException("Failed to store empty file ");

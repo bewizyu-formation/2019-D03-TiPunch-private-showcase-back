@@ -36,13 +36,13 @@ public class ArtistController extends AbstractController {
     @Autowired
     private ImageStorageService storageService;
 
-    @PostMapping("/upload")
-    public ResponseEntity handleFileUpload(@RequestBody MultipartFile file) throws IOException {
-        Long id = getAuthenticatedUser().getId();
-        Artist artist = artistRepository.findArtistById(id);
-        try {
+    @PostMapping("{id}/upload")
+    public ResponseEntity handleFileUpload(@PathVariable Long id, @RequestBody MultipartFile file, @RequestBody String pictureName ) throws IOException {
 
-            byte[] image = storageService.store(file);
+        Artist artist = artistRepository.findArtistById(id);
+
+        try {
+            byte[] image = storageService.store(pictureName ,file);
             artist.setImage(image);
             return new ResponseEntity<>(artist,HttpStatus.OK);
 
