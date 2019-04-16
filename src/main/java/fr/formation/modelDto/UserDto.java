@@ -20,8 +20,6 @@ public class UserDto {
         private String city;
         private ArtistDto artist;
 
-        private ArtistDto artistDto;
-
 
         /**
          * Constructors
@@ -44,14 +42,6 @@ public class UserDto {
             this.mail = mail;
             this.city = city;
         }
-
-    public UserDto(String username, String password, String mail, String city, ArtistDto artistDto) {
-        this.username = username;
-        this.password = password;
-        this.mail = mail;
-        this.city = city;
-        this.artistDto = artistDto;
-    }
 
     /**
          * Getter

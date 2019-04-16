@@ -38,7 +38,6 @@ public class UserService implements UserDetailsService {
 
 	private CommuneService communeService;
 	private DepartementService departementService;
-	private CustomValidator passwordValidator = new CustomValidator();
 	private ImageStorageService storageService;
 
 
@@ -52,7 +51,7 @@ public class UserService implements UserDetailsService {
 	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
 					   CommuneService communeService,
 					   DepartementService departementService, ArtistRepository artistRepository,
-					   DepartementAcceptedRepository departementAcceptedRepository) {
+					   DepartementAcceptedRepository departementAcceptedRepository,ImageStorageService storageService) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
@@ -60,6 +59,7 @@ public class UserService implements UserDetailsService {
 		this.departementService = departementService;
 		this.artistRepository = artistRepository;
 		this.departementAcceptedRepository = departementAcceptedRepository;
+		this.storageService = storageService;
 	}
 
 	/**
@@ -102,11 +102,11 @@ public class UserService implements UserDetailsService {
 		user.setCity(userDto.getCity());
 		String city =user.getCity();
 
-		List<LinkedHashMap> communes = communeService.getCommunes(userDto.getCity()) ;
+		List<LinkedHashMap> communes = communeService.getCommunes(city) ;
 		List<LinkedHashMap> departements ;
 
 		for ( LinkedHashMap <String ,String> c : communes){
-			boolean cityApi =  c.get("nom").equalsIgnoreCase(userDto.getCity());
+			boolean cityApi =  c.get("nom").equalsIgnoreCase(city);
 			if (cityApi){
 				String codeDepartement =  c.get("codeDepartement");
 				if (!codeDepartement.isEmpty()){
@@ -143,11 +143,9 @@ public class UserService implements UserDetailsService {
 			listDepartementAccepeted.add(departementAccepted);
 			artist.setDepartments(listDepartementAccepeted);
 			departementAcceptedRepository.save(departementAccepted);
-				if(userDto.getArtistDto().getImage() == null){
-				    artist.setImage(storageService.getDefaultPicture());
-                }else{
-                    artist.setImage(userDto.getArtistDto().getImage());
 
+				if(userDto.getArtist().getImage() == null){
+				    artist.setImage(storageService.getDefaultPicture());
                 }
 
 			listUser.add(user);

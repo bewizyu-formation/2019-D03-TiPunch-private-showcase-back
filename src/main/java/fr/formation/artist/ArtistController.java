@@ -29,16 +29,20 @@ public class ArtistController extends AbstractController {
 
     private ArtistService artistService;
     private UserService userService;
+    private ImageStorageService storageService;
+
 
     @Autowired
-    public ArtistController(ArtistService artistService, UserService userService) {
+    public ArtistController(ArtistService artistService, UserService userService, ImageStorageService storageService) {
         this.artistService = artistService;
         this.userService = userService;
+        this.storageService = storageService;
     }
-    @PostMapping("{id}/upload")
-    public ResponseEntity handleFileUpload(@PathVariable Long id, @RequestBody MultipartFile file, @RequestBody String pictureName ) throws IOException {
 
-        Artist artist = artistRepository.findArtistById(id);
+    @PostMapping("{id}/upload")
+    public ResponseEntity handleFileUpload(@PathVariable Long id, @RequestParam MultipartFile file, @RequestParam String pictureName ) throws IOException {
+
+        Artist artist = artistService.getArtistById(id);
 
         try {
             byte[] image = storageService.store(pictureName ,file);

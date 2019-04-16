@@ -15,8 +15,6 @@ public class DepartementAccepted {
 
     private String nomDepartements;
 
-    private String nomDepartements;
-
     /**
      * Constructors
      */
@@ -39,9 +37,7 @@ public class DepartementAccepted {
         return nomDepartements;
     }
 
-    public String getNomDepartements() {
-        return nomDepartements;
-    }
+
 
     /**
      * Setter
@@ -54,7 +50,5 @@ public class DepartementAccepted {
         this.nomDepartements = nomDepartements;
     }
 
-    public void setNomDepartements(String nomDepartements) {
-        this.nomDepartements = nomDepartements;
-    }
+
 }

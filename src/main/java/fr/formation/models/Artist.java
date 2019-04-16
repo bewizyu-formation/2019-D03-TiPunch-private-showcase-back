@@ -132,7 +132,9 @@ public class Artist {
         return contactPhone;
     }
 
-
+    public byte[] getImage() {
+        return image;
+    }
 
     /**
      * Setteur Artist
@@ -191,7 +193,8 @@ public class Artist {
     }
 
     public void setImage(byte[] image) {
-    }
         this.image = image;
+    }
+
 }
 
