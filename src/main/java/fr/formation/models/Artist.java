@@ -1,5 +1,6 @@
 package fr.formation.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.formation.geo.model.DepartementAccepted;
 
 import javax.persistence.*;
@@ -17,14 +18,8 @@ public class Artist {
     private String nameArtist;
 
     @Column(name ="departments")
-    @OneToMany(mappedBy = "artist")
+    @OneToMany()
     private  Set<DepartementAccepted> departments;
-
-    @Column(name = "codeDepartement")
-    private String codeDepartement;
-
-    @Column(name="nameDepartement")
-    private String nameDepartement;
 
     @Column(name="descriptionArtist")
     private String descriptionArtist;
@@ -35,9 +30,9 @@ public class Artist {
     @Column(name="noteArtist")
     private Integer noteArtist;
 
-
     @Column(name="userList")
     @ManyToMany(mappedBy = "listArtist")
+    @JsonIgnore
     private Set<User> userList;
 
     @OneToOne
@@ -55,6 +50,8 @@ public class Artist {
     @Column(name="contactMail")
     private String contactMail;
 
+
+
     @Column(name="urlSiteArtist")
     private String urlSiteArtist;
 
@@ -70,7 +67,8 @@ public class Artist {
     public Artist() {
     }
 
-    public Artist( Set<DepartementAccepted> departments, String descriptionArtist) {
+    public Artist(String nameArtist,   Set<DepartementAccepted> departments, String descriptionArtist) {
+        this.nameArtist = nameArtist;
         this.departments = departments;
         this.descriptionArtist = descriptionArtist;
     }
@@ -81,6 +79,15 @@ public class Artist {
      */
     public Long getId() {
         return id;
+    }
+
+    public String getNameArtist() {
+        return nameArtist;
+    }
+
+
+    public String getContactMail() {
+        return contactMail;
     }
 
     public Set<DepartementAccepted> getDepartments() {
@@ -107,6 +114,7 @@ public class Artist {
         return eventBooked;
     }
 
+
     public String getUrlImage() {
         return urlImage;
     }
@@ -115,28 +123,15 @@ public class Artist {
         return shortDescriptionArtist;
     }
 
-    public String getContactMail() {
-        return contactMail;
-    }
-
     public String getUrlSiteArtist() {
         return urlSiteArtist;
     }
 
-    public String getCodeDepartement() {
-        return codeDepartement;
-    }
 
     public String getContactPhone() {
         return contactPhone;
     }
 
-    public String getNameDepartement() {
-        return nameDepartement;
-    }
-    public byte[] getImage() { return image; }
-
-    public String getNameArtist() { return nameArtist; }
 
 
     /**
@@ -150,6 +145,9 @@ public class Artist {
         this.nameArtist = nameArtist;
     }
 
+    public void setContactMail(String contactMail) {
+        this.contactMail = contactMail;
+    }
 
     public void setDepartments(Set<DepartementAccepted> departments) {
         this.departments = departments;
@@ -175,6 +173,7 @@ public class Artist {
         this.eventBooked = eventBooked;
     }
 
+
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
@@ -187,26 +186,12 @@ public class Artist {
         this.contactPhone = contactPhone;
     }
 
-    public void setContactMail(String contactMail) {
-        this.contactMail = contactMail;
-    }
-
     public void setUrlSiteArtist(String urlSiteArtist) {
         this.urlSiteArtist = urlSiteArtist;
     }
 
-    public void setCodeDepartement(String codeDepartement) {
-        this.codeDepartement = codeDepartement;
-    }
-
-    public void setNameDepartement(String nameDepartement) {
-        this.nameDepartement = nameDepartement;
-    }
-
     public void setImage(byte[] image) {
-        this.image = image;
     }
-
-
+        this.image = image;
 }
 

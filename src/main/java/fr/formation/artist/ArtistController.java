@@ -2,6 +2,7 @@ package fr.formation.artist;
 
 
 import fr.formation.controller.AbstractController;
+import fr.formation.user.UserService;
 import fr.formation.image.ImageStorageService;
 import fr.formation.modelDto.ArtistDto;
 import fr.formation.models.Artist;
@@ -18,24 +19,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import org.springframework.core.io.Resource;
-
-import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping("/artists")
+@Secured(SecurityConstants.ROLE_USER)
 public class ArtistController extends AbstractController {
 
-    @Autowired
-    private ArtistRepository artistRepository;
-    @Autowired
-    private ImageStorageService storageService;
 
+    private ArtistService artistService;
+    private UserService userService;
+
+    @Autowired
+    public ArtistController(ArtistService artistService, UserService userService) {
+        this.artistService = artistService;
+        this.userService = userService;
+    }
     @PostMapping("{id}/upload")
     public ResponseEntity handleFileUpload(@PathVariable Long id, @RequestBody MultipartFile file, @RequestBody String pictureName ) throws IOException {
 
@@ -61,6 +60,37 @@ public class ArtistController extends AbstractController {
                 .contentType(MediaType.ALL)
                 .body(test);
     }
+
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Artist> update(@RequestBody Artist artist, @PathVariable Long id){
+
+        // 1- Récupération du user authentifié
+        User authentificatedUser = userService.getUser(getAuthenticatedUser());
+
+        // 2- Update de l'artiste
+        Artist updatedArtists = artistService.update(authentificatedUser, id, artist);
+        if (updatedArtists == null){
+            return new ResponseEntity<>(updatedArtists, HttpStatus.NOT_FOUND);
+        }
+        // 3- Retourne l'artiste modifié
+
+        return new ResponseEntity<>(updatedArtists, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Artist> checkupdate(@PathVariable Long id){
+      Artist artist =artistService.getArtistById(id);
+      if (artist != null){
+          return new ResponseEntity<>(artist,  HttpStatus.OK);
+      }
+
+      return  new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+
+
 
 
 

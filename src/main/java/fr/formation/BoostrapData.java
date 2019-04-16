@@ -46,35 +46,35 @@ public class BoostrapData {
 	@EventListener(ContextRefreshedEvent.class)
 	public void onStart() {
 
-		userService.addNewUser(
+		userService.addNewUserAndArtist(
 				new UserDto("admin", "adminAdmin1", "mail@test", "Lyon", null),
 				SecurityConstants.ROLE_ADMIN
 
 		);
-		userService.addNewUser(
+		userService.addNewUserAndArtist(
 				new UserDto("user", "userUser2", "mailuser@test", "Lyon", null),
 				SecurityConstants.ROLE_USER
 		);
-		userService.addNewUser(
+		userService.addNewUserAndArtist(
 				new UserDto("userArtist", "artistArtist1", "mailArtiste@test", "Marseille",
 						new ArtistDto("Les PatateRats","Ska-Punk")
 				),
 
-				SecurityConstants.ROLE_ARTIST
+				SecurityConstants.ROLE_USER
 
 		);
-		userService.addNewUser(
+		userService.addNewUserAndArtist(
 				new UserDto("userArtist2", "artistArtist2", "mailArtiste@test", "Lyon",
 						new ArtistDto("Les PatateRats2", "Ska-Punk2")
 				),
-				SecurityConstants.ROLE_ARTIST
+				SecurityConstants.ROLE_USER
 
 		);
-		userService.addNewUser(
+		userService.addNewUserAndArtist(
 				new UserDto("userArtist3", "artistArtist3", "mailArtiste@test", "Lyon",
 						new ArtistDto("Les PatateRats3", "Ska-Punk3")
 				),
-				SecurityConstants.ROLE_ARTIST
+				SecurityConstants.ROLE_USER
 
 		);
 

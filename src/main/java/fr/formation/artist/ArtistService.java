@@ -1,21 +1,17 @@
 package fr.formation.artist;
 
-import fr.formation.geo.model.Commune;
+
 import fr.formation.geo.model.DepartementAccepted;
-import fr.formation.geo.services.CommuneService;
-import fr.formation.geo.services.DepartementService;
 import fr.formation.image.ImageStorageService;
-import fr.formation.modelDto.ArtistDto;
+import fr.formation.geo.services.DepartementAcceptedRepository;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
-import fr.formation.user.UserRole;
-import fr.formation.user.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 /**
  * The type Artist service
@@ -24,15 +20,8 @@ import java.util.stream.Collectors;
 public class ArtistService {
 
     private ArtistRepository artistRepository;
-    private UserRoleRepository userRoleRepository;
-    private CommuneService communeService;
-    private DepartementService departementService;
-    private Artist artist;
-    private Commune commune;
-    private DepartementAccepted departementAccepted;
-    private PasswordEncoder passwordEncoder;
-    private ImageStorageService storageService;
 
+    private DepartementAcceptedRepository departementAcceptedRepository;
 
     /**
      * Instanciates a new Artist service.
@@ -41,15 +30,9 @@ public class ArtistService {
      *
      */
     @Autowired
-    public ArtistService(ArtistRepository artistRepository, UserRoleRepository userRoleRepository,
-                         PasswordEncoder passwordEncoder, CommuneService communeService, DepartementService departementService,
-                         ImageStorageService storageService) {
+    public ArtistService(ArtistRepository artistRepository, DepartementAcceptedRepository departementAcceptedRepository) {
         this.artistRepository = artistRepository;
-        this.userRoleRepository = userRoleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.communeService = communeService;
-        this.departementService =departementService;
-        this.storageService = storageService;
+        this.departementAcceptedRepository = departementAcceptedRepository;
 
     }
 
@@ -58,24 +41,23 @@ public class ArtistService {
         return  artists;
     }
 
+
     public Artist findArtistByNameArtist(String nameArtist){
         Artist artist = artistRepository.findArtistByNameArtist(nameArtist);
         return  artist;
     }
-    public Artist findArtistById(Long id){
+    public Artist getArtistById(Long id){
         Artist artist = artistRepository.findArtistById(id);
-
-        return  artist;
+        if (artist != null) {
+            return artist;
+        }
+        return  null;
     }
 
-    public void deleteArtistById(Long id){
-        artistRepository.deleteArtistById(id);
-    }
 
-    public Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist){
-        Artist artist = artistRepository.findArtistByDepartments(codeDepartementArtist);
-        return artist;
-    }
+
+
+
 
     public boolean existsByNameArtist(String nameArtist){
         if(artistRepository.existsByNameArtist(nameArtist)){
@@ -83,12 +65,74 @@ public class ArtistService {
         }
         return false;
     }
+    public Set<Artist> findArtistByuserList(Long userId){
 
-    public Artist finArtistById(Long id){
-
-        Artist artist = artistRepository.findArtistsById(id);
-        return artist;
+      Set<Artist> findArtist =  artistRepository.findByUserList_id(userId);
+        return findArtist;
     }
+
+
+    public Artist update(User authenticatedUser, Long idArtist, Artist artistToUpdate ){
+
+        // 1- Est-ce que l'artiste à update est associé à mon user (est-ce que j'ai le droit de modifié l'artiste)
+        Set<Artist> artists = findArtistByuserList(authenticatedUser.getId());
+
+        if ( artists  != null && !artists.isEmpty()) {
+            // => Récupération de la liste d'artiste du user
+            Set<Artist> listArtist = authenticatedUser.getListArtist();
+            // 2- Récupération de l'artiste à update par son id
+            for (Artist artist : listArtist){
+                if (idArtist == artist.getId()){
+                    // 3- Update de l'artiste et sauvegarde en BDD
+                    String updateMail = artistToUpdate.getContactMail();
+                    if(updateMail != null){
+                        artist.setContactMail(updateMail);
+                    }
+                   Set<DepartementAccepted> updateDepartement = artistToUpdate.getDepartments();
+                    if (!updateDepartement.isEmpty())
+                        for (DepartementAccepted d : updateDepartement){
+                            if(d != null){
+                                departementAcceptedRepository.save(d);
+                            }
+                        }
+                        artist.setDepartments(updateDepartement);
+
+                    String updatePhone = artistToUpdate.getContactPhone();
+                    if(updatePhone != null){
+                        artist.setContactPhone(updatePhone);
+                    }
+                    String updateDescription = artistToUpdate.getDescriptionArtist();
+                    if (updateDescription != null){
+                        artist.setDescriptionArtist(updateDescription);
+                    }
+                    String updateShortDescription = artistToUpdate.getShortDescriptionArtist();
+                    if (updateShortDescription != null){
+                        artist.setShortDescriptionArtist(updateShortDescription);
+                    }
+                    String updateUrl = artistToUpdate.getUrlSiteArtist();
+                    if (updateUrl != null){
+                        artist.setUrlSiteArtist(updateUrl);
+                    }
+                    String updateImage = artistToUpdate.getUrlImage();
+                    if (updateImage != null){
+                        artist.setUrlImage(updateImage);
+                    }
+                    // 4- Retourne l'artiste modifié
+                    artistRepository.save(artist);
+                    return artist;
+                }
+                break;
+            }
+
+        }
+        return null;
+
+
+
+
+    }
+
+
 
 
 

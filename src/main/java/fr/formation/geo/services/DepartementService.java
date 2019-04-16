@@ -1,7 +1,5 @@
 package fr.formation.geo.services;
 
-import fr.formation.geo.model.Departement;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 
