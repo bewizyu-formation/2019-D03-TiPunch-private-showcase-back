@@ -2,6 +2,8 @@ package fr.formation.image;
 
 import fr.formation.artist.ArtistService;
 import fr.formation.controller.AbstractController;
+import fr.formation.models.Artist;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +23,15 @@ public class ImageController extends AbstractController {
         this.storageService = storageService;
     }
 
-   /* @GetMapping("/{id}")
-    public ResponseEntity<Byte[] > getPicture(@PathVariable Long id){
-        *//*Artist artist = artistService.getArtistById(id);
+   @GetMapping("/{id}")
+    public ResponseEntity getPicture(@PathVariable Long id){
+        Artist artist = artistService.getArtistById(id);
         byte[] picture = storageService.loadImage(artist);
 
-        return new ResponseEntity<>(picture, HttpStatus.OK);*//*
+        if(artist == null){
+            return new ResponseEntity<>(artist, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(picture, HttpStatus.OK);
     }
-    */
+
 }
