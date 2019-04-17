@@ -1,13 +1,13 @@
 package fr.formation.modelDto;
 
-
-
 public class ArtistDto {
 
 
     private Long id;
     private String nameArtist;
     private String descriptionArtist;
+    private byte[] image;
+
 
     /**
      * Constructeurs
@@ -22,6 +22,11 @@ public class ArtistDto {
 
     }
 
+    public ArtistDto(String nameArtist, String descriptionArtist, byte[] image) {
+        this.nameArtist = nameArtist;
+        this.descriptionArtist = descriptionArtist;
+        this.image = image;
+    }
 
 
     /**
@@ -39,6 +44,9 @@ public class ArtistDto {
         return descriptionArtist;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
 
     /**
      * Setteur Artist
@@ -53,6 +61,10 @@ public class ArtistDto {
 
     public void setDescriptionArtist(String description) {
         this.descriptionArtist = description;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
 }

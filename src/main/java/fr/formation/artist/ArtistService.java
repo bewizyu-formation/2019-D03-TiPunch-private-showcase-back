@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 
+
 /**
  * The type Artist service
  */
@@ -36,11 +37,9 @@ public class ArtistService {
     }
 
     public List<Artist> getArtists(User user){
+
         List<Artist> artists = artistRepository.findAll();
-        // TODO
-        /*
-            search artist by departement user
-         */
+
         return  artists;
     }
 
@@ -56,11 +55,6 @@ public class ArtistService {
         }
         return  null;
     }
-
-
-
-
-
 
     public boolean existsByNameArtist(String nameArtist){
         if(artistRepository.existsByNameArtist(nameArtist)){

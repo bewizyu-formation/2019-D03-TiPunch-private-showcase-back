@@ -37,6 +37,8 @@ public class DepartementAccepted {
         return nomDepartements;
     }
 
+
+
     /**
      * Setter
      */
@@ -47,4 +49,6 @@ public class DepartementAccepted {
     public void setNomDepartements(String nomDepartements) {
         this.nomDepartements = nomDepartements;
     }
+
+
 }

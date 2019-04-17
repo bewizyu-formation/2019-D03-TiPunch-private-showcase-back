@@ -50,7 +50,7 @@ public class UserController extends AbstractController {
 
 	/**
 	 * Signup artist
-	 * @param artist
+	 * @param data the user dto
 	 * @return string success/failed
 	 */
 	@PutMapping("/artist/")
@@ -94,21 +94,21 @@ public class UserController extends AbstractController {
 		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
+    /**
+     * All artists
+     * @return list artists
+     */
+    @GetMapping("/artist/list")
+    @Secured(SecurityConstants.ROLE_USER)
+    public ResponseEntity<List<Artist>> allArtist(){
 
-	/**
-	 * All artists
-	 * @return list artists
-	 */
-	@GetMapping("/artist/list")
-	@Secured({SecurityConstants.ROLE_USER})
-	public ResponseEntity<List<Artist>> allArtist(){
+        List<Artist> artists = this.artistService.getArtists(getAuthenticatedUser());
 
-		List<Artist> artists = this.artistService.getArtists(getAuthenticatedUser());
+        if (artists.isEmpty()) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
 
-		if (artists.isEmpty()) return new ResponseEntity<>(artists,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(artists,HttpStatus.OK);
+    }
 
-		return new ResponseEntity<>(artists,HttpStatus.OK);
-	}
 
 	@GetMapping("/getUser")
 	@Secured(SecurityConstants.ROLE_USER)
@@ -119,5 +119,4 @@ public class UserController extends AbstractController {
 
 
 	}
-
 

@@ -21,7 +21,7 @@ public class Artist {
     @OneToMany()
     private  Set<DepartementAccepted> departments;
 
-    @Column(name="descriptionArtist")
+    @Column(name="descriptionArtist", columnDefinition="TEXT")
     private String descriptionArtist;
 
     @Column(name="nbVote")
@@ -54,6 +54,11 @@ public class Artist {
 
     @Column(name="urlSiteArtist")
     private String urlSiteArtist;
+
+    @Lob
+    @Column(name="image")
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] image;
 
     /**
      * Constructeurs
@@ -127,7 +132,9 @@ public class Artist {
         return contactPhone;
     }
 
-
+    public byte[] getImage() {
+        return image;
+    }
 
     /**
      * Setteur Artist
@@ -183,6 +190,10 @@ public class Artist {
 
     public void setUrlSiteArtist(String urlSiteArtist) {
         this.urlSiteArtist = urlSiteArtist;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
 }

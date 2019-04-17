@@ -21,8 +21,6 @@ public class UserDto {
         private ArtistDto artist;
 
 
-
-
         /**
          * Constructors
          */
@@ -45,7 +43,7 @@ public class UserDto {
             this.city = city;
         }
 
-        /**
+    /**
          * Getter
          *
          *

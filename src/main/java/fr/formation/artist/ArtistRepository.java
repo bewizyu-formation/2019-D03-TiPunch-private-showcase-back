@@ -44,19 +44,16 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     /**
      * Find by artist username
-     * @param username
+     * @param codeDepartementArtist
      * @return
      */
 
 
     public  Artist findArtistByDepartments(DepartementAccepted codeDepartementArtist);
 
-
     public Set<Artist> findByUserList_id(Long userId);
 
     public  Set<Artist> findByDepartments_id(String nameDepartment);
-
-
 
 
 }

@@ -5,6 +5,7 @@ import fr.formation.geo.model.DepartementAccepted;
 import fr.formation.geo.services.CommuneService;
 import fr.formation.geo.services.DepartementAcceptedRepository;
 import fr.formation.geo.services.DepartementService;
+import fr.formation.image.ImageStorageService;
 import fr.formation.modelDto.ArtistDto;
 import fr.formation.modelDto.UserDto;
 import fr.formation.models.Artist;
@@ -36,6 +37,7 @@ public class UserService implements UserDetailsService {
 
 	private CommuneService communeService;
 	private DepartementService departementService;
+	private ImageStorageService storageService;
 
 
 	/**
@@ -48,7 +50,7 @@ public class UserService implements UserDetailsService {
 	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,
 					   CommuneService communeService,
 					   DepartementService departementService, ArtistRepository artistRepository,
-					   DepartementAcceptedRepository departementAcceptedRepository) {
+					   DepartementAcceptedRepository departementAcceptedRepository,ImageStorageService storageService) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
@@ -56,6 +58,7 @@ public class UserService implements UserDetailsService {
 		this.departementService = departementService;
 		this.artistRepository = artistRepository;
 		this.departementAcceptedRepository = departementAcceptedRepository;
+		this.storageService = storageService;
 	}
 
 	/**
@@ -139,6 +142,10 @@ public class UserService implements UserDetailsService {
 			listDepartementAccepeted.add(departementAccepted);
 			artist.setDepartments(listDepartementAccepeted);
 			departementAcceptedRepository.save(departementAccepted);
+
+				if(userDto.getArtist().getImage() == null){
+				    artist.setImage(storageService.getDefaultPicture());
+                }
 
 			listUser.add(user);
 			artist.setUserList(listUser);
