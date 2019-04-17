@@ -2,7 +2,6 @@ package fr.formation.artist;
 
 
 import fr.formation.geo.model.DepartementAccepted;
-import fr.formation.image.ImageStorageService;
 import fr.formation.geo.services.DepartementAcceptedRepository;
 import fr.formation.models.Artist;
 import fr.formation.models.User;
@@ -11,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 
 /**
@@ -40,7 +39,7 @@ public class ArtistService {
     public List<Artist> getArtists(User user){
 
         List<Artist> artists = artistRepository.findAll();
-       
+
         return  artists;
     }
 
@@ -56,11 +55,6 @@ public class ArtistService {
         }
         return  null;
     }
-
-
-
-
-
 
     public boolean existsByNameArtist(String nameArtist){
         if(artistRepository.existsByNameArtist(nameArtist)){

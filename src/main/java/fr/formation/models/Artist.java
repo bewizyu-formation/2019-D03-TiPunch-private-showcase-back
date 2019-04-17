@@ -21,7 +21,7 @@ public class Artist {
     @OneToMany()
     private  Set<DepartementAccepted> departments;
 
-    @Column(name="descriptionArtist")
+    @Column(name="descriptionArtist", columnDefinition="TEXT")
     private String descriptionArtist;
 
     @Column(name="nbVote")

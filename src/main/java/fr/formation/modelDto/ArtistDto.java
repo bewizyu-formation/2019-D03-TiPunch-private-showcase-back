@@ -1,7 +1,5 @@
 package fr.formation.modelDto;
 
-
-
 public class ArtistDto {
 
 
@@ -22,6 +20,12 @@ public class ArtistDto {
         this.nameArtist = nameArtist;
         this.descriptionArtist = descriptionArtist;
 
+    }
+
+    public ArtistDto(String nameArtist, String descriptionArtist, byte[] image) {
+        this.nameArtist = nameArtist;
+        this.descriptionArtist = descriptionArtist;
+        this.image = image;
     }
 
 

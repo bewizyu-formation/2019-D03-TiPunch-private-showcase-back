@@ -2,8 +2,7 @@ package fr.formation.image;
 
 import fr.formation.artist.ArtistService;
 import fr.formation.controller.AbstractController;
-import fr.formation.exception.FileNotFoundException;
-import fr.formation.exception.UserNotFoundException;
+
 import fr.formation.models.Artist;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,10 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 
 @RestController

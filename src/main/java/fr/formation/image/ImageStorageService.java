@@ -1,29 +1,12 @@
 package fr.formation.image;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 import fr.formation.artist.ArtistRepository;
-import fr.formation.modelDto.ArtistDto;
 import fr.formation.models.Artist;
-import fr.formation.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 
 @Service
 public class ImageStorageService {
@@ -63,7 +46,7 @@ public class ImageStorageService {
      */
     public byte[] getDefaultPicture(){
 
-        File file = new File("image/default.png");
+        File file = new File("image/default.jpg");
         byte[] defaultPicture = new byte[(int) file.length()];
 
         try {
