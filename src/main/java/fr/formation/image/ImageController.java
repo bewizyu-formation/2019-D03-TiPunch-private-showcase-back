@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 
 @RestController
@@ -33,17 +35,15 @@ public class ImageController extends AbstractController {
     public ResponseEntity getPicture(@PathVariable Long id){
         Artist artist = artistService.getArtistById(id);
 
-        byte[] picture = storageService.loadImage(artist);
+        if(artist == null){
+           return new ResponseEntity<>("not found",HttpStatus.NOT_FOUND);
+       }
 
+       byte[] picture = storageService.loadImage(artist);
        HttpHeaders headers = new HttpHeaders();
        headers.setContentType(MediaType.IMAGE_PNG);
 
-
-
-        if(artist == null){
-            return new ResponseEntity<>(artist,headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(picture,headers, HttpStatus.OK);
+       return new ResponseEntity<>(picture,headers, HttpStatus.OK);
     }
 
 }

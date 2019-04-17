@@ -2,6 +2,7 @@ package fr.formation.artist;
 
 
 import fr.formation.controller.AbstractController;
+import fr.formation.exception.UserNotFoundException;
 import fr.formation.user.UserService;
 import fr.formation.image.ImageStorageService;
 import fr.formation.models.Artist;
@@ -70,6 +71,7 @@ public class ArtistController extends AbstractController {
     public ResponseEntity<Artist> checkupdate(@PathVariable Long id){
       Artist artist =artistService.getArtistById(id);
       if (artist != null){
+
           return new ResponseEntity<>(artist,  HttpStatus.OK);
       }
 
